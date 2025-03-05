@@ -39,10 +39,10 @@ async function fetchAndSaveExercisesFromSource(): Promise<string[]> {
 const fetchExercises = async (): Promise<string[]> =>
   (await fetchExercisesFromDb()) || (await fetchAndSaveExercisesFromSource());
 
-function useExerciseData(): string[] | undefined {
-  const { data } = useSWR('exercises', fetchExercises);
+function useExerciseData(): { exercises: string[] | undefined; isLoadingExercises: boolean } {
+  const { data: exercises, isLoading: isLoadingExercises } = useSWR('exercises', fetchExercises);
 
-  return data;
+  return { exercises, isLoadingExercises };
 }
 
 export default useExerciseData;

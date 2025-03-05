@@ -10,6 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { CommandLoading } from 'cmdk';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import useExerciseData from './hooks/use-exercise-data';
 
@@ -20,7 +21,7 @@ interface ExerciseSelectProps {
 }
 
 export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
-  const exercises = useExerciseData();
+  const { exercises, isLoadingExercises } = useExerciseData();
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,6 +36,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
         <Command>
           <CommandInput placeholder="Search exercise..." />
           <CommandList>
+            {isLoadingExercises && <CommandLoading>Fetching exercises…</CommandLoading>}
             <CommandEmpty>No exercise found.</CommandEmpty>
             <CommandGroup>
               {exercises?.map((exercise) => (
