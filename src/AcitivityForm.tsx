@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,7 @@ function ActivityForm() {
   async function onSubmit(activity: z.infer<typeof formSchema>) {
     form.reset();
     await db.activities.add(activity);
+    toast.success('Activity saved successfully');
   }
 
   return (
