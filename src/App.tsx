@@ -20,7 +20,7 @@ function App() {
         <Card></Card>
       </TabsContent>
       <TabsContent value="add">
-        <Card>
+        <Card className="p-6">
           <ActivityForm />
         </Card>
       </TabsContent>

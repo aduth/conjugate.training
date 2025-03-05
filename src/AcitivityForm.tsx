@@ -1,33 +1,76 @@
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { db } from './db';
 
-function ActivityForm() {
-  const [exercise, setExercise] = useState('');
-  const [weight, setWeight] = useState(0);
+const formSchema = z.object({
+  exercise: z.string().min(1),
+  reps: z.number().min(0).default(0),
+  weight: z.number().min(0).default(0),
+  chainWeight: z.number().min(0).default(0),
+  bandType: z.string().nullable().default(null),
+  createdAt: z.date().default(() => new Date()),
+});
 
-  async function addActivity() {
-    await db.activities.add({
-      exercise,
-      reps: 1,
-      weight,
-      chainWeight: 0,
-      bandType: null,
-      createdAt: new Date(),
-    });
+function ActivityForm() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      exercise: '',
+      weight: 0,
+    },
+  });
+
+  async function onSubmit(activity: z.infer<typeof formSchema>) {
+    form.reset();
+    await db.activities.add(activity);
   }
 
   return (
-    <>
-      Exercise:
-      <input type="text" value={exercise} onChange={(event) => setExercise(event.target.value)} />
-      Weight:
-      <input
-        type="number"
-        value={weight}
-        onChange={(event) => setWeight(Number(event.target.value))}
-      />
-      <button onClick={addActivity}>Add</button>
-    </>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="exercise"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Exercise</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="weight"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Weight</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  onChange={(event) => field.onChange(Number(event.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   );
 }
 
