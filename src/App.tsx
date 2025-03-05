@@ -5,7 +5,6 @@ import ActivityForm from './AcitivityForm';
 import LatestActivities from './LatestActivities';
 import TabPage from './TabPage';
 import { Toaster } from '@/components/ui/sonner';
-import logoURL from './assets/logo.svg';
 
 function App() {
   const [location, navigate] = useLocation();
@@ -25,7 +24,7 @@ function App() {
     <div className="px-4">
       <header className="max-w-[800px] mx-auto my-5">
         <Link to="/latest">
-          <img src={logoURL} width="200" height="61" alt="Home" />
+          <img src="/images/logo.svg" width="200" height="61" alt="Home" />
         </Link>
       </header>
       <Tabs value={tabValue} onValueChange={setTabValue} className="max-w-[800px] mx-auto my-4">
