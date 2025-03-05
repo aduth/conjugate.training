@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { db } from './db';
+import { ExerciseSelect } from './ExerciseSelect';
 
 const formSchema = z.object({
   exercise: z.string().min(1),
@@ -48,7 +49,7 @@ function ActivityForm() {
             <FormItem>
               <FormLabel>Exercise</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <ExerciseSelect {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
