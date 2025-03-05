@@ -1,7 +1,7 @@
-import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ActivityForm from './AcitivityForm';
 import LatestActivities from './LatestActivities';
+import TabPage from './TabPage';
 
 function App() {
   return (
@@ -12,17 +12,17 @@ function App() {
         <TabsTrigger value="add">Add New</TabsTrigger>
       </TabsList>
       <TabsContent value="latest">
-        <Card>
+        <TabPage>
           <LatestActivities />
-        </Card>
+        </TabPage>
       </TabsContent>
       <TabsContent value="exercises">
-        <Card></Card>
+        <TabPage></TabPage>
       </TabsContent>
       <TabsContent value="add">
-        <Card className="p-6">
+        <TabPage>
           <ActivityForm />
-        </Card>
+        </TabPage>
       </TabsContent>
     </Tabs>
   );
