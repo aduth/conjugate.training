@@ -10,6 +10,8 @@ interface ExerciseDataResponse {
   exercises: ExerciseDataExercise[];
 }
 
+const EXERCISE_LIMIT = 8;
+
 const EXERCISE_DATA_URL =
   'https://raw.githubusercontent.com/exercemus/exercises/51b2a5c/minified-exercises.json';
 
@@ -22,27 +24,40 @@ const isAccommodationVariation = (exercise: ExerciseDataExercise): boolean =>
 const isIncludedExercise = (exercise: ExerciseDataExercise): boolean =>
   isStrengthExercise(exercise) && !isAccommodationVariation(exercise);
 
-async function fetchExercisesFromDb(): Promise<string[] | null> {
-  const exercises = await db.exercises.toArray();
-  return exercises.length ? exercises.map((exercise) => exercise.name) : null;
-}
-
-async function fetchAndSaveExercisesFromSource(): Promise<string[]> {
+async function fetchExercisesFromSource(): Promise<ExerciseDataExercise[]> {
   const response = await fetch(EXERCISE_DATA_URL);
   const data = (await response.json()) as ExerciseDataResponse;
-  const exercises = data.exercises.filter(isIncludedExercise).map(({ name }) => name);
-  db.exercises.bulkAdd(exercises.map((name) => ({ name, isCustom: false })));
-
-  return exercises;
+  return data.exercises.filter(isIncludedExercise);
 }
 
-const fetchExercises = async (): Promise<string[]> =>
-  (await fetchExercisesFromDb()) || (await fetchAndSaveExercisesFromSource());
+async function initializeExerciseDb(): Promise<void> {
+  const count = await db.exercises.count();
+  if (count > 0) {
+    return;
+  }
 
-function useExerciseData(): { exercises: string[] | undefined; isLoadingExercises: boolean } {
-  const { data: exercises, isLoading: isLoadingExercises } = useSWR('exercises', fetchExercises);
+  const exercises = await fetchExercisesFromSource();
+  const entities = exercises.map((exercise) => ({ name: exercise.name, isCustom: false }));
+  await db.exercises.bulkAdd(entities);
+}
 
-  return { exercises, isLoadingExercises };
+async function fetchExercises(query?: string): Promise<string[]> {
+  await initializeExerciseDb();
+
+  const filter = query
+    ? db.exercises.filter(({ name }) => name.toLowerCase().includes(query.toLowerCase()))
+    : db.exercises;
+  const results = await filter.limit(EXERCISE_LIMIT).toArray();
+
+  return results.map(({ name }) => name);
+}
+
+function useExerciseData(query?: string): string[] {
+  const { data } = useSWR(`exercises/${query}`, () => fetchExercises(query), {
+    keepPreviousData: true,
+  });
+
+  return data ?? [];
 }
 
 export default useExerciseData;
