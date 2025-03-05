@@ -11,6 +11,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import useExerciseData from './hooks/use-exercise-data';
 
 interface ExerciseSelectProps {
   value?: string;
@@ -18,23 +19,15 @@ interface ExerciseSelectProps {
   onChange: (nextValue: string) => void;
 }
 
-const exercises = [
-  {
-    value: 'Bench Press',
-    label: 'Bench Press',
-  },
-];
-
 export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
+  const exercises = useExerciseData();
   const [open, setOpen] = useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="justify-between">
-          {value
-            ? exercises.find((framework) => framework.value === value)?.label
-            : 'Select exercise...'}
+          {value ? value : 'Select exercise...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -44,22 +37,19 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
           <CommandList>
             <CommandEmpty>No exercise found.</CommandEmpty>
             <CommandGroup>
-              {exercises.map((exercise) => (
+              {exercises?.map((exercise) => (
                 <CommandItem
-                  key={exercise.value}
-                  value={exercise.value}
+                  key={exercise}
+                  value={exercise}
                   onSelect={() => {
-                    onChange(exercise.value);
+                    onChange(exercise);
                     setOpen(false);
                   }}
                 >
                   <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      value === exercise.value ? 'opacity-100' : 'opacity-0',
-                    )}
+                    className={cn('mr-2 h-4 w-4', value === exercise ? 'opacity-100' : 'opacity-0')}
                   />
-                  {exercise.label}
+                  {exercise}
                 </CommandItem>
               ))}
             </CommandGroup>
