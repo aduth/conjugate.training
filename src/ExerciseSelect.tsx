@@ -36,7 +36,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
         <Command filter={() => 1}>
           <CommandInput
             placeholder="Search exercise..."
-            onInput={(event: InputEvent) => setQuery((event.target as HTMLInputElement).value)}
+            onInput={(event) => setQuery((event.target as HTMLInputElement).value)}
           />
           <CommandList>
             <CommandEmpty>No exercise found.</CommandEmpty>
