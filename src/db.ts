@@ -1,4 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
+import dexieCloud from 'dexie-cloud-addon';
 
 interface Activity {
   id: number;
@@ -20,11 +21,16 @@ interface Database extends Dexie {
   exercises: EntityTable<Exercise, 'name'>;
 }
 
-const db = new Dexie('conjugate') as Database;
+const db = new Dexie('conjugate', { addons: [dexieCloud] }) as Database;
 
 db.version(1).stores({
-  activities: '++id, exercise, bandType, chainWeight, createdAt',
+  activities: '@id, exercise, bandType, chainWeight, createdAt',
   exercises: 'name',
+});
+
+db.cloud.configure({
+  databaseUrl: 'https://zejmcj630.dexie.cloud',
+  requireAuth: false,
 });
 
 export { db };

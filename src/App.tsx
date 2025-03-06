@@ -5,6 +5,7 @@ import ActivityForm from './AcitivityForm';
 import LatestActivities from './LatestActivities';
 import TabPage from './TabPage';
 import { Toaster } from '@/components/ui/sonner';
+import SignInOut from './sign-in-out';
 
 function App() {
   const [location, navigate] = useLocation();
@@ -24,10 +25,11 @@ function App() {
     <div className="relative py-5 h-full">
       <div className="absolute bg-white inset-x-0 top-0 h-40"></div>
       <div className="relative max-w-[600px] mx-auto px-4">
-        <header className="mb-5">
+        <header className="mb-5 flex justify-between items-center">
           <Link to="/latest">
             <img src="/images/logo.svg" width="200" height="61" alt="Home" />
           </Link>
+          <SignInOut />
         </header>
         <Tabs value={tabValue} onValueChange={setTabValue} className="my-4">
           <TabsList className="grid w-full grid-cols-3">
