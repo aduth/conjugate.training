@@ -3,6 +3,7 @@ import { Trash, ChartNoAxesCombined, Shell, Link, Weight } from 'lucide-react';
 import { db } from './db';
 import { pluralize } from './lib/i18n';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Details, DetailsItem } from './components/ui/details';
 
 function LatestActivities() {
   const activities = useLiveQuery(() => db.activities.orderBy('createdAt').reverse().toArray());
@@ -34,50 +35,28 @@ function LatestActivities() {
                 )}
               </div>
             </div>
-            <div className="flex flex-col items-end justify-between">
-              <div className="divide-x divide-gray-300 flex text-right">
-                <div className="pr-4">
-                  <div className="flex items-center text-sm text-base text-gray-700">
-                    <ChartNoAxesCombined size="16" className="inline-flex me-1" />
-                    Reps
-                  </div>
-                  <div className="font-semibold">{activity.reps}</div>
-                </div>
-                {activity.bandType && (
-                  <div className="px-4 last:pr-0">
-                    <div className="flex items-center text-sm text-base text-gray-700">
-                      <Shell size="16" className="inline-flex me-1" />
-                      Band
-                    </div>
-                    <div className="font-semibold">{activity.bandType}</div>
-                  </div>
-                )}
-                {activity.chainWeight > 0 && (
-                  <div className="px-4 last:pr-0">
-                    <div className="flex items-center text-sm text-base text-gray-700">
-                      <Link size="16" className="inline-flex me-1" />
-                      Chain
-                    </div>
-                    <div className="font-semibold">
-                      {activity.weight}
-                      {pluralize('lb', 'lbs', activity.weight)}
-                    </div>
-                  </div>
-                )}
-                {activity.weight > 0 && (
-                  <div className="px-4 last:pr-0">
-                    <div className="flex items-center text-sm text-base text-gray-700">
-                      <Weight size="16" className="inline-flex me-1" />
-                      Weight
-                    </div>
-                    <div className="font-semibold">
-                      {activity.weight}
-                      {pluralize('lb', 'lbs', activity.weight)}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            <Details>
+              <DetailsItem icon={ChartNoAxesCombined} name="Reps">
+                {activity.reps}
+              </DetailsItem>
+              {activity.bandType && (
+                <DetailsItem icon={Shell} name="Band">
+                  {activity.bandType}
+                </DetailsItem>
+              )}
+              {activity.chainWeight > 0 && (
+                <DetailsItem icon={Link} name="Chain">
+                  {activity.chainWeight}
+                  {pluralize('lb', 'lbs', activity.chainWeight)}
+                </DetailsItem>
+              )}
+              {activity.weight > 0 && (
+                <DetailsItem icon={Weight} name="Weight">
+                  {activity.weight}
+                  {pluralize('lb', 'lbs', activity.weight)}
+                </DetailsItem>
+              )}
+            </Details>
           </div>
         </li>
       ))}
