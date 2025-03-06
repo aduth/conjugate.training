@@ -82,12 +82,12 @@ function ActivityForm() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="Micro Band">Micro Band</SelectItem>
-                        <SelectItem value="Mini Band">Mini Band</SelectItem>
-                        <SelectItem value="Moster Mini Band">Monster Mini Band</SelectItem>
-                        <SelectItem value="Light Band">Light Band</SelectItem>
-                        <SelectItem value="Average Band">Average Band</SelectItem>
-                        <SelectItem value="Strong Band">Strong Band</SelectItem>
+                        <SelectItem value="Micro">Micro Band</SelectItem>
+                        <SelectItem value="Mini">Mini Band</SelectItem>
+                        <SelectItem value="Moster Mini">Monster Mini Band</SelectItem>
+                        <SelectItem value="Light">Light Band</SelectItem>
+                        <SelectItem value="Average">Average Band</SelectItem>
+                        <SelectItem value="Strong">Strong Band</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
