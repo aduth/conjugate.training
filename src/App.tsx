@@ -21,13 +21,13 @@ function App() {
   }, [tabValue, navigate]);
 
   return (
-    <div className="px-4">
-      <header className="max-w-[800px] mx-auto my-5">
+    <div className="max-w-[600px] mx-auto px-4">
+      <header className="my-5">
         <Link to="/latest">
           <img src="/images/logo.svg" width="200" height="61" alt="Home" />
         </Link>
       </header>
-      <Tabs value={tabValue} onValueChange={setTabValue} className="max-w-[800px] mx-auto my-4">
+      <Tabs value={tabValue} onValueChange={setTabValue} className="my-4">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="latest">Latest</TabsTrigger>
           <TabsTrigger value="exercises">Exercises</TabsTrigger>
