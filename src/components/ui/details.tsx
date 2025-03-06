@@ -32,7 +32,7 @@ function DetailsItem({ icon: IconComponent, name, className, children }: Details
         <IconComponent size="16" className="inline-flex me-1" />
         {name}
       </div>
-      <div className="font-semibold">{children}</div>
+      <div className="font-semibold whitespace-nowrap">{children}</div>
     </div>
   );
 }
