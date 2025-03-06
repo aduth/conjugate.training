@@ -1,4 +1,5 @@
 import { useObservable } from 'dexie-react-hooks';
+import { LogOut, LogIn } from 'lucide-react';
 import { db } from '#db';
 import { Button } from './ui/button';
 import Gravatar from './gravatar';
@@ -11,7 +12,7 @@ function SignInOut() {
       <div className="flex space-x-2 items-center">
         <Gravatar email={currentUser.email} />
         <Button variant="outline" onClick={() => db.cloud.logout()}>
-          Sign out
+          <LogOut /> Sign out
         </Button>
       </div>
     );
@@ -19,7 +20,7 @@ function SignInOut() {
 
   return (
     <Button variant="outline" onClick={() => db.cloud.login()}>
-      Sign in
+      <LogIn /> Sign in
     </Button>
   );
 }
