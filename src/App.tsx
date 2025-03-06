@@ -21,33 +21,36 @@ function App() {
   }, [tabValue, navigate]);
 
   return (
-    <div className="max-w-[600px] mx-auto px-4">
-      <header className="my-5">
-        <Link to="/latest">
-          <img src="/images/logo.svg" width="200" height="61" alt="Home" />
-        </Link>
-      </header>
-      <Tabs value={tabValue} onValueChange={setTabValue} className="my-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="latest">Latest</TabsTrigger>
-          <TabsTrigger value="exercises">Exercises</TabsTrigger>
-          <TabsTrigger value="add">Add New</TabsTrigger>
-        </TabsList>
-        <TabsContent value="latest">
-          <TabPage>
-            <LatestActivities />
-          </TabPage>
-        </TabsContent>
-        <TabsContent value="exercises">
-          <TabPage></TabPage>
-        </TabsContent>
-        <TabsContent value="add">
-          <TabPage>
-            <ActivityForm />
-          </TabPage>
-        </TabsContent>
-      </Tabs>
-      <Toaster />
+    <div className="relative py-5 h-full">
+      <div className="absolute bg-white inset-x-0 top-0 h-40"></div>
+      <div className="relative max-w-[600px] mx-auto px-4">
+        <header className="mb-5">
+          <Link to="/latest">
+            <img src="/images/logo.svg" width="200" height="61" alt="Home" />
+          </Link>
+        </header>
+        <Tabs value={tabValue} onValueChange={setTabValue} className="my-4">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="latest">Latest</TabsTrigger>
+            <TabsTrigger value="exercises">Exercises</TabsTrigger>
+            <TabsTrigger value="add">Add New</TabsTrigger>
+          </TabsList>
+          <TabsContent value="latest">
+            <TabPage>
+              <LatestActivities />
+            </TabPage>
+          </TabsContent>
+          <TabsContent value="exercises">
+            <TabPage></TabPage>
+          </TabsContent>
+          <TabsContent value="add">
+            <TabPage>
+              <ActivityForm />
+            </TabPage>
+          </TabsContent>
+        </Tabs>
+        <Toaster />
+      </div>
     </div>
   );
 }
