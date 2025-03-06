@@ -27,14 +27,12 @@ function LatestActivities() {
               </div>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger>
-                    <button
-                      type="button"
-                      onClick={() => db.activities.delete(activity.id)}
-                      className="p-2 -mx-2 text-gray-500 hover:text-red-400 cursor-pointer"
-                    >
-                      <CircleX size="20" />
-                    </button>
+                  <TooltipTrigger
+                    type="button"
+                    onClick={() => db.activities.delete(activity.id)}
+                    className="p-2 -mx-2 text-gray-500 hover:text-red-400 cursor-pointer"
+                  >
+                    <CircleX size="20" />
                   </TooltipTrigger>
                   <TooltipContent sideOffset={-10}>Delete</TooltipContent>
                 </Tooltip>
