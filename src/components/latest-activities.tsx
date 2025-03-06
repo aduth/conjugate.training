@@ -1,9 +1,9 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Trash, ChartNoAxesCombined, Shell, Link, Weight } from 'lucide-react';
-import { db } from './db';
-import { pluralize } from './lib/i18n';
+import { db } from '../db';
+import { pluralize } from '../lib/i18n';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Details, DetailsItem } from './components/ui/details';
+import { Details, DetailsItem } from './ui/details';
 
 function LatestActivities() {
   const activities = useLiveQuery(() => db.activities.orderBy('createdAt').reverse().toArray());

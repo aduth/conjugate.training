@@ -19,9 +19,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { db } from './db';
+import { db } from '../db';
 import { ExerciseSelect } from './exercise-select';
-import { addCustomExercise } from './entities/exercise';
+import { addCustomExercise } from '../entities/exercise';
 
 const formSchema = z.object({
   exercise: z.string().min(1),

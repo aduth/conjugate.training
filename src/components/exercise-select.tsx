@@ -11,7 +11,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import useExerciseData from './hooks/use-exercise-data';
+import useExerciseData from '../hooks/use-exercise-data';
 
 interface ExerciseSelectProps {
   value?: string;

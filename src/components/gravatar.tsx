@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { Avatar, AvatarImage } from './components/ui/avatar';
+import { Avatar, AvatarImage } from './ui/avatar';
 
 const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
 
