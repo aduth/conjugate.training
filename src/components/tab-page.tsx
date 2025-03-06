@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { Card } from '@/components/ui/card';
+import { Card } from '#components/ui/card';
 
 interface TabPageProps {
   children?: ReactNode;

@@ -1,8 +1,8 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Trash, ChartNoAxesCombined, Shell, Link, Weight } from 'lucide-react';
-import { db } from '../db';
-import { pluralize } from '../lib/i18n';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { db } from '#db';
+import { pluralize } from '#lib/i18n';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#components/ui/tooltip';
 import { Details, DetailsItem } from './ui/details';
 
 function LatestActivities() {

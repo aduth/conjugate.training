@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { db } from '../db';
+import { db } from '#db';
 
 interface ExerciseDataExercise {
   category: string;

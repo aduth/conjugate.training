@@ -1,5 +1,5 @@
 import { useObservable } from 'dexie-react-hooks';
-import { db } from '../db';
+import { db } from '#db';
 import { Button } from './ui/button';
 import Gravatar from './gravatar';
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import cn from '@/lib/class-names';
-import { Button } from '@/components/ui/button';
+import cn from '#lib/class-names';
+import { Button } from '#components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -9,9 +9,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import useExerciseData from '../hooks/use-exercise-data';
+} from '#components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '#components/ui/popover';
+import useExerciseData from '#hooks/use-exercise-data';
 
 interface ExerciseSelectProps {
   value?: string;

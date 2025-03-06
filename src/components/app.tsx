@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '#components/ui/tabs';
 import ActivityForm from './activity-form';
 import LatestActivities from './latest-activities';
 import TabPage from './tab-page';
-import { Toaster } from '@/components/ui/sonner';
+import { Toaster } from '#components/ui/sonner';
 import SignInOut from './sign-in-out';
 
 function App() {
