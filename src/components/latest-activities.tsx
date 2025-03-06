@@ -5,13 +5,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#compo
 import { Details, DetailsItem } from './ui/details';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
+import ListSkeleton from './list-skeleton';
 
 function LatestActivities() {
   const activities = useLiveQuery(() => db.activities.orderBy('createdAt').reverse().toArray());
 
+  if (!activities) return <ListSkeleton />;
+
   return (
     <ul className="divide-y -my-4 divide-gray-200">
-      {activities?.map((activity) => (
+      {activities.map((activity) => (
         <li key={activity.id} className="py-3 sm:py-4">
           <div className="flex items-center space-x-4">
             <div className="flex-1">
