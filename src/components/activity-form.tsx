@@ -22,6 +22,8 @@ import { Input } from '#components/ui/input';
 import { db } from '#db';
 import { addCustomExercise } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
+import ExerciseInfo from './exercise-info';
+import { useState } from 'react';
 
 const formSchema = z.object({
   exercise: z.string().min(1),
@@ -33,10 +35,11 @@ const formSchema = z.object({
 });
 
 function ActivityForm() {
+  const [exercise, setExercise] = useState('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      exercise: '',
+      exercise,
       bandType: null,
       weight: 0,
       chainWeight: 0,
@@ -61,7 +64,13 @@ function ActivityForm() {
             <FormItem>
               <FormLabel>Exercise</FormLabel>
               <FormControl>
-                <ExerciseSelect {...field} />
+                <ExerciseSelect
+                  {...field}
+                  onChange={(nextExercise) => {
+                    field.onChange(nextExercise);
+                    setExercise(nextExercise);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -156,6 +165,7 @@ function ActivityForm() {
             />
           </div>
         </div>
+        {exercise && <ExerciseInfo name={exercise} />}
         <Button type="submit" className="w-full">
           Submit
         </Button>

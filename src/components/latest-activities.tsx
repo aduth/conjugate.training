@@ -1,9 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Trash, ChartNoAxesCombined, Shell, Link, Weight } from 'lucide-react';
 import { db } from '#db';
-import { pluralize } from '#lib/i18n';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#components/ui/tooltip';
 import { Details, DetailsItem } from './ui/details';
+import FormattedWeight from './formatted-weight';
+import FormattedDate from './formatted-date';
 
 function LatestActivities() {
   const activities = useLiveQuery(() => db.activities.orderBy('createdAt').reverse().toArray());
@@ -30,9 +31,7 @@ function LatestActivities() {
                 </TooltipProvider>
               </div>
               <div className="text-sm text-gray-500 truncate">
-                {new Intl.DateTimeFormat(undefined, { dateStyle: 'long' }).format(
-                  activity.createdAt,
-                )}
+                <FormattedDate value={activity.createdAt} />
               </div>
             </div>
             <Details>
@@ -46,14 +45,12 @@ function LatestActivities() {
               )}
               {activity.chainWeight > 0 && (
                 <DetailsItem icon={Link} name="Chain">
-                  {activity.chainWeight}
-                  {pluralize('lb', 'lbs', activity.chainWeight)}
+                  <FormattedWeight value={activity.chainWeight} />
                 </DetailsItem>
               )}
               {activity.weight > 0 && (
                 <DetailsItem icon={Weight} name="Weight">
-                  {activity.weight}
-                  {pluralize('lb', 'lbs', activity.weight)}
+                  <FormattedWeight value={activity.weight} />
                 </DetailsItem>
               )}
             </Details>
