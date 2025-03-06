@@ -49,6 +49,7 @@ function ActivityForm() {
 
   async function onSubmit(activity: z.infer<typeof formSchema>) {
     form.reset();
+    setExercise('');
     addCustomExercise(activity.exercise);
     await db.activities.add(activity);
     toast.success('Activity saved successfully');
