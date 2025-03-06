@@ -24,7 +24,7 @@ interface Database extends Dexie {
 const db = new Dexie('conjugate') as Database;
 
 db.version(1).stores({
-  activities: '++id, exercise, bandType, chainWeight',
+  activities: '++id, exercise, bandType, chainWeight, createdAt',
   exercises: '++id, name',
 });
 

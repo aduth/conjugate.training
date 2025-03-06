@@ -5,7 +5,7 @@ import { pluralize } from './lib/i18n';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 function LatestActivities() {
-  const activities = useLiveQuery(() => db.activities.toArray());
+  const activities = useLiveQuery(() => db.activities.orderBy('createdAt').reverse().toArray());
 
   return (
     <ul className="divide-y -my-4 divide-gray-200 dark:divide-gray-700">
