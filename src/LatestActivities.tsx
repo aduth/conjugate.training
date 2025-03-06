@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './db';
+import { pluralize } from './lib/i18n';
 
 function LatestActivities() {
   const activities = useLiveQuery(() => db.activities.toArray());
@@ -18,7 +19,8 @@ function LatestActivities() {
               </div>
             </div>
             <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-              {activity.reps}×{activity.weight}lbs
+              {activity.reps}×{activity.weight}
+              {pluralize('lb', 'lbs', activity.weight)}
             </div>
           </div>
         </li>
