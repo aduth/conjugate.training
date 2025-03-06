@@ -11,21 +11,20 @@ interface Activity {
 }
 
 interface Exercise {
-  id: number;
   name: string;
   isCustom: boolean;
 }
 
 interface Database extends Dexie {
   activities: EntityTable<Activity, 'id'>;
-  exercises: EntityTable<Exercise, 'id'>;
+  exercises: EntityTable<Exercise, 'name'>;
 }
 
 const db = new Dexie('conjugate') as Database;
 
 db.version(1).stores({
   activities: '++id, exercise, bandType, chainWeight, createdAt',
-  exercises: '++id, name',
+  exercises: 'name',
 });
 
 export { db };

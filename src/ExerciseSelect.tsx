@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import cn from '@/lib/class-names';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,12 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
   const [query, setQuery] = useState('');
   const exercises = useExerciseData(query);
   const [open, setOpen] = useState(false);
+  const hasExactMatch = exercises.some(
+    (exercise) => exercise.toLowerCase() === query.toLowerCase(),
+  );
+  useEffect(() => {
+    if (!open) setQuery('');
+  }, [open]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,6 +47,21 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
           <CommandList>
             <CommandEmpty>No exercise found.</CommandEmpty>
             <CommandGroup>
+              {!hasExactMatch && query.length > 0 && (
+                <CommandItem
+                  key="add-new"
+                  value={query}
+                  onSelect={() => {
+                    onChange(query);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn('mr-2 h-4 w-4', value === query ? 'opacity-100' : 'opacity-0')}
+                  />
+                  Add new “{query}”…
+                </CommandItem>
+              )}
               {exercises.map((exercise) => (
                 <CommandItem
                   key={exercise}

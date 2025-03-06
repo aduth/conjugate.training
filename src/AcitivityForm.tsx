@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { db } from './db';
 import { ExerciseSelect } from './ExerciseSelect';
+import { addCustomExercise } from './entities/exercise';
 
 const formSchema = z.object({
   exercise: z.string().min(1),
@@ -45,6 +46,7 @@ function ActivityForm() {
 
   async function onSubmit(activity: z.infer<typeof formSchema>) {
     form.reset();
+    addCustomExercise(activity.exercise);
     await db.activities.add(activity);
     toast.success('Activity saved successfully');
   }
