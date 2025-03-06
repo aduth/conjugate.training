@@ -1,56 +1,30 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'wouter';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '#components/ui/tabs';
-import ActivityForm from './activity-form';
-import LatestActivities from './latest-activities';
-import TabPage from './tab-page';
+import { Link, Redirect, Route, Switch } from 'wouter';
 import { Toaster } from '#components/ui/sonner';
+import LatestPage from '#pages/latest-activities-page.tsx';
 import SignInOut from './sign-in-out';
+import AddActivityPage from '#pages/add-activity-page.tsx';
 
 function App() {
-  const [location, navigate] = useLocation();
-  const [tabValue, setTabValue] = useState('');
-  useEffect(() => {
-    setTabValue(location.split('/')[1] || 'latest');
-  }, [location]);
-  useEffect(() => {
-    if (tabValue) {
-      const url = new URL('/', window.location.href);
-      url.pathname = tabValue;
-      navigate(url.pathname);
-    }
-  }, [tabValue, navigate]);
-
   return (
     <div className="relative py-5 h-full">
       <div className="absolute bg-white inset-x-0 top-0 h-40"></div>
       <div className="relative max-w-[600px] mx-auto px-4">
         <header className="mb-5 flex justify-between items-center">
-          <Link to="/latest">
+          <Link to="/">
             <img src="/images/logo.svg" width="200" height="61" alt="Home" />
           </Link>
           <SignInOut />
         </header>
-        <Tabs value={tabValue} onValueChange={setTabValue} className="my-4">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="latest">Latest</TabsTrigger>
-            <TabsTrigger value="exercises">Exercises</TabsTrigger>
-            <TabsTrigger value="add">Add New</TabsTrigger>
-          </TabsList>
-          <TabsContent value="latest">
-            <TabPage>
-              <LatestActivities />
-            </TabPage>
-          </TabsContent>
-          <TabsContent value="exercises">
-            <TabPage></TabPage>
-          </TabsContent>
-          <TabsContent value="add">
-            <TabPage>
-              <ActivityForm />
-            </TabPage>
-          </TabsContent>
-        </Tabs>
+        <Switch>
+          <Route path="/latest" component={LatestPage} />
+          <Route path="/add" component={AddActivityPage} />
+          <Route path="/exercises">
+            <Redirect to="/latest" />
+          </Route>
+          <Route>
+            <Redirect to="/latest" />
+          </Route>
+        </Switch>
         <Toaster />
       </div>
     </div>
