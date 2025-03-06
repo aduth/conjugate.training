@@ -27,8 +27,8 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
     (exercise) => exercise.toLowerCase() === query.toLowerCase(),
   );
   useEffect(() => {
-    if (!open) setQuery('');
-  }, [open]);
+    if (!open && value) setQuery(value);
+  }, [open, value]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,6 +41,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
       <PopoverContent className="p-0 w-[var(--radix-popover-trigger-width)]">
         <Command filter={() => 1}>
           <CommandInput
+            value={query}
             placeholder="Search exercise..."
             onInput={(event) => setQuery((event.target as HTMLInputElement).value)}
           />
