@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { db } from './db';
-import { ExerciseSelect } from './ExerciseSelect';
+import { ExerciseSelect } from './exercise-select';
 import { addCustomExercise } from './entities/exercise';
 
 const formSchema = z.object({
