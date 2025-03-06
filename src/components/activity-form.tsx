@@ -94,7 +94,7 @@ function ActivityForm() {
                         <SelectItem value="none">None</SelectItem>
                         <SelectItem value="Micro">Micro Band</SelectItem>
                         <SelectItem value="Mini">Mini Band</SelectItem>
-                        <SelectItem value="Moster Mini">Monster Mini Band</SelectItem>
+                        <SelectItem value="Monster Mini">Monster Mini Band</SelectItem>
                         <SelectItem value="Light">Light Band</SelectItem>
                         <SelectItem value="Average">Average Band</SelectItem>
                         <SelectItem value="Strong">Strong Band</SelectItem>
