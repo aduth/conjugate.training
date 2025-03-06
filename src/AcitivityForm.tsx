@@ -4,6 +4,13 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Form,
   FormControl,
   FormField,
@@ -29,7 +36,10 @@ function ActivityForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       exercise: '',
+      bandType: null,
       weight: 0,
+      chainWeight: 0,
+      reps: 1,
     },
   });
 
@@ -55,22 +65,95 @@ function ActivityForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="weight"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Weight</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  onChange={(event) => field.onChange(Number(event.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex space-x-2">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="bandType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Band Type</FormLabel>
+                  <FormControl>
+                    <Select value={field.value || 'none'} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="None" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="Micro Band">Micro Band</SelectItem>
+                        <SelectItem value="Mini Band">Mini Band</SelectItem>
+                        <SelectItem value="Moster Mini Band">Monster Mini Band</SelectItem>
+                        <SelectItem value="Light Band">Light Band</SelectItem>
+                        <SelectItem value="Average Band">Average Band</SelectItem>
+                        <SelectItem value="Strong Band">Strong Band</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="chainWeight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Chain Weight</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      onChange={(event) => field.onChange(Number(event.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex space-x-2">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="reps"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Reps</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      onChange={(event) => field.onChange(Number(event.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Weight</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      onChange={(event) => field.onChange(Number(event.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
         <Button type="submit">Submit</Button>
       </form>
     </Form>
