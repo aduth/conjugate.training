@@ -24,7 +24,7 @@ import { type Activity, db } from '#db';
 import { addCustomExercise } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import DatePicker from './date-picker';
 
 const formSchema = z.object({
