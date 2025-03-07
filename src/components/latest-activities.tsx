@@ -1,14 +1,16 @@
-import { useLiveQuery } from 'dexie-react-hooks';
 import { Trash, ChartNoAxesCombined, Shell, Link, Weight } from 'lucide-react';
 import { db } from '#db';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#components/ui/tooltip';
+import useCachedLiveQuery from '#hooks/use-cached-live-query';
 import { Details, DetailsItem } from './ui/details';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
 import ListSkeleton from './list-skeleton';
 
 function LatestActivities() {
-  const activities = useLiveQuery(() => db.activities.orderBy('createdAt').reverse().toArray());
+  const activities = useCachedLiveQuery('activities', () =>
+    db.activities.orderBy('createdAt').reverse().toArray(),
+  );
 
   if (!activities) return <ListSkeleton />;
 
