@@ -7,6 +7,7 @@ import { Details, DetailsItem } from './ui/details';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
 import ListSkeleton from './list-skeleton';
+import EmptyActivitiesState from './empty-activities-state';
 
 function LatestActivities() {
   const [, navigate] = useLocation();
@@ -15,6 +16,7 @@ function LatestActivities() {
   );
 
   if (!activities) return <ListSkeleton />;
+  if (!activities.length) return <EmptyActivitiesState />;
 
   return (
     <ul className="divide-y -my-4 divide-gray-200">

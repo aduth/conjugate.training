@@ -1,5 +1,6 @@
 import { db } from '#db.ts';
 import useCachedLiveQuery from '#hooks/use-cached-live-query.ts';
+import EmptyActivitiesState from './empty-activities-state';
 import ListSkeleton from './list-skeleton';
 
 function ExerciseList() {
@@ -8,6 +9,7 @@ function ExerciseList() {
   );
 
   if (!exercises) return <ListSkeleton />;
+  if (!exercises.length) return <EmptyActivitiesState />;
 
   return (
     <ul>
