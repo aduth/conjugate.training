@@ -42,11 +42,10 @@ interface ActivityFormProps {
 
 function ActivityForm({ entity }: ActivityFormProps) {
   const [, navigate] = useLocation();
-  const [exercise, setExercise] = useState('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      exercise,
+      exercise: '',
       bandType: null,
       weight: 0,
       chainWeight: 0,
@@ -54,6 +53,12 @@ function ActivityForm({ entity }: ActivityFormProps) {
       createdAt: new Date(),
     },
   });
+  const [exercise, reps, chainWeight, bandType] = form.watch([
+    'exercise',
+    'reps',
+    'chainWeight',
+    'bandType',
+  ]);
 
   useEffect(() => {
     if (entity) form.reset(entity);
@@ -71,7 +76,6 @@ function ActivityForm({ entity }: ActivityFormProps) {
       navigate('/latest');
     } else {
       form.reset();
-      setExercise('');
       addCustomExercise(activity.exercise);
       await db.activities.add(activity);
     }
@@ -93,7 +97,6 @@ function ActivityForm({ entity }: ActivityFormProps) {
                   {...field}
                   onChange={(nextExercise) => {
                     field.onChange(nextExercise);
-                    setExercise(nextExercise);
                   }}
                 />
               </FormControl>
@@ -211,7 +214,9 @@ function ActivityForm({ entity }: ActivityFormProps) {
           </div>
           <div className="flex-1"></div>
         </div>
-        {exercise && <ExerciseInfo name={exercise} />}
+        {exercise && (
+          <ExerciseInfo name={exercise} reps={reps} chainWeight={chainWeight} bandType={bandType} />
+        )}
         <div className="space-y-2">
           <Button type="submit" className="w-full">
             {entity ? 'Update' : 'Submit'}

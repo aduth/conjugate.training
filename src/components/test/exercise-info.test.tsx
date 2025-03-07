@@ -1,10 +1,10 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from '@testing-library/react';
 import ExerciseInfo from '../exercise-info';
 import { db } from '#db';
 
 describe('ExerciseInfo', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await db.activities.add({
       exercise: 'Barbell Bench Press',
       reps: 1,
@@ -22,15 +22,72 @@ describe('ExerciseInfo', () => {
       bandType: null,
       createdAt: new Date(2025, 0, 2),
     });
+
+    await db.activities.add({
+      exercise: 'Barbell Bench Press',
+      reps: 2,
+      weight: 185,
+      chainWeight: 0,
+      bandType: null,
+      createdAt: new Date(2025, 0, 3),
+    });
+
+    await db.activities.add({
+      exercise: 'Barbell Bench Press',
+      reps: 1,
+      weight: 185,
+      chainWeight: 0,
+      bandType: 'Mini Band',
+      createdAt: new Date(2025, 0, 4),
+    });
+
+    await db.activities.add({
+      exercise: 'Barbell Bench Press',
+      reps: 1,
+      weight: 185,
+      chainWeight: 80,
+      bandType: null,
+      createdAt: new Date(2025, 0, 5),
+    });
   });
 
   it('renders best and latest recorded activity', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" />);
 
-    const term = await findByText('Best');
+    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
     expect(terms).to.deep.equal(['Best', '225lbs (1/1/25)', 'Latest', '200lbs (1/2/25)']);
+  });
+
+  it('filters to given reps', async () => {
+    const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" reps={2} />);
+
+    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal(['Best', '185lbs (1/3/25)', 'Latest', '185lbs (1/3/25)']);
+  });
+
+  it('filters to given bandType', async () => {
+    const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" bandType="Mini Band" />);
+
+    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal(['Best', '185lbs (1/4/25)', 'Latest', '185lbs (1/4/25)']);
+  });
+
+  it('filters to given chainWeight', async () => {
+    const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" chainWeight={80} />);
+
+    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal(['Best', '185lbs (1/5/25)', 'Latest', '185lbs (1/5/25)']);
   });
 });

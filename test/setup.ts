@@ -1,7 +1,6 @@
 import 'fake-indexeddb/auto';
-import { beforeAll, vi } from 'vitest';
-import { IDBFactory } from 'fake-indexeddb';
-import { beforeEach } from 'node:test';
+import { beforeEach, beforeAll, vi } from 'vitest';
+import { db } from '../src/db';
 
 beforeAll(() => {
   // Dexie uses `console.debug` internally for general debugging. This suppress those messages.
@@ -16,6 +15,6 @@ beforeAll(() => {
   });
 });
 
-beforeEach(() => {
-  global.indexedDB = new IDBFactory();
+beforeEach(async () => {
+  await db.activities.clear();
 });

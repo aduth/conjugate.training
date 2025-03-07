@@ -7,17 +7,40 @@ import { Details, DetailsItem } from './ui/details';
 
 interface ExerciseInfoProps {
   name: string;
+
+  reps?: number;
+
+  chainWeight?: number;
+
+  bandType?: string | null;
 }
 
-function ExerciseInfo({ name }: ExerciseInfoProps) {
-  const best = useLiveQuery(
-    async () => (await db.activities.where({ exercise: name }).reverse().sortBy('weight'))[0],
-    [name],
+function useSortedFirst(
+  name: string,
+  sortKey: string,
+  { reps, chainWeight, bandType }: Pick<ExerciseInfoProps, 'reps' | 'chainWeight' | 'bandType'>,
+) {
+  return useLiveQuery(
+    async () =>
+      (
+        await db.activities
+          .where({ exercise: name })
+          .filter(
+            (activity) =>
+              activity.reps === reps &&
+              activity.chainWeight === chainWeight &&
+              activity.bandType === bandType,
+          )
+          .reverse()
+          .sortBy(sortKey)
+      )[0],
+    [name, reps, chainWeight, bandType],
   );
-  const latest = useLiveQuery(
-    async () => (await db.activities.where({ exercise: name }).reverse().sortBy('createdAt'))[0],
-    [name],
-  );
+}
+
+function ExerciseInfo({ name, reps = 1, chainWeight = 0, bandType = null }: ExerciseInfoProps) {
+  const best = useSortedFirst(name, 'weight', { reps, chainWeight, bandType });
+  const latest = useSortedFirst(name, 'createdAt', { reps, chainWeight, bandType });
 
   if (!best && !latest) return null;
 
