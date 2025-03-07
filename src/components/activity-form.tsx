@@ -27,7 +27,7 @@ import { useState } from 'react';
 import DatePicker from './date-picker';
 
 const formSchema = z.object({
-  exercise: z.string().min(1),
+  exercise: z.string().min(1, 'You must make a selection'),
   reps: z.number().min(0).default(0),
   weight: z.number().min(0).default(0),
   chainWeight: z.number().min(0).default(0),
