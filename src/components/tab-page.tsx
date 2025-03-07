@@ -6,7 +6,7 @@ interface TabPageProps {
 }
 
 function TabPage({ children }: TabPageProps) {
-  return <Card className="p-6">{children}</Card>;
+  return <Card className="rounded-none md:rounded-xl p-6">{children}</Card>;
 }
 
 export default TabPage;

@@ -9,10 +9,10 @@ function App() {
   return (
     <div className="relative py-5 h-full">
       <div className="absolute bg-white inset-x-0 top-0 h-40"></div>
-      <div className="relative max-w-[600px] mx-auto px-4">
-        <header className="mb-5 flex justify-between items-center">
+      <div className="relative max-w-[600px] mx-auto">
+        <header className="mb-5 flex justify-between items-center mx-4 md:mx-0">
           <Link to="/">
-            <img src="/images/logo.svg" width="200" height="61" alt="Home" />
+            <img src="/images/logo.svg" className="w-40 h-[49px] md:w-50 md:h-[51px]" alt="Home" />
           </Link>
           <SignInOut />
         </header>

@@ -20,17 +20,19 @@ function Page({ tabValue, children }: PageProps) {
 
   return (
     <Tabs value={tabValue} onValueChange={setTabValue} className="my-4">
-      <TabsList className="grid w-full grid-cols-3 h-auto *:py-2">
-        <TabsTrigger value="latest">
-          <List /> Latest
-        </TabsTrigger>
-        <TabsTrigger value="exercises">
-          <Activity /> Exercises
-        </TabsTrigger>
-        <TabsTrigger value="add">
-          <CirclePlus /> Add New
-        </TabsTrigger>
-      </TabsList>
+      <div className="mx-4 md:mx-0">
+        <TabsList className="grid w-full grid-cols-3 h-auto *:py-2">
+          <TabsTrigger value="latest">
+            <List /> Latest
+          </TabsTrigger>
+          <TabsTrigger value="exercises">
+            <Activity /> Exercises
+          </TabsTrigger>
+          <TabsTrigger value="add">
+            <CirclePlus /> Add New
+          </TabsTrigger>
+        </TabsList>
+      </div>
       <TabsContent value={tabValue}>
         <TabPage>{children}</TabPage>
       </TabsContent>

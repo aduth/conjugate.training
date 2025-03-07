@@ -18,8 +18,8 @@ function LatestActivities() {
     <ul className="divide-y -my-4 divide-gray-200">
       {activities.map((activity) => (
         <li key={activity.id} className="py-3 sm:py-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex-1">
+          <div className="flex items-center flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4">
+            <div className="flex-1 w-full text-left">
               <div className="font-medium text-gray-900 truncate flex items-center">
                 {activity.exercise}
                 <TooltipProvider>
@@ -39,7 +39,7 @@ function LatestActivities() {
                 <FormattedDate value={activity.createdAt} />
               </div>
             </div>
-            <Details>
+            <Details className="self-start">
               <DetailsItem icon={ChartNoAxesCombined} name="Reps">
                 {activity.reps}
               </DetailsItem>
