@@ -1,9 +1,10 @@
 import { Link, Redirect, Route, Switch } from 'wouter';
 import { Toaster } from '#components/ui/sonner';
-import LatestPage from '#pages/latest-activities-page.tsx';
+import LatestPage from '#pages/latest-activities-page';
 import SignInOut from './sign-in-out';
-import AddActivityPage from '#pages/add-activity-page.tsx';
-import ExercisesPage from '#pages/exercises-page.tsx';
+import AddActivityPage from '#pages/add-activity-page';
+import EditActivityPage from '#pages/edit-activity-page';
+import ExercisesPage from '#pages/exercises-page';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Switch>
           <Route path="/latest" component={LatestPage} />
           <Route path="/add" component={AddActivityPage} />
+          <Route path="/edit/:activityId" component={EditActivityPage} />
           <Route path="/exercises" component={ExercisesPage} />
           <Route>
             <Redirect to="/latest" />

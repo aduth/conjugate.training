@@ -1,4 +1,5 @@
-import { Trash, ChartNoAxesCombined, Shell, Link, Weight } from 'lucide-react';
+import { ChartNoAxesCombined, Shell, Link, Weight, FilePen } from 'lucide-react';
+import { useLocation } from 'wouter';
 import { db } from '#db';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#components/ui/tooltip';
 import useCachedLiveQuery from '#hooks/use-cached-live-query';
@@ -8,6 +9,7 @@ import FormattedDate from './formatted-date';
 import ListSkeleton from './list-skeleton';
 
 function LatestActivities() {
+  const [, navigate] = useLocation();
   const activities = useCachedLiveQuery('activities', () =>
     db.activities.orderBy('createdAt').reverse().toArray(),
   );
@@ -26,12 +28,12 @@ function LatestActivities() {
                   <Tooltip>
                     <TooltipTrigger
                       type="button"
-                      onClick={() => db.activities.delete(activity.id)}
+                      onClick={() => navigate(`/edit/${activity.id}`)}
                       className="p-2 -mr-2 text-gray-500 hover:text-red-400 cursor-pointer"
                     >
-                      <Trash size="16" />
+                      <FilePen size="16" />
                     </TooltipTrigger>
-                    <TooltipContent sideOffset={-10}>Delete</TooltipContent>
+                    <TooltipContent sideOffset={-10}>Edit</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </div>

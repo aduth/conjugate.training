@@ -2,7 +2,7 @@ import Dexie, { type EntityTable } from 'dexie';
 import dexieCloud from 'dexie-cloud-addon';
 
 interface Activity {
-  id: number;
+  id: string;
   exercise: string;
   reps: number;
   weight: number;
@@ -33,4 +33,4 @@ db.cloud.configure({
   requireAuth: false,
 });
 
-export { db };
+export { db, type Activity, type Exercise };

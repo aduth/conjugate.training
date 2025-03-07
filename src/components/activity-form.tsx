@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useLocation } from 'wouter';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,11 +20,11 @@ import {
   FormMessage,
 } from '#components/ui/form';
 import { Input } from '#components/ui/input';
-import { db } from '#db';
+import { type Activity, db } from '#db';
 import { addCustomExercise } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from './date-picker';
 
 const formSchema = z.object({
@@ -35,7 +36,12 @@ const formSchema = z.object({
   createdAt: z.date().default(() => new Date()),
 });
 
-function ActivityForm() {
+interface ActivityFormProps {
+  entity?: Activity;
+}
+
+function ActivityForm({ entity }: ActivityFormProps) {
+  const [, navigate] = useLocation();
   const [exercise, setExercise] = useState('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,11 +55,27 @@ function ActivityForm() {
     },
   });
 
+  useEffect(() => {
+    if (entity) form.reset(entity);
+  }, [entity, form]);
+
+  async function onDestroy() {
+    await db.activities.delete(entity!.id);
+    toast.success('Activity deleted successfully');
+    navigate('/latest');
+  }
+
   async function onSubmit(activity: z.infer<typeof formSchema>) {
-    form.reset();
-    setExercise('');
-    addCustomExercise(activity.exercise);
-    await db.activities.add(activity);
+    if (entity) {
+      await db.activities.update(entity.id, activity);
+      navigate('/latest');
+    } else {
+      form.reset();
+      setExercise('');
+      addCustomExercise(activity.exercise);
+      await db.activities.add(activity);
+    }
+
     toast.success('Activity saved successfully');
   }
 
@@ -190,9 +212,16 @@ function ActivityForm() {
           <div className="flex-1"></div>
         </div>
         {exercise && <ExerciseInfo name={exercise} />}
-        <Button type="submit" className="w-full">
-          Submit
-        </Button>
+        <div className="space-y-2">
+          <Button type="submit" className="w-full">
+            {entity ? 'Update' : 'Submit'}
+          </Button>
+          {entity && (
+            <Button type="button" variant="destructive" className="w-full" onClick={onDestroy}>
+              Delete
+            </Button>
+          )}
+        </div>
       </form>
     </Form>
   );
