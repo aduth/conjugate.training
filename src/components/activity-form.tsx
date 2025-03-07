@@ -119,6 +119,7 @@ function ActivityForm() {
                     <Input
                       {...field}
                       type="number"
+                      onFocus={(event) => event.target.select()}
                       onChange={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
@@ -140,6 +141,7 @@ function ActivityForm() {
                     <Input
                       {...field}
                       type="number"
+                      onFocus={(event) => event.target.select()}
                       onChange={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
@@ -159,6 +161,7 @@ function ActivityForm() {
                     <Input
                       {...field}
                       type="number"
+                      onFocus={(event) => event.target.select()}
                       onChange={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
