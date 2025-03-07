@@ -22,18 +22,23 @@ interface ExerciseSelectProps {
 export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
   const [query, setQuery] = useState('');
   const exercises = useExerciseData(query);
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const hasExactMatch = exercises.some(
     (exercise) => exercise.toLowerCase() === query.toLowerCase(),
   );
   useEffect(() => {
-    if (!open && value) setQuery(value);
-  }, [open, value]);
+    if (!isOpen && value) setQuery(value);
+  }, [isOpen, value]);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="justify-between">
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={isOpen}
+          className="justify-between"
+        >
           {value ? value : 'Select exercise...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -54,7 +59,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
                   value={query}
                   onSelect={() => {
                     onChange(query);
-                    setOpen(false);
+                    setIsOpen(false);
                   }}
                 >
                   <Check
@@ -69,7 +74,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
                   value={exercise}
                   onSelect={() => {
                     onChange(exercise);
-                    setOpen(false);
+                    setIsOpen(false);
                   }}
                 >
                   <Check

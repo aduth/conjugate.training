@@ -24,6 +24,7 @@ import { addCustomExercise } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
 import { useState } from 'react';
+import DatePicker from './date-picker';
 
 const formSchema = z.object({
   exercise: z.string().min(1),
@@ -44,6 +45,7 @@ function ActivityForm() {
       weight: 0,
       chainWeight: 0,
       reps: 1,
+      createdAt: new Date(),
     },
   });
 
@@ -57,7 +59,7 @@ function ActivityForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="exercise"
@@ -165,6 +167,24 @@ function ActivityForm() {
               )}
             />
           </div>
+        </div>
+        <div className="flex space-x-2">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="createdAt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date</FormLabel>
+                  <FormControl>
+                    <DatePicker value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex-1"></div>
         </div>
         {exercise && <ExerciseInfo name={exercise} />}
         <Button type="submit" className="w-full">
