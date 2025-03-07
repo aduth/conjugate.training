@@ -11,11 +11,11 @@ interface ExerciseInfoProps {
 
 function ExerciseInfo({ name }: ExerciseInfoProps) {
   const best = useLiveQuery(
-    async () => (await db.activities.where({ exercise: name }).sortBy('weight')).at(-1),
+    async () => (await db.activities.where({ exercise: name }).reverse().sortBy('weight'))[0],
     [name],
   );
   const latest = useLiveQuery(
-    async () => (await db.activities.where({ exercise: name }).sortBy('createdAt')).at(-1),
+    async () => (await db.activities.where({ exercise: name }).reverse().sortBy('createdAt'))[0],
     [name],
   );
 

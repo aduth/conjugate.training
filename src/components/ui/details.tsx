@@ -18,9 +18,9 @@ function Details({ children, className }: DetailsProps) {
   const classes = cn('flex flex-col items-end justify-between', className);
 
   return (
-    <div className={classes}>
+    <dl className={classes}>
       <div className="divide-x divide-gray-300 flex w-full text-right">{children}</div>
-    </div>
+    </dl>
   );
 }
 
@@ -30,9 +30,9 @@ function DetailsItem({ icon: IconComponent, name, className, children }: Details
     <div className={classes}>
       <div className="inline-flex items-center text-sm text-base text-gray-700 basis-full">
         <IconComponent size="16" className="inline-flex me-1" />
-        {name}
+        <dt>{name}</dt>
       </div>
-      <div className="font-semibold whitespace-nowrap">{children}</div>
+      <dd className="font-semibold whitespace-nowrap">{children}</dd>
     </div>
   );
 }
