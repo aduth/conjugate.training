@@ -31,6 +31,7 @@ db.version(1).stores({
 db.cloud.configure({
   databaseUrl: 'https://zejmcj630.dexie.cloud',
   requireAuth: false,
+  customLoginGui: true,
 });
 
 export { db, type Activity, type Exercise };

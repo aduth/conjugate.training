@@ -3,6 +3,7 @@ import { LogOut, LogIn } from 'lucide-react';
 import { db } from '#db';
 import { Button } from './ui/button';
 import Gravatar from './gravatar';
+import SignInDialog from './sign-in-dialog';
 
 function SignInOut() {
   const currentUser = useObservable(db.cloud.currentUser);
@@ -19,9 +20,12 @@ function SignInOut() {
   }
 
   return (
-    <Button variant="outline" onClick={() => db.cloud.login()}>
-      <LogIn /> Sign in
-    </Button>
+    <>
+      <SignInDialog />
+      <Button variant="outline" onClick={() => db.cloud.login()}>
+        <LogIn /> Sign in
+      </Button>
+    </>
   );
 }
 
