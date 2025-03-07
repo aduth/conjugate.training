@@ -30,3 +30,9 @@ To get started, follow these steps:
    ```
 
 4. **Open the application:** Open your browser and navigate to `http://localhost:5173` to start using the application.
+
+## License
+
+Copyright 2025 Andrew Duthie
+
+Released under the [GPLv3 License](https://opensource.org/license/gpl-3-0).
