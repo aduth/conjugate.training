@@ -10,11 +10,17 @@ import ListSkeleton from './list-skeleton';
 import EmptyActivitiesState from './empty-activities-state';
 import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
 
-function LatestActivities() {
+interface LatestActivitiesProps {
+  exercise?: string;
+}
+
+function LatestActivities({ exercise }: LatestActivitiesProps) {
   const [, navigate] = useLocation();
-  const activities = useCachedLiveQuery('activities', () =>
-    db.activities.orderBy('createdAt').reverse().toArray(),
-  );
+  const activities = useCachedLiveQuery(['activities', exercise ?? ''], () => {
+    let activities = db.activities.orderBy('createdAt').reverse();
+    if (exercise) activities = activities.filter((activity) => activity.exercise === exercise);
+    return activities.toArray();
+  });
 
   if (!activities) return <ListSkeleton />;
   if (!activities.length) return <EmptyActivitiesState />;
