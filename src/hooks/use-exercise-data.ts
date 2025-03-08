@@ -11,7 +11,7 @@ interface ExerciseDataResponse {
   exercises: ExerciseDataExercise[];
 }
 
-const EXERCISE_LIMIT = 8;
+const EXERCISE_LIMIT = 20;
 
 const EXERCISE_DATA_URL =
   'https://raw.githubusercontent.com/exercemus/exercises/51b2a5c/minified-exercises.json';
