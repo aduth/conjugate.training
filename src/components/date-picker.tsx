@@ -16,7 +16,7 @@ function DatePicker({ value, onChange }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Popover open={isOpen}>
+    <Popover open={isOpen} onOpenChange={(nextIsOpen) => setIsOpen(nextIsOpen)}>
       <PopoverTrigger asChild>
         <Button
           variant={'outline'}
