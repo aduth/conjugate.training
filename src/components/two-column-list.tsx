@@ -6,7 +6,6 @@ interface TwoColumnListItemColumnProps {
 }
 
 interface TwoColumnListItemProps {
-  key: string | number;
   children: ReactNode;
 }
 
@@ -18,9 +17,9 @@ function TwoColumnListItemColumn({ children, className }: TwoColumnListItemColum
   return <div className={className}>{children}</div>;
 }
 
-function TwoColumnListItem({ key, children }: TwoColumnListItemProps) {
+function TwoColumnListItem({ children }: TwoColumnListItemProps) {
   return (
-    <li key={key} className="py-3 sm:py-4">
+    <li className="py-3 sm:py-4">
       <div className="flex items-center flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4">
         {children}
       </div>
