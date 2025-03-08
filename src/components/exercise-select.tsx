@@ -50,6 +50,7 @@ function ExerciseSelectList({ isOpen, value, onChange, onClose }: ExerciseSelect
         placeholder="Search exercise..."
         autoFocus
         onInput={(event) => setQuery((event.target as HTMLInputElement).value)}
+        className="text-md"
       />
       <CommandList className="max-h-none md:max-h-[300px]">
         <CommandEmpty>No exercise found.</CommandEmpty>
@@ -136,7 +137,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
           <DialogTitle>Select exercise</DialogTitle>
           <DialogDescription>Search or select an exercise</DialogDescription>
         </VisuallyHidden>
-        <div className="mt-4 border-t h-[60svh]">
+        <div className="mt-4 border-t h-[30svh]">
           <ExerciseSelectList
             isOpen={isOpen}
             value={value}
