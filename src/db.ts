@@ -12,6 +12,7 @@ interface Activity {
 }
 
 interface Exercise {
+  slug: string;
   name: string;
   isCustom: boolean;
 }
@@ -25,7 +26,7 @@ const db = new Dexie('conjugate', { addons: [dexieCloud] }) as Database;
 
 db.version(1).stores({
   activities: '@id, exercise, bandType, chainWeight, createdAt',
-  exercises: 'name',
+  exercises: 'name, slug',
 });
 
 if (process.env.NODE_ENV !== 'test') {

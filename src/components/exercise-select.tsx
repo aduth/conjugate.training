@@ -24,7 +24,7 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
   const exercises = useExerciseData(query);
   const [isOpen, setIsOpen] = useState(false);
   const hasExactMatch = exercises.some(
-    (exercise) => exercise.toLowerCase() === query.toLowerCase(),
+    (exercise) => exercise.name.toLowerCase() === query.toLowerCase(),
   );
   useEffect(() => {
     if (!isOpen && value) setQuery(value);
@@ -70,17 +70,19 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
               )}
               {exercises.map((exercise) => (
                 <CommandItem
-                  key={exercise}
-                  value={exercise}
+                  key={exercise.slug}
                   onSelect={() => {
-                    onChange(exercise);
+                    onChange(exercise.name);
                     setIsOpen(false);
                   }}
                 >
                   <Check
-                    className={cn('mr-2 h-4 w-4', value === exercise ? 'opacity-100' : 'opacity-0')}
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      value === exercise.name ? 'opacity-100' : 'opacity-0',
+                    )}
                   />
-                  {exercise}
+                  {exercise.name}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -5,6 +5,7 @@ import SignInOut from './sign-in-out';
 import AddActivityPage from '#pages/add-activity-page';
 import EditActivityPage from '#pages/edit-activity-page';
 import ExercisesPage from '#pages/exercises-page';
+import ExerciseDetailPage from '#pages/exercise-detail-page.tsx';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/add" component={AddActivityPage} />
           <Route path="/edit/:activityId" component={EditActivityPage} />
           <Route path="/exercises" component={ExercisesPage} />
+          <Route path="/exercises/:exercise" component={ExerciseDetailPage} />
           <Route>
             <Redirect to="/latest" />
           </Route>

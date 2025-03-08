@@ -1,5 +1,6 @@
 import useSWR from 'swr';
-import { db } from '#db';
+import { toKebabCase } from 'remeda';
+import { type Exercise, db } from '#db';
 
 interface ExerciseDataExercise {
   category: string;
@@ -37,11 +38,16 @@ async function initializeExerciseDb(): Promise<void> {
   }
 
   const exercises = await fetchExercisesFromSource();
-  const entities = exercises.map((exercise) => ({ name: exercise.name, isCustom: false }));
+  const entities = exercises.map((exercise) => ({
+    slug: toKebabCase(exercise.name),
+    name: exercise.name,
+    isCustom: false,
+  }));
+
   await db.exercises.bulkAdd(entities);
 }
 
-async function fetchExercises(query?: string): Promise<string[]> {
+async function fetchExercises(query?: string): Promise<Exercise[]> {
   await initializeExerciseDb();
 
   const filter = query
@@ -49,10 +55,10 @@ async function fetchExercises(query?: string): Promise<string[]> {
     : db.exercises;
   const results = await filter.limit(EXERCISE_LIMIT).toArray();
 
-  return results.map(({ name }) => name);
+  return results;
 }
 
-function useExerciseData(query?: string): string[] {
+function useExerciseData(query?: string): Exercise[] {
   const { data } = useSWR(`exercises/${query}`, () => fetchExercises(query), {
     keepPreviousData: true,
   });
