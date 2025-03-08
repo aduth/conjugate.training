@@ -8,6 +8,7 @@ import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
 import ListSkeleton from './list-skeleton';
 import EmptyActivitiesState from './empty-activities-state';
+import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
 
 function LatestActivities() {
   const [, navigate] = useLocation();
@@ -19,30 +20,30 @@ function LatestActivities() {
   if (!activities.length) return <EmptyActivitiesState />;
 
   return (
-    <ul className="divide-y -my-4 divide-gray-200">
+    <TwoColumnList>
       {activities.map((activity) => (
-        <li key={activity.id} className="py-3 sm:py-4">
-          <div className="flex items-center flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4">
-            <div className="flex-1 w-full text-left">
-              <div className="font-medium text-gray-900 truncate flex items-center">
-                {activity.exercise}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger
-                      type="button"
-                      onClick={() => navigate(`/edit/${activity.id}`)}
-                      className="p-2 -mr-2 text-gray-500 hover:text-red-400 cursor-pointer"
-                    >
-                      <FilePen size="16" />
-                    </TooltipTrigger>
-                    <TooltipContent sideOffset={-10}>Edit</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-              <div className="text-sm text-gray-500 truncate">
-                <FormattedDate value={activity.createdAt} />
-              </div>
+        <TwoColumnListItem key={activity.id}>
+          <TwoColumnListItemColumn className="flex-1 w-full text-left">
+            <div className="font-medium text-gray-900 truncate flex items-center">
+              {activity.exercise}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    type="button"
+                    onClick={() => navigate(`/edit/${activity.id}`)}
+                    className="p-2 -mr-2 text-gray-500 hover:text-red-400 cursor-pointer"
+                  >
+                    <FilePen size="16" />
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={-10}>Edit</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
+            <div className="text-sm text-gray-500 truncate">
+              <FormattedDate value={activity.createdAt} />
+            </div>
+          </TwoColumnListItemColumn>
+          <TwoColumnListItemColumn>
             <Details className="self-start">
               <DetailsItem icon={ChartNoAxesCombined} name="Reps">
                 {activity.reps}
@@ -63,10 +64,10 @@ function LatestActivities() {
                 </DetailsItem>
               )}
             </Details>
-          </div>
-        </li>
+          </TwoColumnListItemColumn>
+        </TwoColumnListItem>
       ))}
-    </ul>
+    </TwoColumnList>
   );
 }
 

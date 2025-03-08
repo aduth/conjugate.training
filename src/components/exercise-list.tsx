@@ -1,22 +1,46 @@
 import { db } from '#db.ts';
 import useCachedLiveQuery from '#hooks/use-cached-live-query.ts';
+import { Activity } from 'lucide-react';
 import EmptyActivitiesState from './empty-activities-state';
 import ListSkeleton from './list-skeleton';
+import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
+import { Details, DetailsItem } from './ui/details';
 
 function ExerciseList() {
-  const exercises = useCachedLiveQuery('exercises', () =>
-    db.activities.orderBy('exercise').uniqueKeys(),
-  );
+  const exerciseCounts = useCachedLiveQuery('exerciseCounts', async () => {
+    const counts: Record<string, number> = {};
 
-  if (!exercises) return <ListSkeleton />;
-  if (!exercises.length) return <EmptyActivitiesState />;
+    await db.activities.orderBy('exercise').eachKey((key) => {
+      const exercise = key.toString();
+      counts[exercise] ??= 0;
+      counts[exercise]++;
+    });
+
+    return counts;
+  });
+
+  if (!exerciseCounts) return <ListSkeleton />;
+
+  const entries = Object.entries(exerciseCounts);
+  if (!entries.length) return <EmptyActivitiesState />;
 
   return (
-    <ul>
-      {exercises.map((exercise) => (
-        <li key={exercise.toString()}>{exercise.toString()}</li>
+    <TwoColumnList>
+      {entries.map(([exercise, count]) => (
+        <TwoColumnListItem key={exercise.toString()}>
+          <TwoColumnListItemColumn className="flex-1 w-full text-left">
+            <div className="font-medium truncate">{exercise.toString()}</div>
+          </TwoColumnListItemColumn>
+          <TwoColumnListItemColumn>
+            <Details>
+              <DetailsItem icon={Activity} name="Activities">
+                {count}
+              </DetailsItem>
+            </Details>
+          </TwoColumnListItemColumn>
+        </TwoColumnListItem>
       ))}
-    </ul>
+    </TwoColumnList>
   );
 }
 
