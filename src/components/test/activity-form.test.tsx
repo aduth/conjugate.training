@@ -123,7 +123,7 @@ describe('ActivityForm', () => {
     const chainWeightField = getByRole('textbox', { name: 'Chain Weight' }) as HTMLInputElement;
     expect(chainWeightField.value).to.equal('80');
 
-    const repsField = getByRole('textbox', { name: 'Reps' }) as HTMLInputElement;
+    const repsField = getByRole('spinbutton', { name: 'Reps' }) as HTMLInputElement;
     expect(repsField.value).to.equal('2');
 
     const weightField = getByRole('textbox', { name: 'Weight' }) as HTMLInputElement;
