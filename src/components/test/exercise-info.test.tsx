@@ -90,4 +90,38 @@ describe('ExerciseInfo', () => {
 
     expect(terms).to.deep.equal(['Best', '185lbs (1/5/25)', 'Latest', '185lbs (1/5/25)']);
   });
+
+  it('renders estimated weight when reps do not match', async () => {
+    const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" reps={3} />);
+
+    const [term] = await Promise.all([findByText('Estimated')]);
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal(['Best (1RM)', '225lbs (1/1/25)', 'Estimated', '209.3lbs']);
+  });
+
+  it('renders best but not estimate with band type', async () => {
+    const { findByText } = render(
+      <ExerciseInfo name="Barbell Bench Press" reps={3} bandType="Mini Band" />,
+    );
+
+    const [term] = await Promise.all([findByText('Best (1RM)')]);
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal(['Best (1RM)', '185lbs (1/4/25)']);
+  });
+
+  it('renders best but not estimate with chain weight', async () => {
+    const { findByText } = render(
+      <ExerciseInfo name="Barbell Bench Press" reps={3} chainWeight={80} />,
+    );
+
+    const [term] = await Promise.all([findByText('Best (1RM)')]);
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal(['Best (1RM)', '185lbs (1/5/25)']);
+  });
 });

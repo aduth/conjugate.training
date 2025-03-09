@@ -19,16 +19,16 @@ function Details({ children, className }: DetailsProps) {
 
   return (
     <dl className={classes}>
-      <div className="divide-x divide-gray-300 flex w-full text-right">{children}</div>
+      <div className="divide-x divide-gray-300 flex text-right">{children}</div>
     </dl>
   );
 }
 
 function DetailsItem({ icon: IconComponent, name, className, children }: DetailsItemProps) {
-  const classes = cn('px-4 first:pl-0 last:pr-0 basis-full', className);
+  const classes = cn('px-4 first:pl-0 last:pr-0', className);
   return (
     <div className={classes}>
-      <div className="inline-flex items-center text-sm text-base text-gray-700 basis-full">
+      <div className="inline-flex items-center text-sm text-base text-gray-700">
         <IconComponent size="16" className="inline-flex me-1" />
         <dt>{name}</dt>
       </div>
