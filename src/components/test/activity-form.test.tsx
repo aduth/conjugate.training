@@ -57,6 +57,48 @@ describe('ActivityForm', () => {
     await waitFor(() => expect(toast.success).toHaveBeenCalledWith('Activity saved successfully'));
   });
 
+  it('saves "None" band type as null', async () => {
+    vi.spyOn(db.activities, 'add');
+    (useLocation as Mock).mockReturnValue([undefined, vi.fn()]);
+    const { getByRole } = render(<ActivityForm />);
+
+    // Select exercise
+    const exerciseField = getByRole('combobox', { name: 'Select exercise' });
+    await userEvent.click(exerciseField);
+    const input = document.activeElement!;
+    await userEvent.type(input, 'Barbell Bench Press');
+    let controlsId = input.getAttribute('aria-controls')!;
+    let options = document.getElementById(controlsId)!;
+    let option = within(options).getByRole('option', { name: 'Add new “Barbell Bench Press”…' });
+    await userEvent.click(option);
+
+    // Select non-"None" band type
+    let bandTypeField = getByRole('combobox', { name: 'Band Type' });
+    await userEvent.click(bandTypeField);
+    controlsId = bandTypeField.getAttribute('aria-controls')!;
+    options = document.getElementById(controlsId)!;
+    option = within(options).getByRole('option', { name: 'Light Band' });
+    await userEvent.click(option);
+
+    // Revert back to "None" band type
+    bandTypeField = getByRole('combobox', { name: 'Band Type' });
+    await userEvent.click(bandTypeField);
+    controlsId = bandTypeField.getAttribute('aria-controls')!;
+    options = document.getElementById(controlsId)!;
+    option = within(options).getByRole('option', { name: 'None' });
+    await userEvent.click(option);
+
+    // Save
+    const submitButton = getByRole('button', { name: 'Submit' });
+    await userEvent.click(submitButton);
+
+    expect(db.activities.add).toHaveBeenCalledWith(
+      expect.objectContaining({
+        bandType: null,
+      }),
+    );
+  });
+
   it('should allow editing of existing activity', async () => {
     const key = await db.activities.add({
       exercise: 'Barbell Bench Press',

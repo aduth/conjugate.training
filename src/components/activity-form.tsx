@@ -118,7 +118,9 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       {...field}
                       key={field.value}
                       value={field.value || 'none'}
-                      onValueChange={(nextValue) => field.onChange(nextValue || null)}
+                      onValueChange={(nextValue) =>
+                        field.onChange(nextValue === 'none' ? null : nextValue)
+                      }
                     >
                       <SelectTrigger className="w-full" aria-label="Band Type" id="band-type">
                         <SelectValue placeholder="None" />

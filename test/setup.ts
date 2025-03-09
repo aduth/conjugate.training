@@ -13,6 +13,9 @@ beforeAll(() => {
       this.onload();
     },
   });
+
+  // @radix-ui uses DOM element functions not implemented by happy-dom
+  HTMLElement.prototype.hasPointerCapture = vi.fn().mockImplementation(() => false);
 });
 
 beforeEach(async () => {
