@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react';
+import cn from '#lib/class-names';
 
 interface TwoColumnListItemColumnProps {
   children: ReactNode;
@@ -14,7 +15,9 @@ interface TwoColumnListProps {
 }
 
 function TwoColumnListItemColumn({ children, className }: TwoColumnListItemColumnProps) {
-  return <div className={className}>{children}</div>;
+  const classes = cn('self-start md:self-auto', className);
+
+  return <div className={classes}>{children}</div>;
 }
 
 function TwoColumnListItem({ children }: TwoColumnListItemProps) {
