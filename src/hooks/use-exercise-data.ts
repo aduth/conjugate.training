@@ -26,6 +26,7 @@ const isIncludedExercise = (exercise: ExerciseDataExercise): boolean =>
   isStrengthExercise(exercise) && !isAccommodationVariation(exercise);
 
 async function fetchExercisesFromSource(): Promise<ExerciseDataExercise[]> {
+  if (process.env.NODE_ENV === 'test') return [];
   const response = await fetch(EXERCISE_DATA_URL);
   const data = (await response.json()) as ExerciseDataResponse;
   return data.exercises.filter(isIncludedExercise);

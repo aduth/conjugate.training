@@ -91,10 +91,11 @@ function ActivityForm({ entity }: ActivityFormProps) {
           name="exercise"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Exercise</FormLabel>
+              <FormLabel htmlFor="exercise">Exercise</FormLabel>
               <FormControl>
                 <ExerciseSelect
                   {...field}
+                  id="exercise"
                   onChange={(nextExercise) => {
                     field.onChange(nextExercise);
                   }}
@@ -111,10 +112,15 @@ function ActivityForm({ entity }: ActivityFormProps) {
               name="bandType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Band Type</FormLabel>
+                  <FormLabel htmlFor="band-type">Band Type</FormLabel>
                   <FormControl>
-                    <Select value={field.value || 'none'} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full">
+                    <Select
+                      {...field}
+                      key={field.value}
+                      value={field.value || 'none'}
+                      onValueChange={(nextValue) => field.onChange(nextValue || null)}
+                    >
+                      <SelectTrigger className="w-full" aria-label="Band Type" id="band-type">
                         <SelectValue placeholder="None" />
                       </SelectTrigger>
                       <SelectContent>
@@ -203,9 +209,9 @@ function ActivityForm({ entity }: ActivityFormProps) {
               name="createdAt"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date</FormLabel>
+                  <FormLabel htmlFor="date">Date</FormLabel>
                   <FormControl>
-                    <DatePicker value={field.value} onChange={field.onChange} />
+                    <DatePicker id="date" value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

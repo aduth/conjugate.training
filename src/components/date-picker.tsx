@@ -7,18 +7,21 @@ import { Calendar } from '#components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '#components/ui/popover';
 
 interface DatePickerProps {
+  id?: string;
+
   value?: Date;
 
   onChange?: (date?: Date) => void;
 }
 
-function DatePicker({ value, onChange }: DatePickerProps) {
+function DatePicker({ id, value, onChange }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Popover open={isOpen} onOpenChange={(nextIsOpen) => setIsOpen(nextIsOpen)}>
       <PopoverTrigger asChild>
         <Button
+          id={id}
           variant={'outline'}
           className={cn(
             'w-[280px] justify-start text-left font-normal',

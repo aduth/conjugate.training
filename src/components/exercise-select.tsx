@@ -18,6 +18,8 @@ import { useMediaQuery } from '#hooks/use-media-query.ts';
 import { DialogDescription, DialogTitle } from './ui/dialog';
 
 interface ExerciseSelectProps {
+  id?: string;
+
   value?: string;
 
   onChange: (nextValue: string) => void;
@@ -44,7 +46,7 @@ function ExerciseSelectList({ isOpen, value, onChange, onClose }: ExerciseSelect
   );
 
   return (
-    <Command filter={() => 1}>
+    <Command label="Search exercise" filter={() => 1}>
       <CommandInput
         value={query}
         placeholder="Search exercise..."
@@ -94,7 +96,7 @@ function ExerciseSelectList({ isOpen, value, onChange, onClose }: ExerciseSelect
   );
 }
 
-export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
+export function ExerciseSelect({ id, value, onChange }: ExerciseSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
@@ -103,12 +105,14 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
+            id={id}
             variant="outline"
             role="combobox"
             aria-expanded={isOpen}
+            aria-label="Select exercise"
             className="justify-between"
           >
-            {value ? value : 'Select exercise...'}
+            {value ? value : 'Select exercise…'}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -127,8 +131,8 @@ export function ExerciseSelect({ value, onChange }: ExerciseSelectProps) {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="justify-between">
-          {value ? value : 'Select exercise...'}
+        <Button variant="outline" className="justify-between" aria-label="Select exercise">
+          {value ? value : 'Select exercise…'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DrawerTrigger>
