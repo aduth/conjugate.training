@@ -20,9 +20,9 @@ const isStrengthExercise = (exercise: ExerciseDataExercise): boolean =>
   exercise.category === 'strength';
 
 const isAccommodationVariation = (exercise: ExerciseDataExercise): boolean =>
-  /with (Bands|Chains)$/.test(exercise.name);
+  /^Band (?!Assisted)|with (Bands|Chains)$/i.test(exercise.name);
 
-const isIncludedExercise = (exercise: ExerciseDataExercise): boolean =>
+export const isIncludedExercise = (exercise: ExerciseDataExercise): boolean =>
   isStrengthExercise(exercise) && !isAccommodationVariation(exercise);
 
 async function fetchExercisesFromSource(): Promise<ExerciseDataExercise[]> {
