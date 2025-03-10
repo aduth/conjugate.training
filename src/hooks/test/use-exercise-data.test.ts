@@ -19,11 +19,13 @@ describe('isIncludedExercise', () => {
     const exercise2 = { category: 'strength', name: 'Squat with Bands' };
     const exercise3 = { category: 'strength', name: 'Squat with Chains' };
     const exercise4 = { category: 'strength', name: 'Band Bench Press' };
+    const exercise5 = { category: 'strength', name: 'Hip Lift with Band' };
 
     expect(isIncludedExercise(exercise1)).toBe(false);
     expect(isIncludedExercise(exercise2)).toBe(false);
     expect(isIncludedExercise(exercise3)).toBe(false);
     expect(isIncludedExercise(exercise4)).toBe(false);
+    expect(isIncludedExercise(exercise5)).toBe(false);
   });
 
   it('should return true for band-assisted strength exercises', () => {

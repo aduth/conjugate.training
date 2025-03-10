@@ -20,7 +20,7 @@ const isStrengthExercise = (exercise: ExerciseDataExercise): boolean =>
   exercise.category === 'strength';
 
 const isAccommodationVariation = (exercise: ExerciseDataExercise): boolean =>
-  /^Band (?!Assisted)|with (Bands|Chains)$/i.test(exercise.name);
+  /^Band (?!Assisted)|with (Band|Chain)s?$/i.test(exercise.name);
 
 export const isIncludedExercise = (exercise: ExerciseDataExercise): boolean =>
   isStrengthExercise(exercise) && !isAccommodationVariation(exercise);
