@@ -132,8 +132,18 @@ describe('ActivityForm', () => {
     const dateField = getByRole('button', { name: 'Date' });
     expect(dateField.textContent).to.equal('January 1st, 2025');
 
+    // Edit field with verification below
     await userEvent.clear(weightField);
     await userEvent.type(weightField, '225');
+
+    // Regression: Ensure that editing to create a new exercise saves new exercise
+    await userEvent.click(exerciseField);
+    const input = document.activeElement!;
+    await userEvent.type(input, 'My Custom Exercise');
+    const controlsId = input.getAttribute('aria-controls')!;
+    const options = document.getElementById(controlsId)!;
+    const option = within(options).getByRole('option', { name: 'Add new “My Custom Exercise”…' });
+    await userEvent.click(option);
 
     const submitButton = getByRole('button', { name: 'Update' });
     await userEvent.click(submitButton);
@@ -142,11 +152,12 @@ describe('ActivityForm', () => {
       bandType: 'Light',
       chainWeight: 80,
       createdAt: new Date(2025, 0, 1),
-      exercise: 'Barbell Bench Press',
+      exercise: 'My Custom Exercise',
       reps: 2,
       weight: 225,
     });
     await waitFor(() => expect(toast.success).toHaveBeenCalledWith('Activity saved successfully'));
     await waitFor(() => expect(navigate).toHaveBeenCalledWith('/latest'));
+    expect(await db.exercises.get('My Custom Exercise')).toBeTruthy();
   });
 });

@@ -71,12 +71,13 @@ function ActivityForm({ entity }: ActivityFormProps) {
   }
 
   async function onSubmit(activity: z.infer<typeof formSchema>) {
+    addCustomExercise(activity.exercise);
+
     if (entity) {
       await db.activities.update(entity.id, activity);
       navigate('/latest');
     } else {
       form.reset();
-      addCustomExercise(activity.exercise);
       await db.activities.add(activity);
     }
 
