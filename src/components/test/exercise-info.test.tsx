@@ -54,7 +54,8 @@ describe('ExerciseInfo', () => {
   it('renders best and latest recorded activity', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" />);
 
-    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    await findByText('Latest');
+    const term = await findByText('Best');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
@@ -64,7 +65,8 @@ describe('ExerciseInfo', () => {
   it('filters to given reps', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" reps={2} />);
 
-    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    await findByText('Latest');
+    const term = await findByText('Best');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
@@ -74,7 +76,8 @@ describe('ExerciseInfo', () => {
   it('filters to given bandType', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" bandType="Mini Band" />);
 
-    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    await findByText('Latest');
+    const term = await findByText('Best');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
@@ -84,7 +87,8 @@ describe('ExerciseInfo', () => {
   it('filters to given chainWeight', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" chainWeight={80} />);
 
-    const [term] = await Promise.all([findByText('Best'), findByText('Latest')]);
+    await findByText('Latest');
+    const term = await findByText('Best');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
@@ -94,7 +98,7 @@ describe('ExerciseInfo', () => {
   it('renders estimated weight when reps do not match', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" reps={3} />);
 
-    const [term] = await Promise.all([findByText('Estimated')]);
+    const term = await findByText('Estimated');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
@@ -106,7 +110,7 @@ describe('ExerciseInfo', () => {
       <ExerciseInfo name="Barbell Bench Press" reps={3} bandType="Mini Band" />,
     );
 
-    const [term] = await Promise.all([findByText('Best (1RM)')]);
+    const term = await findByText('Best (1RM)');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
@@ -118,7 +122,7 @@ describe('ExerciseInfo', () => {
       <ExerciseInfo name="Barbell Bench Press" reps={3} chainWeight={80} />,
     );
 
-    const [term] = await Promise.all([findByText('Best (1RM)')]);
+    const term = await findByText('Best (1RM)');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
