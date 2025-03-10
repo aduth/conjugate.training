@@ -1,6 +1,8 @@
 import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import { toKebabCase } from 'remeda';
-import { type Exercise, db } from '#db';
+import Fuzzy from '@leeoniya/ufuzzy';
+import { db } from '#db';
 
 interface ExerciseDataExercise {
   category: string;
@@ -10,6 +12,8 @@ interface ExerciseDataExercise {
 interface ExerciseDataResponse {
   exercises: ExerciseDataExercise[];
 }
+
+const fuzzy = new Fuzzy({ intraMode: 1 });
 
 const EXERCISE_LIMIT = 20;
 
@@ -48,23 +52,29 @@ async function initializeExerciseDb(): Promise<void> {
   await db.exercises.bulkAdd(entities);
 }
 
-async function fetchExercises(query?: string): Promise<Exercise[]> {
-  await initializeExerciseDb();
-
-  const filter = query
-    ? db.exercises.filter(({ name }) => name.toLowerCase().includes(query.toLowerCase()))
-    : db.exercises;
-  const results = await filter.limit(EXERCISE_LIMIT).toArray();
-
-  return results;
+function fetchAllExercises(): Promise<string[]> {
+  return db.exercises.toCollection().primaryKeys();
 }
 
-function useExerciseData(query?: string): Exercise[] {
-  const { data } = useSWR(`exercises/${query}`, () => fetchExercises(query), {
-    keepPreviousData: true,
-  });
+async function fetchExercises(query: string, allExercises: string[]): Promise<string[]> {
+  await initializeExerciseDb();
 
-  return data ?? [];
+  const [, info, order] = fuzzy.search(allExercises, query);
+  return info && order
+    ? order.slice(0, EXERCISE_LIMIT).map((i) => allExercises[info.idx[order[i]]])
+    : [];
+}
+
+function useExerciseData(query?: string): string[] {
+  const { data: allExercises } = useSWRImmutable('exercises', () => fetchAllExercises());
+  const { data: filteredExercises } = useSWR(
+    allExercises && query ? `exercises/${query}` : null,
+    () => fetchExercises(query!, allExercises!),
+    { keepPreviousData: true },
+  );
+
+  const exercises = query ? filteredExercises : allExercises?.slice(0, EXERCISE_LIMIT);
+  return exercises ?? [];
 }
 
 export default useExerciseData;

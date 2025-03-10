@@ -42,7 +42,7 @@ function ExerciseSelectList({ isOpen, value, onChange, onClose }: ExerciseSelect
     if (!isOpen && value) setQuery(value);
   }, [isOpen, value]);
   const hasExactMatch = exercises.some(
-    (exercise) => exercise.name.toLowerCase() === query.toLowerCase(),
+    (exercise) => exercise.toLowerCase() === query.toLowerCase(),
   );
 
   return (
@@ -74,20 +74,17 @@ function ExerciseSelectList({ isOpen, value, onChange, onClose }: ExerciseSelect
           )}
           {exercises.map((exercise) => (
             <CommandItem
-              key={exercise.slug}
-              value={exercise.name}
+              key={exercise}
+              value={exercise}
               onSelect={() => {
-                onChange(exercise.name);
+                onChange(exercise);
                 onClose();
               }}
             >
               <Check
-                className={cn(
-                  'mr-2 h-4 w-4',
-                  value === exercise.name ? 'opacity-100' : 'opacity-0',
-                )}
+                className={cn('mr-2 h-4 w-4', value === exercise ? 'opacity-100' : 'opacity-0')}
               />
-              {exercise.name}
+              {exercise}
             </CommandItem>
           ))}
         </CommandGroup>
