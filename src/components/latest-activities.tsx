@@ -9,16 +9,28 @@ import FormattedDate from './formatted-date';
 import ListSkeleton from './list-skeleton';
 import EmptyActivitiesState from './empty-activities-state';
 import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
+import { useState } from 'react';
+import { times } from 'remeda';
+import { Button } from './ui/button';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 interface LatestActivitiesProps {
   exercise?: string;
 }
 
-function LatestActivities({ exercise }: LatestActivitiesProps) {
+interface LatestActivitiesPageProps {
+  exercise?: string;
+  page: number;
+}
+
+const PER_PAGE_SIZE = 20;
+
+function LatestActivitiesPage({ exercise, page = 1 }: LatestActivitiesPageProps) {
   const [, navigate] = useLocation();
-  const activities = useCachedLiveQuery(['activities', exercise ?? ''], () => {
+  const activities = useCachedLiveQuery(['activities', exercise ?? '', page.toString()], () => {
     let activities = db.activities.orderBy('createdAt').reverse();
     if (exercise) activities = activities.filter((activity) => activity.exercise === exercise);
+    activities = activities.offset(page * PER_PAGE_SIZE).limit(PER_PAGE_SIZE);
     return activities.toArray();
   });
 
@@ -74,6 +86,27 @@ function LatestActivities({ exercise }: LatestActivitiesProps) {
         </TwoColumnListItem>
       ))}
     </TwoColumnList>
+  );
+}
+
+function LatestActivities({ exercise }: LatestActivitiesProps) {
+  const [page, setPage] = useState(1);
+  const count = useLiveQuery(
+    () => (exercise ? db.activities.where({ exercise }).count() : db.activities.count()),
+    [exercise],
+  );
+
+  return (
+    <>
+      {times(page, (i) => (
+        <LatestActivitiesPage exercise={exercise} key={i} page={i} />
+      ))}
+      {count! > page * PER_PAGE_SIZE && (
+        <Button variant="outline" onClick={() => setPage(page + 1)}>
+          Load More
+        </Button>
+      )}
+    </>
   );
 }
 
