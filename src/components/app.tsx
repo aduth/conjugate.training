@@ -1,11 +1,12 @@
 import { Link, Redirect, Route, Switch } from 'wouter';
 import { Toaster } from '#components/ui/sonner';
 import LatestPage from '#pages/latest-activities-page';
-import SignInOut from './sign-in-out';
-import AddActivityPage from '#pages/add-activity-page';
+import NewActivityPage from '#pages/new-activity-page';
 import EditActivityPage from '#pages/edit-activity-page';
 import ExercisesPage from '#pages/exercises-page';
 import ExerciseDetailPage from '#pages/exercise-detail-page.tsx';
+import SignInOut from './sign-in-out';
+import Page from './page';
 
 function App() {
   return (
@@ -18,16 +19,18 @@ function App() {
           </Link>
           <SignInOut />
         </header>
-        <Switch>
-          <Route path="/latest" component={LatestPage} />
-          <Route path="/add" component={AddActivityPage} />
-          <Route path="/edit/:activityId" component={EditActivityPage} />
-          <Route path="/exercises" component={ExercisesPage} />
-          <Route path="/exercises/:exercise" component={ExerciseDetailPage} />
-          <Route>
-            <Redirect to="/latest" />
-          </Route>
-        </Switch>
+        <Page>
+          <Switch>
+            <Route path="/latest" component={LatestPage} />
+            <Route path="/activities/new" component={NewActivityPage} />
+            <Route path="/activities/:activityId/edit" component={EditActivityPage} />
+            <Route path="/exercises" component={ExercisesPage} />
+            <Route path="/exercises/:exercise" component={ExerciseDetailPage} />
+            <Route>
+              <Redirect to="/latest" />
+            </Route>
+          </Switch>
+        </Page>
         <Toaster />
       </div>
     </div>

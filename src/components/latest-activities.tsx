@@ -48,7 +48,7 @@ function LatestActivitiesPage({ exercise, page = 1 }: LatestActivitiesPageProps)
                 <Tooltip>
                   <TooltipTrigger
                     type="button"
-                    onClick={() => navigate(`/edit/${activity.id}`)}
+                    onClick={() => navigate(`/activities/${activity.id}/edit`)}
                     className="p-2 -mr-2 text-gray-500 hover:text-red-400 cursor-pointer"
                   >
                     <FilePen size="16" />
