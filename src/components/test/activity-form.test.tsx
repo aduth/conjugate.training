@@ -35,7 +35,7 @@ describe('ActivityForm', () => {
     await userEvent.type(input, 'Barbell Bench Press');
     const controlsId = input.getAttribute('aria-controls')!;
     const options = document.getElementById(controlsId)!;
-    const option = within(options).getByRole('option', { name: 'Add new “Barbell Bench Press”…' });
+    const option = await within(options).findByRole('option', { name: 'Barbell Bench Press' });
     await userEvent.click(option);
 
     const weightField = getByRole('textbox', { name: 'Weight' }) as HTMLInputElement;
@@ -69,7 +69,7 @@ describe('ActivityForm', () => {
     await userEvent.type(input, 'Barbell Bench Press');
     let controlsId = input.getAttribute('aria-controls')!;
     let options = document.getElementById(controlsId)!;
-    let option = within(options).getByRole('option', { name: 'Add new “Barbell Bench Press”…' });
+    let option = await within(options).findByRole('option', { name: 'Barbell Bench Press' });
     await userEvent.click(option);
 
     // Select non-"None" band type

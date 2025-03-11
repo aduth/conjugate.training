@@ -1,5 +1,6 @@
+import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { isIncludedExercise } from '../use-exercise-data';
+import useExerciseData, { isIncludedExercise } from '../use-exercise-data';
 
 describe('isIncludedExercise', () => {
   it('should return true for strength exercises without accommodation variations', () => {
@@ -32,5 +33,25 @@ describe('isIncludedExercise', () => {
     const exercise = { category: 'strength', name: 'Band Assisted Pull-Up' };
 
     expect(isIncludedExercise(exercise)).toBe(true);
+  });
+});
+
+describe('useExerciseData', () => {
+  it('fetches and filters exercises correctly', async () => {
+    const { result } = renderHook(() => useExerciseData());
+
+    await waitFor(() => expect(result.current).toEqual(['Barbell Bench Press', 'Barbell Squat']));
+  });
+
+  it('returns filtered exercises based on query', async () => {
+    const { result } = renderHook(() => useExerciseData('bench'));
+
+    await waitFor(() => expect(result.current).toEqual(['Barbell Bench Press']));
+  });
+
+  it('returns empty array if no exercises match the query', async () => {
+    const { result } = renderHook(() => useExerciseData('deadlift'));
+
+    await waitFor(() => expect(result.current).toEqual([]));
   });
 });

@@ -17,7 +17,7 @@ const fuzzy = new Fuzzy({ intraMode: 1 });
 
 const EXERCISE_LIMIT = 20;
 
-const EXERCISE_DATA_URL =
+export const EXERCISE_DATA_URL =
   'https://raw.githubusercontent.com/exercemus/exercises/51b2a5c/minified-exercises.json';
 
 const isStrengthExercise = (exercise: ExerciseDataExercise): boolean =>
@@ -30,7 +30,6 @@ export const isIncludedExercise = (exercise: ExerciseDataExercise): boolean =>
   isStrengthExercise(exercise) && !isAccommodationVariation(exercise);
 
 async function fetchExercisesFromSource(): Promise<ExerciseDataExercise[]> {
-  if (process.env.NODE_ENV === 'test') return [];
   const response = await fetch(EXERCISE_DATA_URL);
   const data = (await response.json()) as ExerciseDataResponse;
   return data.exercises.filter(isIncludedExercise);
@@ -52,13 +51,12 @@ async function initializeExerciseDb(): Promise<void> {
   await db.exercises.bulkAdd(entities);
 }
 
-function fetchAllExercises(): Promise<string[]> {
+async function fetchAllExercises(): Promise<string[]> {
+  await initializeExerciseDb();
   return db.exercises.toCollection().primaryKeys();
 }
 
-async function fetchExercises(query: string, allExercises: string[]): Promise<string[]> {
-  await initializeExerciseDb();
-
+function fetchExercises(query: string, allExercises: string[]): string[] {
   const [, info, order] = fuzzy.search(allExercises, query);
   return info && order
     ? order.slice(0, EXERCISE_LIMIT).map((i) => allExercises[info.idx[order[i]]])
