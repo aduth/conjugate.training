@@ -1,8 +1,9 @@
 import { type ReactNode } from 'react';
+import { Activity, CirclePlus, List } from 'lucide-react';
 import { Link, useRoute } from 'wouter';
+import useDocumentState from '#hooks/use-document-state.ts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import TabPage from './tab-page';
-import { Activity, CirclePlus, List } from 'lucide-react';
 
 interface PageProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface PageProps {
 
 function Page({ children }: PageProps) {
   const [, params] = useRoute('/:activeTab/*?');
+  const title = useDocumentState((state) => state.title);
   const { activeTab = '' } = params ?? {};
 
   return (
@@ -34,7 +36,10 @@ function Page({ children }: PageProps) {
         </TabsList>
       </div>
       <TabsContent value={activeTab}>
-        <TabPage>{children}</TabPage>
+        <TabPage>
+          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+          {children}
+        </TabPage>
       </TabsContent>
     </Tabs>
   );
