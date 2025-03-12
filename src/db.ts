@@ -12,9 +12,9 @@ interface Activity {
 }
 
 interface Exercise {
+  realmId: string;
   slug: string;
   name: string;
-  isCustom: boolean;
 }
 
 interface Database extends Dexie {

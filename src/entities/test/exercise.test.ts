@@ -15,7 +15,7 @@ describe('addCustomExercise', () => {
 
     expect(result).to.equal(slug);
     const exercise = await db.exercises.get(name);
-    expect(exercise).toMatchObject({ slug, name, isCustom: true });
+    expect(exercise).toMatchObject({ slug, name });
   });
 
   it('should not throw an error if adding duplicate', async () => {

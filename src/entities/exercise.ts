@@ -5,7 +5,7 @@ export async function addCustomExercise(name: string): Promise<string> {
   const slug = toKebabCase(name);
 
   try {
-    await db.exercises.add({ slug, name, isCustom: true }, name);
+    await db.exercises.add({ slug, name }, name);
   } catch (error: any) {
     if (error.name !== 'ConstraintError') throw error;
   }
