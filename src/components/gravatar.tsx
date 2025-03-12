@@ -5,6 +5,8 @@ const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
 
 interface GravatarProps {
   email?: string;
+
+  size?: number;
 }
 
 const toHex = (ab: ArrayBuffer): string =>
@@ -17,17 +19,20 @@ async function getDigest(input: string): Promise<string> {
   return toHex(buffer);
 }
 
-async function getGravatarURL(email: string) {
+async function getGravatarURL(email: string, size?: number) {
   const hash = await getDigest(email);
   const url = new URL(hash, GRAVATAR_BASE_URL);
   url.searchParams.set('d', 'mp');
+  if (size) url.searchParams.set('s', size.toString());
   return url.toString();
 }
 
-function Gravatar({ email }: GravatarProps) {
-  const { data: emailHash } = useSWR(email ?? null, getGravatarURL);
+function Gravatar({ email, size }: GravatarProps) {
+  const { data: url } = useSWR(email ? [email, size] : null, ([email, size]) =>
+    getGravatarURL(email, size),
+  );
 
-  return <Avatar>{emailHash && <AvatarImage src={emailHash} />}</Avatar>;
+  return <Avatar>{url && <AvatarImage src={url} />}</Avatar>;
 }
 
 export default Gravatar;

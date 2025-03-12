@@ -11,7 +11,7 @@ function SignInOut() {
   if (currentUser?.email) {
     return (
       <div className="flex space-x-2 items-center">
-        <Gravatar email={currentUser.email} />
+        <Gravatar email={currentUser.email} size={64} />
         <Button variant="outline" onClick={() => db.cloud.logout()}>
           <LogOut /> Sign out
         </Button>
