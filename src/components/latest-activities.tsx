@@ -50,6 +50,7 @@ function LatestActivitiesPage({ exercise, page = 1 }: LatestActivitiesPageProps)
                     type="button"
                     onClick={() => navigate(`/activities/${activity.id}/edit`)}
                     className="p-2 -mr-2 text-gray-500 hover:text-red-400 cursor-pointer"
+                    aria-label="Edit"
                   >
                     <FilePen size="16" />
                   </TooltipTrigger>
