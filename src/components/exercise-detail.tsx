@@ -1,10 +1,8 @@
 import { lazy } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { Link } from 'wouter';
-import { db } from '#db';
+import useExerciseName from '#hooks/use-exercise-name.ts';
 import ListSkeleton from './list-skeleton';
 import LatestActivities from './latest-activities';
-import { Button } from './ui/button';
+import ExerciseDetailBackLink from './exercise-detail-back-link';
 
 interface ExerciseDetailProps {
   slug: string;
@@ -13,19 +11,15 @@ interface ExerciseDetailProps {
 const ExerciseDetailChart = lazy(() => import('./exercise-detail-chart'));
 
 function ExerciseDetail({ slug }: ExerciseDetailProps) {
-  const exercise = useLiveQuery(() => db.exercises.get({ slug }));
+  const name = useExerciseName(slug);
 
   return (
     <>
-      <div className="relative -mb-6">
-        <Button asChild variant="outline" className="absolute bottom-full right-0 mb-6">
-          <Link to="/exercises/">Back to exercises</Link>
-        </Button>
-      </div>
-      {exercise ? (
+      <ExerciseDetailBackLink slug={slug} />
+      {name ? (
         <>
-          <ExerciseDetailChart exercise={exercise.name} />
-          <LatestActivities exercise={exercise.name} />
+          <ExerciseDetailChart exercise={name} />
+          <LatestActivities exercise={name} />
         </>
       ) : (
         <ListSkeleton />

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useLocation } from 'wouter';
+import { Link, useLocation, useSearchParams } from 'wouter';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -29,6 +29,7 @@ import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
 import { useEffect } from 'react';
 import DatePicker from './date-picker';
+import useExerciseName from '#hooks/use-exercise-name.ts';
 
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
@@ -44,6 +45,8 @@ interface ActivityFormProps {
 }
 
 function ActivityForm({ entity }: ActivityFormProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const exerciseNameFromParams = useExerciseName(searchParams.get('exercise'));
   const [, navigate] = useLocation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,6 +73,18 @@ function ActivityForm({ entity }: ActivityFormProps) {
   useEffect(() => {
     if (entity) form.reset(entity);
   }, [entity, form]);
+  useEffect(() => {
+    if (exerciseNameFromParams) {
+      form.setValue('exercise', exerciseNameFromParams);
+      setSearchParams(
+        (previousSearchParams) => {
+          previousSearchParams.delete('exercise');
+          return previousSearchParams;
+        },
+        { replace: true },
+      );
+    }
+  }, [exerciseNameFromParams, form, setSearchParams]);
 
   async function onDestroy() {
     await db.activities.delete(entity!.id);
@@ -116,9 +131,9 @@ function ActivityForm({ entity }: ActivityFormProps) {
               )}
             />
           </div>
-          {historyCount && historyCount > 0 && (
+          {!!historyCount && (
             <Button variant="outline" className="font-normal" asChild>
-              <Link to={`/exercises/${toKebabCase(exercise)}`}>
+              <Link to={`/exercises/${toKebabCase(exercise)}?referrer=add-activity`}>
                 <History /> History ({historyCount})
               </Link>
             </Button>
