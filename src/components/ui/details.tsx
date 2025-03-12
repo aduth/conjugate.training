@@ -15,25 +15,35 @@ interface DetailsItemProps {
 }
 
 function Details({ children, className }: DetailsProps) {
-  const classes = cn('flex flex-col items-end justify-between', className);
+  const classes = cn('flex flex-col', className);
 
   return (
-    <dl className={classes}>
-      <div className="divide-x divide-gray-300 flex text-right">{children}</div>
-    </dl>
+    <div className={classes}>
+      <dl className="grid grid-flow-col grid-rows-2 auto-cols-max text-right *:px-4 [&>*:nth-child(-n+2)]:pl-0 [&>*:nth-last-child(-n+2)]:pr-0 [&>*:nth-last-child(-n+2)]:border-r-0">
+        {children}
+      </dl>
+    </div>
   );
 }
 
 function DetailsItem({ icon: IconComponent, name, className, children }: DetailsItemProps) {
-  const classes = cn('px-4 first:pl-0 last:pr-0', className);
+  const dtClasses = cn(
+    'inline-flex items-center justify-self-end text-sm text-base text-gray-700 border-r-1 border-gray-300',
+    className,
+  );
+  const ddClasses = cn(
+    'font-semibold justify-self-end whitespace-nowrap border-r-1 border-gray-300',
+    className,
+  );
+
   return (
-    <div className={classes}>
-      <div className="inline-flex items-center text-sm text-base text-gray-700">
+    <>
+      <dt className={dtClasses}>
         <IconComponent size="16" className="inline-flex me-1" />
-        <dt>{name}</dt>
-      </div>
-      <dd className="font-semibold whitespace-nowrap">{children}</dd>
-    </div>
+        {name}
+      </dt>
+      <dd className={ddClasses}>{children}</dd>
+    </>
   );
 }
 

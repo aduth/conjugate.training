@@ -58,7 +58,7 @@ function ExerciseInfo({ name, reps = 1, chainWeight = 0, bandType = null }: Exer
   return (
     <Details className="rounded-md border-1 border-input py-2 px-4 items-center">
       {best && (
-        <DetailsItem icon={Award} name="Best" className="text-right">
+        <DetailsItem icon={Award} name="Best">
           <FormattedWeight value={best.weight} />{' '}
           <span className="font-normal text-gray-500">
             (<FormattedDate value={best.createdAt} variant="short" />)
@@ -78,12 +78,12 @@ function ExerciseInfo({ name, reps = 1, chainWeight = 0, bandType = null }: Exer
         </DetailsItem>
       )}
       {estimated && (
-        <DetailsItem icon={Calendar1} name="Estimated" className="text-left">
+        <DetailsItem icon={Calendar1} name="Estimated" className="justify-self-start">
           <FormattedWeight value={estimated} />
         </DetailsItem>
       )}
       {latest && (
-        <DetailsItem icon={Calendar1} name="Latest" className="text-left">
+        <DetailsItem icon={Calendar1} name="Latest" className="justify-self-start">
           <FormattedWeight value={latest.weight} />{' '}
           <span className="font-normal text-gray-500">
             (<FormattedDate value={latest.createdAt} variant="short" />)
