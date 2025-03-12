@@ -1,13 +1,28 @@
 import { useMemo } from 'react';
-import { LineChart, CartesianGrid, XAxis, Line, LabelList, YAxis } from 'recharts';
+import {
+  type DotProps,
+  LineChart,
+  CartesianGrid,
+  XAxis,
+  Line,
+  LabelList,
+  YAxis,
+  Dot,
+} from 'recharts';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { prop, sortBy } from 'remeda';
-import { db } from '#db';
+import { type Activity, db } from '#db';
+import { getEstimatedWeight } from '#lib/estimator';
 import { formatDate } from './formatted-date';
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
+import cn from '#lib/class-names.ts';
 
 interface ExerciseDetailChartProps {
   exercise: string;
+}
+
+interface EstimatedActivity extends Activity {
+  isEstimate?: true;
 }
 
 const chartConfig = {
@@ -20,17 +35,44 @@ const chartConfig = {
 const roundToInterval = (number: number, interval: number): number =>
   Math.round(number / interval) * interval;
 
-function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
-  const activities = useLiveQuery(
-    () =>
-      exercise
-        ? db.activities
-            .where({ exercise })
-            .filter(({ reps, bandType, chainWeight }) => reps === 1 && !bandType && !chainWeight)
-            .sortBy('createdAt')
-        : [],
-    [exercise],
+function ExerciseDetailChartDot({
+  cx,
+  cy,
+  stroke,
+  payload,
+  fill,
+  r,
+  strokeWidth,
+}: DotProps & { payload?: EstimatedActivity }) {
+  const classes = cn({ 'stroke-amber-600': payload?.isEstimate });
+
+  return (
+    <Dot
+      cx={cx}
+      cy={cy}
+      r={r}
+      stroke={stroke}
+      fill={fill}
+      strokeWidth={strokeWidth}
+      className={classes}
+    ></Dot>
   );
+}
+
+function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
+  const activities = useLiveQuery<EstimatedActivity[]>(async () => {
+    if (!exercise) return [];
+    const result = await db.activities
+      .where({ exercise })
+      .filter(({ bandType, chainWeight }) => !bandType && !chainWeight)
+      .sortBy('createdAt');
+
+    return result.map((activity) => {
+      return activity.reps > 1
+        ? { ...activity, reps: 1, weight: getEstimatedWeight(1, activity)!, isEstimate: true }
+        : activity;
+    });
+  }, [exercise]);
   const domain = useMemo(() => {
     const sortedActivities = sortBy(activities ?? [], prop('weight'));
 
@@ -67,9 +109,7 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
           type="natural"
           stroke="black"
           strokeWidth={2}
-          dot={{
-            fill: 'fill-foreground',
-          }}
+          dot={<ExerciseDetailChartDot />}
         >
           <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
         </Line>
