@@ -4,10 +4,14 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 const SPLIT_BUNDLE_PACKAGES = new Set([
+  '@radix-ui',
   'dexie',
   'dexie-cloud-addon',
+  'react-day-picker',
   'react-dom',
-  '@radix-ui',
+  'recharts',
+  'sonner',
+  'vaul',
   'zod',
 ]);
 
