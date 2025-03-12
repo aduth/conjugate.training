@@ -22,10 +22,12 @@ beforeAll(async () => {
     {
       slug: 'barbell-bench-press',
       name: 'Barbell Bench Press',
+      realmId: 'rlm-public',
     },
     {
       slug: 'barbell-squat',
       name: 'Barbell Squat',
+      realmId: 'rlm-public',
     },
   ]);
 });

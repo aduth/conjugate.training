@@ -1,5 +1,5 @@
-import Dexie, { type EntityTable } from 'dexie';
-import dexieCloud from 'dexie-cloud-addon';
+import Dexie from 'dexie';
+import dexieCloud, { type DexieCloudTable } from 'dexie-cloud-addon';
 
 interface Activity {
   id: string;
@@ -12,14 +12,13 @@ interface Activity {
 }
 
 interface Exercise {
-  realmId: string;
   slug: string;
   name: string;
 }
 
 interface Database extends Dexie {
-  activities: EntityTable<Activity, 'id'>;
-  exercises: EntityTable<Exercise, 'name'>;
+  activities: DexieCloudTable<Activity, 'id'>;
+  exercises: DexieCloudTable<Exercise, 'name'>;
 }
 
 const db = new Dexie('conjugate', { addons: [dexieCloud] }) as Database;
