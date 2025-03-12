@@ -23,6 +23,8 @@ interface ExerciseDetailChartProps {
 
 interface EstimatedActivity extends Activity {
   isEstimate?: true;
+
+  label?: string;
 }
 
 const chartConfig = {
@@ -68,9 +70,12 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
       .sortBy('createdAt');
 
     return result.map((activity) => {
-      return activity.reps > 1
-        ? { ...activity, reps: 1, weight: getEstimatedWeight(1, activity)!, isEstimate: true }
-        : activity;
+      if (activity.reps > 1) {
+        const estimate = getEstimatedWeight(1, activity)!;
+        return { ...activity, label: `~${estimate}`, weight: estimate, isEstimate: true };
+      }
+
+      return { ...activity, label: activity.weight.toString() };
     });
   }, [exercise]);
   const domain = useMemo(() => {
@@ -103,7 +108,32 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
           tickMargin={8}
           tickFormatter={(value) => formatDate({ value, variant: 'short' })}
         />
-        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              hideLabel
+              formatter={(value, _name, _item, _index, payload) => {
+                const activity = payload as unknown as EstimatedActivity;
+                return (
+                  <div className="flex flex-col">
+                    <div className="flex gap-x-1">
+                      <span className="">Weight</span>
+                      <span className="text-foreground font-mono font-semibold tabular-nums">
+                        {value.toLocaleString()}
+                      </span>
+                    </div>
+                    {activity.isEstimate && (
+                      <div className="text-muted-foreground">
+                        (Estimated from {activity.reps}RM)
+                      </div>
+                    )}
+                  </div>
+                );
+              }}
+            />
+          }
+        />
         <Line
           dataKey="weight"
           type="natural"
@@ -111,7 +141,13 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
           strokeWidth={2}
           dot={<ExerciseDetailChartDot />}
         >
-          <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
+          <LabelList
+            dataKey="label"
+            position="top"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+          />
         </Line>
       </LineChart>
     </ChartContainer>
