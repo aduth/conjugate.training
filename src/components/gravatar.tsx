@@ -32,7 +32,7 @@ function Gravatar({ email, size }: GravatarProps) {
     getGravatarURL(email, size),
   );
 
-  return <Avatar>{url && <AvatarImage src={url} />}</Avatar>;
+  return <Avatar>{url && <AvatarImage src={url} alt="Avatar" />}</Avatar>;
 }
 
 export default Gravatar;
