@@ -5,6 +5,7 @@ import NewActivityPage from '#pages/new-activity-page';
 import EditActivityPage from '#pages/edit-activity-page';
 import ExercisesPage from '#pages/exercises-page';
 import ExerciseDetailPage from '#pages/exercise-detail-page.tsx';
+import logoImageURL from '#assets/images/logo.svg';
 import SignInOut from './sign-in-out';
 import Page from './page';
 
@@ -15,7 +16,7 @@ function App() {
       <div className="relative max-w-[600px] mx-auto">
         <header className="mb-5 flex justify-between items-center mx-4 md:mx-0">
           <Link to="/">
-            <img src="/images/logo.svg" className="w-40 h-[49px] md:w-50 md:h-[51px]" alt="Home" />
+            <img src={logoImageURL} className="w-40 h-[49px] md:w-50 md:h-[51px]" alt="Home" />
           </Link>
           <SignInOut />
         </header>
