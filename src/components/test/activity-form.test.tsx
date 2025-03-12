@@ -7,7 +7,8 @@ import { db } from '#db';
 import { toast } from 'sonner';
 import ActivityForm from '../activity-form';
 
-vi.mock('wouter', () => ({
+vi.mock(import('wouter'), async (importOriginal) => ({
+  ...(await importOriginal()),
   useLocation: vi.fn().mockImplementation(() => []),
 }));
 
@@ -112,10 +113,13 @@ describe('ActivityForm', () => {
     const navigate = vi.fn();
     vi.spyOn(db.activities, 'update');
     (useLocation as Mock).mockReturnValue([undefined, navigate]);
-    const { getByRole } = render(<ActivityForm entity={entity} />);
+    const { getByRole, findByRole } = render(<ActivityForm entity={entity} />);
 
     const exerciseField = getByRole('combobox', { name: 'Select exercise' });
     expect(exerciseField.textContent).to.equal('Barbell Bench Press');
+
+    const historyLink = await findByRole('link', { name: 'History (1)' });
+    expect(historyLink).toBeTruthy();
 
     const bandTypeField = getByRole('combobox', { name: 'Band Type' });
     expect(bandTypeField.textContent).to.equal('Light Band');

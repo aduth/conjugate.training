@@ -1,8 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { History } from 'lucide-react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { toKebabCase } from 'remeda';
 import { Button } from '#components/ui/button';
 import {
   Select,
@@ -59,6 +62,10 @@ function ActivityForm({ entity }: ActivityFormProps) {
     'chainWeight',
     'bandType',
   ]);
+  const historyCount = useLiveQuery<number | null>(
+    () => (exercise ? db.activities.where({ exercise }).count() : null),
+    [exercise],
+  );
 
   useEffect(() => {
     if (entity) form.reset(entity);
@@ -87,25 +94,36 @@ function ActivityForm({ entity }: ActivityFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="exercise"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="exercise">Exercise</FormLabel>
-              <FormControl>
-                <ExerciseSelect
-                  {...field}
-                  id="exercise"
-                  onChange={(nextExercise) => {
-                    field.onChange(nextExercise);
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+        <div className="flex items-end space-x-2">
+          <div className="basis-full">
+            <FormField
+              control={form.control}
+              name="exercise"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="exercise">Exercise</FormLabel>
+                  <FormControl>
+                    <ExerciseSelect
+                      {...field}
+                      id="exercise"
+                      onChange={(nextExercise) => {
+                        field.onChange(nextExercise);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {historyCount && historyCount > 0 && (
+            <Button variant="outline" className="font-normal" asChild>
+              <Link to={`/exercises/${toKebabCase(exercise)}`}>
+                <History /> History ({historyCount})
+              </Link>
+            </Button>
           )}
-        />
+        </div>
         <div className="flex space-x-2">
           <div className="flex-1">
             <FormField
