@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   unit-test:
-    name: Unit Test
+    name: Browser Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
