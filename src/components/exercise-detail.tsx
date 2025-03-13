@@ -15,7 +15,7 @@ function ExerciseDetail({ slug }: ExerciseDetailProps) {
 
   return (
     <>
-      <ExerciseDetailBackLink slug={slug} />
+      <ExerciseDetailBackLink />
       {name ? (
         <>
           <ExerciseDetailChart exercise={name} />

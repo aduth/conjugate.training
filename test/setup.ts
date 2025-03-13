@@ -34,4 +34,5 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await db.activities.clear();
+  history.replaceState(null, '');
 });

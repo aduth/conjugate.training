@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useLocation, useSearchParams } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { History } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { toKebabCase } from 'remeda';
+import { isShallowEqual, toKebabCase } from 'remeda';
 import { Button } from '#components/ui/button';
 import {
   Select,
@@ -27,9 +27,8 @@ import { type Activity, db } from '#db';
 import { addCustomExercise } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from './date-picker';
-import useExerciseName from '#hooks/use-exercise-name.ts';
 
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
@@ -40,17 +39,18 @@ const formSchema = z.object({
   createdAt: z.date().default(() => new Date()),
 });
 
+type FormSchema = z.infer<typeof formSchema>;
+
 interface ActivityFormProps {
   entity?: Activity;
 }
 
 function ActivityForm({ entity }: ActivityFormProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const exerciseNameFromParams = useExerciseName(searchParams.get('exercise'));
   const [, navigate] = useLocation();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const [historyState, setHistoryState] = useState<{ activityForm?: FormSchema }>({});
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: history.state?.activityForm ?? {
       exercise: '',
       bandType: null,
       weight: 0,
@@ -59,11 +59,13 @@ function ActivityForm({ entity }: ActivityFormProps) {
       createdAt: new Date(),
     },
   });
-  const [exercise, reps, chainWeight, bandType] = form.watch([
+  const [exercise, reps, chainWeight, bandType, weight, createdAt] = form.watch([
     'exercise',
     'reps',
     'chainWeight',
     'bandType',
+    'weight',
+    'createdAt',
   ]);
   const historyCount = useLiveQuery<number | null>(
     () => (exercise ? db.activities.where({ exercise }).count() : null),
@@ -74,17 +76,14 @@ function ActivityForm({ entity }: ActivityFormProps) {
     if (entity) form.reset(entity);
   }, [entity, form]);
   useEffect(() => {
-    if (exerciseNameFromParams) {
-      form.setValue('exercise', exerciseNameFromParams);
-      setSearchParams(
-        (previousSearchParams) => {
-          previousSearchParams.delete('exercise');
-          return previousSearchParams;
-        },
-        { replace: true },
-      );
+    const nextState = { exercise, reps, chainWeight, bandType, weight, createdAt };
+    if (!isShallowEqual(history.state?.activityForm, nextState)) {
+      setHistoryState({ activityForm: nextState });
     }
-  }, [exerciseNameFromParams, form, setSearchParams]);
+  }, [exercise, reps, chainWeight, bandType, weight, createdAt]);
+  useEffect(() => {
+    if (historyState) history.replaceState(historyState, '');
+  }, [historyState]);
 
   async function onDestroy() {
     await db.activities.delete(entity!.id);
@@ -133,7 +132,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
           </div>
           {!!historyCount && (
             <Button variant="outline" className="font-normal" asChild>
-              <Link to={`/exercises/${toKebabCase(exercise)}?referrer=add-activity`}>
+              <Link to={`/exercises/${toKebabCase(exercise)}`} state={historyState}>
                 <History /> History ({historyCount})
               </Link>
             </Button>
