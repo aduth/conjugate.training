@@ -17,6 +17,9 @@ const SPLIT_BUNDLE_PACKAGES = new Set([
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    include: ['react/jsx-dev-runtime'],
+  },
   build: {
     rollupOptions: {
       output: {
