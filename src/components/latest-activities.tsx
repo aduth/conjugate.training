@@ -16,21 +16,23 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 interface LatestActivitiesProps {
   exercise?: string;
+  perPage?: number;
 }
 
 interface LatestActivitiesPageProps {
   exercise?: string;
   page: number;
+  perPage: number;
 }
 
-const PER_PAGE_SIZE = 20;
+const DEFAULT_PER_PAGE = 20;
 
-function LatestActivitiesPage({ exercise, page = 1 }: LatestActivitiesPageProps) {
+function LatestActivitiesPage({ exercise, page, perPage }: LatestActivitiesPageProps) {
   const [, navigate] = useLocation();
   const activities = useCachedLiveQuery(['activities', exercise ?? '', page.toString()], () => {
     let activities = db.activities.orderBy('createdAt').reverse();
     if (exercise) activities = activities.filter((activity) => activity.exercise === exercise);
-    activities = activities.offset(page * PER_PAGE_SIZE).limit(PER_PAGE_SIZE);
+    activities = activities.offset(page * perPage).limit(perPage);
     return activities.toArray();
   });
 
@@ -50,7 +52,7 @@ function LatestActivitiesPage({ exercise, page = 1 }: LatestActivitiesPageProps)
                     type="button"
                     onClick={() => navigate(`/activities/${activity.id}/edit`)}
                     className="p-2 -mr-2 text-gray-500 hover:text-red-400 cursor-pointer"
-                    aria-label="Edit"
+                    aria-label={`Edit activity: ${activity.exercise}`}
                   >
                     <FilePen size="16" />
                   </TooltipTrigger>
@@ -90,7 +92,7 @@ function LatestActivitiesPage({ exercise, page = 1 }: LatestActivitiesPageProps)
   );
 }
 
-function LatestActivities({ exercise }: LatestActivitiesProps) {
+function LatestActivities({ exercise, perPage = DEFAULT_PER_PAGE }: LatestActivitiesProps) {
   const [page, setPage] = useState(1);
   const count = useLiveQuery(
     () => (exercise ? db.activities.where({ exercise }).count() : db.activities.count()),
@@ -100,9 +102,9 @@ function LatestActivities({ exercise }: LatestActivitiesProps) {
   return (
     <>
       {times(page, (i) => (
-        <LatestActivitiesPage exercise={exercise} key={i} page={i} />
+        <LatestActivitiesPage exercise={exercise} key={i} page={i} perPage={perPage} />
       ))}
-      {count! > page * PER_PAGE_SIZE && (
+      {count! > page * perPage && (
         <Button variant="outline" onClick={() => setPage(page + 1)}>
           Load More
         </Button>
