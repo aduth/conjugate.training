@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useId } from 'react';
 import { Activity, CirclePlus, List } from 'lucide-react';
 import { Link, useRoute } from 'wouter';
 import useDocumentState from '#hooks/use-document-state.ts';
@@ -10,6 +10,7 @@ interface PageProps {
 }
 
 function Page({ children }: PageProps) {
+  const id = useId();
   const [, params] = useRoute('/:activeTab/*?');
   const title = useDocumentState((state) => state.title);
   const { activeTab = '' } = params ?? {};
@@ -35,9 +36,11 @@ function Page({ children }: PageProps) {
           </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent value={activeTab}>
+      <TabsContent value={activeTab} aria-labelledby={`tab-title-${id}`}>
         <TabPage>
-          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+          <h1 id={`tab-title-${id}`} className="text-2xl font-bold tracking-tight">
+            {title}
+          </h1>
           {children}
         </TabPage>
       </TabsContent>
