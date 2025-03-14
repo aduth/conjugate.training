@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
 import App from '#components/app.tsx';
 
-test('properly handles form inputs', async () => {
+test('creating new activity', async () => {
   indexedDB.deleteDatabase('conjugate');
   const { getByRole } = render(<App />);
 
@@ -12,7 +12,6 @@ test('properly handles form inputs', async () => {
   // Populate initial entry
   await getByRole('button', { name: 'Select exercise' }).click();
   await getByRole('combobox', { name: 'Search exercise' }).fill('Barbell Bench Press');
-  // await userEvent.fill(document.activeElement!, 'Barbell Bench Press');
   await getByRole('option', { name: 'Add new “Barbell Bench Press”…' }).click();
   await getByRole('textbox', { name: 'Weight', exact: true }).fill('225');
   await getByRole('button', { name: 'Submit' }).click();
@@ -25,6 +24,8 @@ test('properly handles form inputs', async () => {
 
   // Navigating from and back should maintain information
   await getByRole('link', { name: 'History (1)' }).click();
+  const tabPanel = await getByRole('tabpanel', { name: 'Exercise Detail' }).element();
+  expect(tabPanel).toBe(document.activeElement);
   await getByRole('link', { name: 'Back to new activity' }).click();
 
   const weightInput = getByRole('textbox', {
