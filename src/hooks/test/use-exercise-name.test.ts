@@ -16,10 +16,18 @@ describe('useExerciseName', () => {
     vi.resetAllMocks();
   });
 
-  it('should return null if no slug is provided', () => {
+  it('should return undefined while loading', () => {
+    const { result } = renderHook(() => useExerciseName('maybe-existent-slug'));
+
+    expect(result.current).toBeUndefined();
+  });
+
+  it('should return null if no slug is provided', async () => {
     const { result } = renderHook(() => useExerciseName(null));
 
-    expect(result.current).toBeNull();
+    await waitFor(() => {
+      expect(result.current).toBeNull();
+    });
   });
 
   it('should return exercise name if slug is provided', async () => {
