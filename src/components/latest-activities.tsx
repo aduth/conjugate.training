@@ -1,18 +1,19 @@
-import { ChartNoAxesCombined, Shell, Link, Weight, FilePen } from 'lucide-react';
-import { useLocation } from 'wouter';
+import { useState } from 'react';
+import { times } from 'remeda';
+import { ChartNoAxesCombined, Shell, Weight, FilePen, LinkIcon } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '#db';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#components/ui/tooltip';
 import useCachedLiveQuery from '#hooks/use-cached-live-query';
+import { getExerciseSlug } from '#entities/exercise.ts';
 import { Details, DetailsItem } from './ui/details';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
 import ListSkeleton from './list-skeleton';
 import EmptyActivitiesState from './empty-activities-state';
 import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
-import { useState } from 'react';
-import { times } from 'remeda';
 import { Button } from './ui/button';
-import { useLiveQuery } from 'dexie-react-hooks';
 
 interface LatestActivitiesProps {
   exercise?: string;
@@ -45,7 +46,9 @@ function LatestActivitiesPage({ exercise, page, perPage }: LatestActivitiesPageP
         <TwoColumnListItem key={activity.id}>
           <TwoColumnListItemColumn className="flex-1 w-full text-left">
             <div className="font-medium text-gray-900 truncate flex items-center">
-              {activity.exercise}
+              <Link to={`/exercises/${getExerciseSlug(activity.exercise)}/`}>
+                {activity.exercise}
+              </Link>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger
@@ -75,7 +78,7 @@ function LatestActivitiesPage({ exercise, page, perPage }: LatestActivitiesPageP
                 </DetailsItem>
               )}
               {activity.chainWeight > 0 && (
-                <DetailsItem icon={Link} name="Chain">
+                <DetailsItem icon={LinkIcon} name="Chain">
                   <FormattedWeight value={activity.chainWeight} />
                 </DetailsItem>
               )}

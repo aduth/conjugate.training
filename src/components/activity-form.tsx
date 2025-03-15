@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { History } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { isShallowEqual, toKebabCase } from 'remeda';
+import { isShallowEqual } from 'remeda';
 import { Button } from '#components/ui/button';
 import {
   Select,
@@ -24,7 +24,7 @@ import {
 } from '#components/ui/form';
 import { Input } from '#components/ui/input';
 import { type Activity, db } from '#db';
-import { addCustomExercise } from '#entities/exercise';
+import { addCustomExercise, getExerciseSlug } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
 import { useEffect, useState } from 'react';
@@ -132,7 +132,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
           </div>
           {!!historyCount && (
             <Button variant="outline" className="font-normal" asChild>
-              <Link to={`/exercises/${toKebabCase(exercise)}`} state={historyState}>
+              <Link to={`/exercises/${getExerciseSlug(exercise)}`} state={historyState}>
                 <History /> History ({historyCount})
               </Link>
             </Button>

@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { addCustomExercise } from '../exercise';
+import { addCustomExercise, getExerciseSlug } from '../exercise';
 import { db } from '#db';
+
+describe('getExerciseSlug', () => {
+  it('should convert a name to kebab-case', () => {
+    expect(getExerciseSlug('Test Exercise ')).toBe('test-exercise');
+  });
+});
 
 describe('addCustomExercise', () => {
   afterEach(() => {

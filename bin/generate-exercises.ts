@@ -11,8 +11,9 @@
 // - https://dexie.org/cloud/docs/access-control#the-public-realm
 // - https://dexie.org/cloud/docs/add-public-data
 
-import { indexBy, map, pipe, prop, toKebabCase } from 'remeda';
+import { indexBy, map, pipe, prop } from 'remeda';
 import { fetchExercises } from '#services/exercises.ts';
+import { getExerciseSlug } from '#entities/exercise';
 
 interface DexieCloudImport {
   data: {
@@ -26,7 +27,7 @@ async function generateImportData(): Promise<DexieCloudImport> {
   const exercises = pipe(
     await fetchExercises(),
     map((exercise) => ({
-      slug: toKebabCase(exercise.name),
+      slug: getExerciseSlug(exercise.name),
       name: exercise.name,
     })),
     indexBy(prop('name')),

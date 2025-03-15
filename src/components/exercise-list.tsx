@@ -2,11 +2,11 @@ import { db } from '#db.ts';
 import useCachedLiveQuery from '#hooks/use-cached-live-query.ts';
 import { Activity } from 'lucide-react';
 import { Link } from 'wouter';
-import { toKebabCase } from 'remeda';
 import EmptyActivitiesState from './empty-activities-state';
 import ListSkeleton from './list-skeleton';
 import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
 import { Details, DetailsItem } from './ui/details';
+import { getExerciseSlug } from '#entities/exercise.ts';
 
 function ExerciseList() {
   const exerciseCounts = useCachedLiveQuery('exerciseCounts', async () => {
@@ -32,7 +32,7 @@ function ExerciseList() {
         <TwoColumnListItem key={exercise.toString()}>
           <TwoColumnListItemColumn className="flex-1 w-full text-left">
             <div className="font-medium truncate">
-              <Link to={`/exercises/${toKebabCase(exercise.toString())}/`}>
+              <Link to={`/exercises/${getExerciseSlug(exercise.toString())}/`}>
                 {exercise.toString()}
               </Link>
             </div>
