@@ -45,7 +45,7 @@ function LatestActivitiesPage({ exercise, page, perPage }: LatestActivitiesPageP
       {activities.map((activity) => (
         <TwoColumnListItem key={activity.id}>
           <TwoColumnListItemColumn className="flex-1 w-full text-left">
-            <div className="font-medium text-gray-900 truncate flex items-center">
+            <div className="font-medium text-gray-900 flex items-center">
               <Link to={`/exercises/${getExerciseSlug(activity.exercise)}/`}>
                 {activity.exercise}
               </Link>
