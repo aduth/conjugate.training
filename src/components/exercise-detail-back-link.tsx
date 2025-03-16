@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { Button } from './ui/button';
+import { ChevronLeft } from 'lucide-react';
 
 function ExerciseDetailBackLink() {
   const isFromAddActivity = !!history.state?.activityForm;
@@ -7,12 +7,11 @@ function ExerciseDetailBackLink() {
   const url = isFromAddActivity ? '/activities/new' : '/exercises';
 
   return (
-    <div className="relative -mb-6">
-      <Button asChild variant="outline" className="absolute bottom-full right-0 mb-6">
-        <Link to={url} state={history.state}>
-          {text}
-        </Link>
-      </Button>
+    <div className="-mt-5 font-light text-sm text-gray-700">
+      <Link to={url} state={history.state} className="flex items-center gap-x-0.5">
+        <ChevronLeft size={14} className="-ml-1" />
+        {text}
+      </Link>
     </div>
   );
 }
