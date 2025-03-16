@@ -15,7 +15,7 @@ function useMaintainedNavigateFocus(fallbackElement: HTMLElement | null) {
   }, []);
   useDidUpdateEffect(() => {
     if (focusedElement && !focusedElement.isConnected) {
-      fallbackElement?.focus();
+      fallbackElement?.focus({ preventScroll: true });
     }
   }, [location]);
 }
