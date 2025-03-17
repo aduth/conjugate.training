@@ -10,6 +10,7 @@
     "paths": {
       "#*": ["./src/*"]
     },
+    "types": ["@vitest/browser/matchers"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

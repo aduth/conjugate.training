@@ -24,8 +24,8 @@ test('creating new activity', async () => {
 
   // Navigating from and back should maintain information
   await getByRole('link', { name: 'History (1)' }).click();
-  const tabPanel = await getByRole('tabpanel', { name: 'Exercise Detail' }).element();
-  expect(tabPanel).toBe(document.activeElement);
+  const tabPanel = await getByRole('tabpanel', { name: 'Barbell Bench Press' });
+  await expect.element(tabPanel).toHaveFocus();
   await getByRole('link', { name: 'Back to new activity' }).click();
 
   const weightInput = getByRole('textbox', {
