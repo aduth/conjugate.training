@@ -2,7 +2,6 @@ import { render, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { type Mock, describe, it, expect, vi, afterEach } from 'vitest';
 import { useLocation } from 'wouter';
-import { computeAccessibleName } from 'dom-accessibility-api';
 import { db } from '#db';
 import { toast } from 'sonner';
 import ActivityForm from '../activity-form';
@@ -30,8 +29,7 @@ describe('ActivityForm', () => {
     const exerciseField = getByRole('combobox', { name: 'Select exercise' });
 
     await userEvent.click(exerciseField);
-    const input = document.activeElement!;
-    expect(computeAccessibleName(input)).to.equal('Search exercise');
+    expect(document.activeElement).toHaveAccessibleName('Search exercise');
 
     await userEvent.type(input, 'Barbell Bench Press');
     const controlsId = input.getAttribute('aria-controls')!;
