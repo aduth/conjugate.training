@@ -25,3 +25,6 @@ dist-ssr
 
 # Sensitive files
 dexie-cloud.key
+
+# Test artifacts
+__screenshots__
