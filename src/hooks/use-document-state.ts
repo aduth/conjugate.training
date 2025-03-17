@@ -3,12 +3,15 @@ import { create } from 'zustand';
 interface DocumentState {
   title: string;
 
-  setTitle: (title: string) => void;
+  showHeading: boolean;
+
+  setTitle: (title: string, options?: Partial<DocumentState>) => void;
 }
 
 const useDocumentState = create<DocumentState>((set) => ({
   title: '',
-  setTitle: (title: string) => set(() => ({ title })),
+  showHeading: true,
+  setTitle: (title, options) => set(() => ({ title, ...options })),
 }));
 
 export default useDocumentState;

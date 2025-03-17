@@ -8,7 +8,7 @@ function ExerciseDetailPage({ params }: RouteComponentProps<{ exercise: string }
 
   return (
     <>
-      <PageTitle>{exerciseName ?? ''}</PageTitle>
+      <PageTitle showHeading={false}>{exerciseName ?? ''}</PageTitle>
       <ExerciseDetail slug={params.exercise} />
     </>
   );

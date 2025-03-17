@@ -1,7 +1,7 @@
 import Dexie from 'dexie';
-import dexieCloud, { type DexieCloudTable } from 'dexie-cloud-addon';
+import dexieCloud, { type DBSyncedObject, type DexieCloudTable } from 'dexie-cloud-addon';
 
-interface Activity {
+interface Activity extends DBSyncedObject {
   id: string;
   exercise: string;
   reps: number;
@@ -11,7 +11,7 @@ interface Activity {
   createdAt: Date;
 }
 
-interface Exercise {
+interface Exercise extends DBSyncedObject {
   slug: string;
   name: string;
 }

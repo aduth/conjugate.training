@@ -1,20 +1,21 @@
-import { type ReactNode, useId, useRef } from 'react';
+import { type ReactNode, useRef } from 'react';
 import { Activity, CirclePlus, List } from 'lucide-react';
 import { Link, useRoute } from 'wouter';
 import useDocumentState from '#hooks/use-document-state.ts';
 import useMaintainedNavigateFocus from '#hooks/use-maintained-navigation-focus.ts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import TabPage from './tab-page';
+import PageHeading from './page-heading';
 
 interface PageProps {
   children: ReactNode;
 }
 
 function Page({ children }: PageProps) {
-  const id = useId();
   const tabRef = useRef<HTMLDivElement>(null);
   const [, params] = useRoute('/:activeTab/*?');
   const title = useDocumentState((state) => state.title);
+  const showHeading = useDocumentState((state) => state.showHeading);
   useMaintainedNavigateFocus(tabRef.current);
   const { activeTab = '' } = params ?? {};
 
@@ -39,11 +40,9 @@ function Page({ children }: PageProps) {
           </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent ref={tabRef} value={activeTab} aria-labelledby={`tab-title-${id}`}>
+      <TabsContent ref={tabRef} value={activeTab} aria-labelledby={undefined} aria-label={title}>
         <TabPage>
-          <h1 id={`tab-title-${id}`} className="text-2xl font-bold tracking-tight">
-            {title}
-          </h1>
+          {showHeading && <PageHeading />}
           {children}
         </TabPage>
       </TabsContent>
