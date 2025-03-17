@@ -29,7 +29,8 @@ describe('ActivityForm', () => {
     const exerciseField = getByRole('combobox', { name: 'Select exercise' });
 
     await userEvent.click(exerciseField);
-    expect(document.activeElement).toHaveAccessibleName('Search exercise');
+    const input = document.activeElement!;
+    expect(input).toHaveAccessibleName('Search exercise');
 
     await userEvent.type(input, 'Barbell Bench Press');
     const controlsId = input.getAttribute('aria-controls')!;
