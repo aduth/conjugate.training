@@ -9,9 +9,9 @@ describe('ExerciseDetail', () => {
     await addCustomExercise('Barbell Bench Press');
     await createActivity({ exercise: 'Barbell Bench Press' });
 
-    const { findByText } = render(<ExerciseDetail slug="barbell-bench-press" />);
+    const { findByRole } = render(<ExerciseDetail slug="barbell-bench-press" />);
 
-    expect(await findByText('Barbell Bench Press')).toBeTruthy();
+    expect(await findByRole('heading', { name: 'Barbell Bench Press' })).toBeTruthy();
   });
 
   it('should render not found when exercise does not exist', async () => {
