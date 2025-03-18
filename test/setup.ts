@@ -1,4 +1,5 @@
 import 'fake-indexeddb/auto';
+import '@testing-library/jest-dom/vitest';
 import { beforeEach, beforeAll, vi } from 'vitest';
 import { db } from '#db';
 
