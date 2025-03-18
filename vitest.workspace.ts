@@ -9,6 +9,9 @@ export default defineWorkspace([
       globals: true,
       setupFiles: './test/setup.ts',
     },
+    optimizeDeps: {
+      include: ['react/jsx-dev-runtime'],
+    },
   },
   {
     test: {
@@ -20,6 +23,9 @@ export default defineWorkspace([
         provider: 'playwright',
         instances: [{ browser: 'chromium' }],
       },
+    },
+    optimizeDeps: {
+      include: ['react/jsx-dev-runtime'],
     },
   },
 ]);
