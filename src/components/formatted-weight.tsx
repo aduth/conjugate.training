@@ -4,8 +4,11 @@ interface FormattedWeightProps {
   value: number;
 }
 
+export const getFormattedWeight = (value: number): string =>
+  `${value}${pluralize('lb', 'lbs', value)}`;
+
 function FormattedWeight({ value }: FormattedWeightProps) {
-  return `${value}${pluralize('lb', 'lbs', value)}`;
+  return getFormattedWeight(value);
 }
 
 export default FormattedWeight;

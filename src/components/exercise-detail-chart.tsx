@@ -16,13 +16,14 @@ import { getEstimatedWeight } from '#lib/estimator';
 import { formatDate } from './formatted-date';
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
 import cn from '#lib/class-names.ts';
+import { getFormattedWeight } from './formatted-weight';
 
 interface ExerciseDetailChartProps {
   exercise: string;
 }
 
 interface EstimatedActivity extends Activity {
-  isEstimate?: true;
+  estimateLabel?: string;
 
   label?: string;
 }
@@ -37,6 +38,20 @@ const chartConfig = {
 const roundToInterval = (number: number, interval: number): number =>
   Math.round(number / interval) * interval;
 
+export function getEstimateLabel(activity: Activity): string {
+  let label = `Estimated from ${getFormattedWeight(activity.weight)}`;
+
+  if (activity.reps > 1) {
+    label += ` ${activity.reps}RM`;
+  }
+
+  if (activity.chainWeight) {
+    label += ` + ${getFormattedWeight(activity.chainWeight)} chain`;
+  }
+
+  return label;
+}
+
 function ExerciseDetailChartDot({
   cx,
   cy,
@@ -46,7 +61,7 @@ function ExerciseDetailChartDot({
   r,
   strokeWidth,
 }: DotProps & { payload?: EstimatedActivity }) {
-  const classes = cn({ 'stroke-amber-600': payload?.isEstimate });
+  const classes = cn({ 'stroke-amber-600': payload?.estimateLabel });
 
   return (
     <Dot
@@ -66,13 +81,18 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
     if (!exercise) return [];
     const result = await db.activities
       .where({ exercise })
-      .filter(({ bandType, chainWeight }) => !bandType && !chainWeight)
+      .filter(({ bandType }) => !bandType)
       .sortBy('createdAt');
 
     return result.map((activity) => {
-      if (activity.reps > 1) {
+      if (activity.reps > 1 || activity.chainWeight) {
         const estimate = getEstimatedWeight(1, activity)!;
-        return { ...activity, label: `~${estimate}`, weight: estimate, isEstimate: true };
+        return {
+          ...activity,
+          label: `~${estimate}`,
+          weight: estimate,
+          estimateLabel: getEstimateLabel(activity),
+        };
       }
 
       return { ...activity, label: activity.weight.toString() };
@@ -123,10 +143,8 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
                         {value.toLocaleString()}
                       </span>
                     </div>
-                    {activity.isEstimate && (
-                      <div className="text-muted-foreground">
-                        (Estimated from {activity.reps}RM)
-                      </div>
+                    {activity.estimateLabel && (
+                      <div className="text-muted-foreground">({activity.estimateLabel})</div>
                     )}
                   </div>
                 );

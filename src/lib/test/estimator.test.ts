@@ -59,4 +59,18 @@ describe('getEstimatedWeight', () => {
     expect(getEstimatedWeight(0, activity)).toBeNull();
     expect(getEstimatedWeight(-1, activity)).toBeNull();
   });
+
+  it('should return estimate with chainWeight', () => {
+    const activity: Activity = {
+      id: 'id',
+      exercise: 'Barbell Bench Press',
+      weight: 100,
+      reps: 1,
+      bandType: null,
+      chainWeight: 50,
+      createdAt: new Date(),
+    };
+
+    expect(getEstimatedWeight(1, activity)).toBe(125);
+  });
 });

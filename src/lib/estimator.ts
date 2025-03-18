@@ -15,8 +15,10 @@ function getNCSALoadEstimate(weight: number, reps: number): number | null {
 }
 
 export function getEstimatedWeight(reps: number, best: Activity): number | null {
-  if (best.bandType || best.chainWeight) return null;
-  const oneRepMax = getBrzyckiEstimate(best.weight, best.reps);
+  if (best.bandType) return null;
+  let { weight } = best;
+  if (best.chainWeight) weight += best.chainWeight / 2;
+  const oneRepMax = getBrzyckiEstimate(weight, best.reps);
   const estimatedWeight = getNCSALoadEstimate(oneRepMax, reps);
   return estimatedWeight === null ? null : Math.round(estimatedWeight * 10) / 10;
 }
