@@ -30,7 +30,7 @@ db.version(1).stores({
 
 if (process.env.NODE_ENV !== 'test') {
   db.cloud.configure({
-    databaseUrl: 'https://zejmcj630.dexie.cloud',
+    databaseUrl: import.meta.env.VITE_DEXIE_CLOUD_URL,
     requireAuth: false,
     customLoginGui: true,
   });
