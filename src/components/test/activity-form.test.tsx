@@ -39,7 +39,7 @@ describe('ActivityForm', () => {
     await userEvent.click(option);
 
     const weightField = getByRole('textbox', { name: 'Weight' }) as HTMLInputElement;
-    await userEvent.type(weightField, '225');
+    await userEvent.type(weightField, '225.5');
 
     const submitButton = getByRole('button', { name: 'Submit' });
     await userEvent.click(submitButton);
@@ -51,7 +51,7 @@ describe('ActivityForm', () => {
         createdAt: expect.any(Date),
         exercise: 'Barbell Bench Press',
         reps: 1,
-        weight: 225,
+        weight: 225.5,
       }),
     );
     await waitFor(() => expect(toast.success).toHaveBeenCalledWith('Activity saved successfully'));

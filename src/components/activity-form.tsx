@@ -220,7 +220,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       {...field}
                       inputMode="decimal"
                       onFocus={(event) => event.target.select()}
-                      onChange={(event) => field.onChange(Number(event.target.value))}
+                      onBlur={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
