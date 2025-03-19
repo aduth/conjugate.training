@@ -8,13 +8,6 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { isShallowEqual } from 'remeda';
 import { Button } from '#components/ui/button';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '#components/ui/select';
-import {
   Form,
   FormControl,
   FormField,
@@ -27,8 +20,9 @@ import { type Activity, db } from '#db';
 import { addCustomExercise, getExerciseSlug } from '#entities/exercise';
 import { ExerciseSelect } from './exercise-select';
 import ExerciseInfo from './exercise-info';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import DatePicker from './date-picker';
+import MultiSelect from './multi-select';
 
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
@@ -71,6 +65,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
     () => (exercise ? db.activities.where({ exercise }).count() : null),
     [exercise],
   );
+  const bandTypeArray = useMemo(() => bandType?.split(/,\s*/) ?? [], [bandType]);
 
   useEffect(() => {
     if (entity) form.reset(entity);
@@ -145,29 +140,24 @@ function ActivityForm({ entity }: ActivityFormProps) {
               name="bandType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="band-type">Band Type</FormLabel>
+                  <FormLabel>Band Type</FormLabel>
                   <FormControl>
-                    <Select
-                      {...field}
-                      key={field.value}
-                      value={field.value || 'none'}
-                      onValueChange={(nextValue) =>
-                        field.onChange(nextValue === 'none' ? null : nextValue)
+                    <MultiSelect
+                      label="Band Type"
+                      options={[
+                        { value: 'Micro', label: 'Micro Band' },
+                        { value: 'Mini', label: 'Mini Band' },
+                        { value: 'Monster Mini', label: 'Monster Mini Band' },
+                        { value: 'Light', label: 'Light Band' },
+                        { value: 'Average', label: 'Average Band' },
+                        { value: 'Strong', label: 'Strong Band' },
+                      ]}
+                      value={bandTypeArray}
+                      onValueChange={(nextBandTypeArray) =>
+                        field.onChange(nextBandTypeArray.join(', ') || null)
                       }
-                    >
-                      <SelectTrigger className="w-full" aria-label="Band Type" id="band-type">
-                        <SelectValue placeholder="None" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="Micro">Micro Band</SelectItem>
-                        <SelectItem value="Mini">Mini Band</SelectItem>
-                        <SelectItem value="Monster Mini">Monster Mini Band</SelectItem>
-                        <SelectItem value="Light">Light Band</SelectItem>
-                        <SelectItem value="Average">Average Band</SelectItem>
-                        <SelectItem value="Strong">Strong Band</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      placeholder="Select bands…"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -49,7 +49,7 @@ function ExerciseSelectList({ isOpen, value, onChange, onClose }: ExerciseSelect
     <Command label="Search exercise" filter={() => 1}>
       <CommandInput
         value={query}
-        placeholder="Search exercise..."
+        placeholder="Search exercise…"
         autoFocus
         onInput={(event) => setQuery((event.target as HTMLInputElement).value)}
         className="text-md"

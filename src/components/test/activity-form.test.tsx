@@ -57,7 +57,7 @@ describe('ActivityForm', () => {
     await waitFor(() => expect(toast.success).toHaveBeenCalledWith('Activity saved successfully'));
   });
 
-  it('saves "None" band type as null', async () => {
+  it('saves empty band type as null', async () => {
     vi.spyOn(db.activities, 'add');
     (useLocation as Mock).mockReturnValue([undefined, vi.fn()]);
     const { getByRole } = render(<ActivityForm />);
@@ -83,10 +83,7 @@ describe('ActivityForm', () => {
     // Revert back to "None" band type
     bandTypeField = getByRole('combobox', { name: 'Band Type' });
     await userEvent.click(bandTypeField);
-    controlsId = bandTypeField.getAttribute('aria-controls')!;
-    options = document.getElementById(controlsId)!;
-    option = within(options).getByRole('option', { name: 'None' });
-    await userEvent.click(option);
+    await userEvent.keyboard('{backspace}');
 
     // Save
     const submitButton = getByRole('button', { name: 'Submit' });
@@ -121,7 +118,7 @@ describe('ActivityForm', () => {
     expect(historyLink).toBeTruthy();
 
     const bandTypeField = getByRole('combobox', { name: 'Band Type' });
-    expect(bandTypeField.textContent).to.equal('Light Band');
+    expect(bandTypeField.closest('.group')!.textContent).to.equal('Light Band');
 
     const chainWeightField = getByRole('textbox', { name: 'Chain Weight' }) as HTMLInputElement;
     expect(chainWeightField.value).to.equal('80');
