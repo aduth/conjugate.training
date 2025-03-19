@@ -28,7 +28,7 @@ function MultiSelect({ options, label, placeholder, value, onValueChange }: Mult
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const inputContainerClasses = cn(
-    'group rounded-md border border-input shadow-xs py-2 px-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50',
+    'group rounded-md border border-input shadow-xs py-1 md:py-2 px-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50',
     !value.length && 'h-9',
   );
 
@@ -59,7 +59,7 @@ function MultiSelect({ options, label, placeholder, value, onValueChange }: Mult
   return (
     <Command onKeyDown={handleKeyDown} label={label} className="overflow-visible bg-transparent">
       <div className={inputContainerClasses}>
-        <div className="flex flex-wrap gap-1 md:text-sm">
+        <div className="flex flex-wrap gap-1 md:text-sm ">
           {selected.map((item, index) => {
             return (
               <Badge key={index} variant="secondary">
@@ -88,7 +88,7 @@ function MultiSelect({ options, label, placeholder, value, onValueChange }: Mult
             onValueChange={setInputValue}
             onBlur={() => setIsOpen(false)}
             onFocus={() => setIsOpen(true)}
-            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+            className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground placeholder:text-sm w-full"
             placeholder={placeholder}
           />
         </div>
