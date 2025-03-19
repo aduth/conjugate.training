@@ -33,4 +33,9 @@ test('creating new activity', async () => {
     exact: true,
   }).element() as HTMLInputElement;
   expect(weightInput.value).to.equal('225');
+
+  // Submitting should reset form fields to empty, even if initial state stored in history
+  await getByRole('button', { name: 'Submit' }).click();
+  await getByRole('alert', { name: 'Activity saved successfully' });
+  expect(weightInput.value).to.equal('0');
 });

@@ -24,6 +24,15 @@ import { useEffect, useMemo, useState } from 'react';
 import DatePicker from './date-picker';
 import MultiSelect from './multi-select';
 
+const getDefaultValues = () => ({
+  exercise: '',
+  bandType: null,
+  weight: 0,
+  chainWeight: 0,
+  reps: 1,
+  createdAt: new Date(),
+});
+
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
   reps: z.number().min(0).default(0),
@@ -44,14 +53,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
   const [historyState, setHistoryState] = useState<{ activityForm?: FormSchema }>({});
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: history.state?.activityForm ?? {
-      exercise: '',
-      bandType: null,
-      weight: 0,
-      chainWeight: 0,
-      reps: 1,
-      createdAt: new Date(),
-    },
+    defaultValues: history.state?.activityForm ?? getDefaultValues(),
   });
   const [exercise, reps, chainWeight, bandType, weight, createdAt] = form.watch([
     'exercise',
@@ -93,7 +95,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
       await db.activities.update(entity.id, activity);
       navigate('/latest');
     } else {
-      form.reset();
+      form.reset(getDefaultValues());
       await db.activities.add(activity);
     }
 
