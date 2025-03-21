@@ -1,5 +1,13 @@
 # Conjugate Training
 
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/ffac1a97-72bf-4fe8-a7dd-9c2c09b1ed37"
+    width="500"
+    height="328"
+    alt="App mockups, a desktop display with activity history and a mobile display adding an activity">
+</p>
+
 Conjugate Training is an exercise journaling application designed to record your personal best weight records for strength training. Unlike other workout tracking applications which focus on tracking every set for every exercise, Conjugate Training specializes in tracking your maximum weights for exercises, with support for exercise variations and accommodating resistance with chains and bands.
 
 ## Setup
