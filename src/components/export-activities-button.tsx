@@ -1,8 +1,8 @@
 import { useActionState, type ComponentProps } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { Loader2 } from 'lucide-react';
 import { pick } from 'remeda';
 import { type Activity, db } from '#db';
+import useCachedLiveQuery from '#hooks/use-cached-live-query.ts';
 import { Button } from './ui/button';
 
 type ExportActivitiesButtonProps = ComponentProps<'form'>;
@@ -29,7 +29,7 @@ export function toCSV(rows: string[][]): string {
 }
 
 function ExportActivitiesButton(props: ExportActivitiesButtonProps) {
-  const count = useLiveQuery(() => db.activities.count(), []);
+  const count = useCachedLiveQuery('activity-count', () => db.activities.count());
   const [, formAction, isPending] = useActionState(async () => {
     const headers: (keyof Activity)[] = [
       'exercise',
