@@ -7,12 +7,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc -b",
-    "unit-test": "vitest run --project node",
-    "test": "run-p lint typecheck unit-test",
-    "test:browser": "vitest run --project browser"
+    "test": "run-p test:*",
+    "test:browser": "vitest run --project browser",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc -b",
+    "test:unit": "vitest run --project node"
   },
   "imports": {
     "#*": "./src/*"
