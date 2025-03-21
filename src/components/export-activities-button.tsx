@@ -1,10 +1,11 @@
-import { type ComponentProps } from 'react';
+import { useActionState, type ComponentProps } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { Loader2 } from 'lucide-react';
 import { pick } from 'remeda';
 import { type Activity, db } from '#db';
 import { Button } from './ui/button';
-import { useLiveQuery } from 'dexie-react-hooks';
 
-type ExportActivitiesButtonProps = ComponentProps<'button'>;
+type ExportActivitiesButtonProps = ComponentProps<'form'>;
 
 function download(blob: Blob, fileName: string) {
   const url = window.URL.createObjectURL(blob);
@@ -29,10 +30,7 @@ export function toCSV(rows: string[][]): string {
 
 function ExportActivitiesButton(props: ExportActivitiesButtonProps) {
   const count = useLiveQuery(() => db.activities.count(), []);
-
-  if (!count) return null;
-
-  async function exportActivities() {
+  const [, formAction, isPending] = useActionState(async () => {
     const headers: (keyof Activity)[] = [
       'exercise',
       'reps',
@@ -49,12 +47,23 @@ function ExportActivitiesButton(props: ExportActivitiesButtonProps) {
     ];
 
     download(new Blob([toCSV(data)], { type: 'text/csv' }), 'activities.csv');
-  }
+  }, null);
+
+  if (!count) return null;
 
   return (
-    <Button onClick={exportActivities} variant="outline" {...props}>
-      Export Data
-    </Button>
+    <form action={formAction} {...props}>
+      <Button
+        type="submit"
+        variant="outline"
+        aria-busy={isPending}
+        aria-disabled={isPending}
+        aria-label={isPending ? 'Exporting' : undefined}
+      >
+        {isPending && <Loader2 className="animate-spin" aria-hidden />}
+        Export Data
+      </Button>
+    </form>
   );
 }
 

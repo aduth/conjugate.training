@@ -1,7 +1,15 @@
-import { describe, it, expect } from 'vitest';
+import { type Mock, describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createActivity } from '#entities/activity.ts';
+import { db } from '#db';
 import ExportActivitiesButton, { toCSVValue, toCSV } from '../export-activities-button';
+
+vi.mock(import('#db'), async (importOriginal) => {
+  const original = await importOriginal();
+  original.db.activities.toArray = vi.fn();
+  return original;
+});
 
 describe('toCSVValue', () => {
   it('returns an empty string for nullish values', () => {
@@ -58,5 +66,27 @@ describe('ExportActivitiesButton', () => {
     const button = await findByRole('button', { name: 'Export Data' });
 
     expect(button).toBeTruthy();
+  });
+
+  it('disables the button while loading', async () => {
+    const { promise, resolve } = Promise.withResolvers();
+    (db.activities.toArray as Mock).mockImplementation(() => promise);
+    await createActivity({ exercise: 'Barbell Bench Press' });
+
+    const { findByRole, getByRole } = render(<ExportActivitiesButton />);
+
+    let button = await findByRole('button', { name: 'Export Data' });
+
+    await userEvent.click(button);
+
+    button = getByRole('button', { name: 'Exporting' });
+    expect(button.getAttribute('aria-busy')).toBe('true');
+    expect(button.getAttribute('aria-disabled')).toBe('true');
+
+    resolve([]);
+
+    button = await findByRole('button', { name: 'Export Data' });
+    expect(button.getAttribute('aria-busy')).toBe('false');
+    expect(button.getAttribute('aria-disabled')).toBe('false');
   });
 });
