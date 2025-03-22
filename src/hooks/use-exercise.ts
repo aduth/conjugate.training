@@ -1,4 +1,4 @@
-import { type Exercise, db } from '#db.ts';
+import { type Exercise, db } from '#db';
 import { useLiveQuery } from 'dexie-react-hooks';
 
 function useExercise(slug?: string | null): Exercise | null | undefined {

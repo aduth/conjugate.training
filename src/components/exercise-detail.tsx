@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import useExercise from '#hooks/use-exercise.ts';
+import useExercise from '#hooks/use-exercise';
 import ListSkeleton from './list-skeleton';
 import LatestActivities from './latest-activities';
 import ExerciseDetailBackLink from './exercise-detail-back-link';

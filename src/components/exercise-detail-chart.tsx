@@ -15,7 +15,7 @@ import { type Activity, db } from '#db';
 import { getEstimatedWeight } from '#lib/estimator';
 import { formatDate } from './formatted-date';
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
-import cn from '#lib/class-names.ts';
+import cn from '#lib/class-names';
 import { getFormattedWeight } from './formatted-weight';
 
 interface ExerciseDetailChartProps {

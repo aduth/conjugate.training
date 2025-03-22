@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 import { db } from '#db';
-import { addCustomExercise } from '#entities/exercise.ts';
+import { addCustomExercise } from '#entities/exercise';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { Input } from './ui/input';
 import { Button } from './ui/button';

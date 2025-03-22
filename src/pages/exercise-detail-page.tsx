@@ -1,7 +1,7 @@
 import { type RouteComponentProps } from 'wouter';
-import ExerciseDetail from '#components/exercise-detail.tsx';
-import PageTitle from '#components/page-title.tsx';
-import useExerciseName from '#hooks/use-exercise-name.ts';
+import ExerciseDetail from '#components/exercise-detail';
+import PageTitle from '#components/page-title';
+import useExerciseName from '#hooks/use-exercise-name';
 
 function ExerciseDetailPage({ params }: RouteComponentProps<{ exercise: string }>) {
   const exerciseName = useExerciseName(params.exercise);

@@ -1,5 +1,5 @@
-import useDocumentState from '#hooks/use-document-state.ts';
-import cn from '#lib/class-names.ts';
+import useDocumentState from '#hooks/use-document-state';
+import cn from '#lib/class-names';
 
 type PageHeadingProps = React.ComponentProps<'h1'>;
 

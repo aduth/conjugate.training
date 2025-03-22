@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { createActivity } from '#entities/activity.ts';
-import { addCustomExercise } from '#entities/exercise.ts';
-import ExerciseDetail from '../exercise-detail.tsx';
+import { createActivity } from '#entities/activity';
+import { addCustomExercise } from '#entities/exercise';
+import ExerciseDetail from '../exercise-detail';
 
 describe('ExerciseDetail', () => {
   it('should render latest activities for exercise with recorded activity', async () => {

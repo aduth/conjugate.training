@@ -1,5 +1,5 @@
-import ExerciseList from '#components/exercise-list.tsx';
-import PageTitle from '#components/page-title.tsx';
+import ExerciseList from '#components/exercise-list';
+import PageTitle from '#components/page-title';
 
 function ExercisesPage() {
   return (

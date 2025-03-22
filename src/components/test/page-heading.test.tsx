@@ -1,7 +1,7 @@
 import { render, renderHook } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import PageHeading from '../page-heading';
-import useDocumentState from '#hooks/use-document-state.ts';
+import useDocumentState from '#hooks/use-document-state';
 
 describe('PageHeading', () => {
   it('renders with default title from document state', () => {

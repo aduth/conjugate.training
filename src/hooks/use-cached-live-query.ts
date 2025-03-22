@@ -1,6 +1,6 @@
 import { liveQuery } from 'dexie';
 import useSWRSubscription from 'swr/subscription';
-import toArray from '#lib/to-array.ts';
+import toArray from '#lib/to-array';
 
 const useCachedLiveQuery = <T>(
   key: string | string[],

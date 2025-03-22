@@ -1,6 +1,6 @@
-import ExportActivitiesButton from '#components/export-activities-button.tsx';
-import LatestActivities from '#components/latest-activities.tsx';
-import PageTitle from '#components/page-title.tsx';
+import ExportActivitiesButton from '#components/export-activities-button';
+import LatestActivities from '#components/latest-activities';
+import PageTitle from '#components/page-title';
 
 function LatestActivitiesPage() {
   return (

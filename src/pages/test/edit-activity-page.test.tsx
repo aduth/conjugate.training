@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import EditActivityPage from '../edit-activity-page';
-import { createActivity } from '#entities/activity.ts';
+import { createActivity } from '#entities/activity';
 
 describe('EditActivityPage', () => {
   it('sets the page title', async () => {

@@ -1,8 +1,8 @@
 import { type ReactNode, useRef } from 'react';
 import { Activity, CirclePlus, List } from 'lucide-react';
 import { Link, useRoute } from 'wouter';
-import useDocumentState from '#hooks/use-document-state.ts';
-import useMaintainedNavigateFocus from '#hooks/use-maintained-navigation-focus.ts';
+import useDocumentState from '#hooks/use-document-state';
+import useMaintainedNavigateFocus from '#hooks/use-maintained-navigation-focus';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import TabPage from './tab-page';
 import PageHeading from './page-heading';

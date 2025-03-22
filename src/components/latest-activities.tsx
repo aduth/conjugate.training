@@ -6,7 +6,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '#db';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '#components/ui/tooltip';
 import useCachedLiveQuery from '#hooks/use-cached-live-query';
-import { getExerciseSlug } from '#entities/exercise.ts';
+import { getExerciseSlug } from '#entities/exercise';
 import { Details, DetailsItem } from './ui/details';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';

@@ -2,7 +2,7 @@ import { useActionState, type ComponentProps } from 'react';
 import { Loader2 } from 'lucide-react';
 import { pick } from 'remeda';
 import { type Activity, db } from '#db';
-import useCachedLiveQuery from '#hooks/use-cached-live-query.ts';
+import useCachedLiveQuery from '#hooks/use-cached-live-query';
 import { Button } from './ui/button';
 
 type ExportActivitiesButtonProps = ComponentProps<'form'>;

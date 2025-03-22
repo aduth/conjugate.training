@@ -1,7 +1,7 @@
 import { type KeyboardEvent, useCallback, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { Command as CommandPrimitive } from 'cmdk';
-import cn from '#lib/class-names.ts';
+import cn from '#lib/class-names';
 import { Badge } from './ui/badge';
 import { Command, CommandGroup, CommandItem, CommandList } from './ui/command';
 

@@ -4,7 +4,7 @@ import LatestPage from '#pages/latest-activities-page';
 import NewActivityPage from '#pages/new-activity-page';
 import EditActivityPage from '#pages/edit-activity-page';
 import ExercisesPage from '#pages/exercises-page';
-import ExerciseDetailPage from '#pages/exercise-detail-page.tsx';
+import ExerciseDetailPage from '#pages/exercise-detail-page';
 import logoImageURL from '#assets/images/logo.svg';
 import SignInOut from './sign-in-out';
 import Page from './page';

@@ -1,5 +1,5 @@
 import ActivityForm from '#components/activity-form';
-import PageTitle from '#components/page-title.tsx';
+import PageTitle from '#components/page-title';
 
 function NewActivityPage() {
   return (

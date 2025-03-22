@@ -1,6 +1,6 @@
 import { type ComponentType, type ReactNode } from 'react';
 import { type LucideProps } from 'lucide-react';
-import cn from '#lib/class-names.ts';
+import cn from '#lib/class-names';
 
 interface DetailsProps {
   children: ReactNode;

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import App from '#components/app.tsx';
+import App from '#components/app';
 
 test('creating new activity', async () => {
   indexedDB.deleteDatabase('conjugate');

@@ -1,4 +1,4 @@
-import { pluralize } from '#lib/i18n.ts';
+import { pluralize } from '#lib/i18n';
 
 interface FormattedWeightProps {
   value: number;

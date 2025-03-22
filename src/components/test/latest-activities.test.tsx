@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import LatestActivities from '../latest-activities';
-import { createActivity } from '#entities/activity.ts';
+import { createActivity } from '#entities/activity';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react';
 

@@ -12,7 +12,7 @@
 // - https://dexie.org/cloud/docs/add-public-data
 
 import { indexBy, map, pipe, prop } from 'remeda';
-import { fetchExercises } from '#services/exercises.ts';
+import { fetchExercises } from '#services/exercises';
 import { getExerciseSlug } from '#entities/exercise';
 
 interface DexieCloudImport {

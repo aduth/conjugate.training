@@ -3,7 +3,7 @@ import { memoryLocation } from 'wouter/memory-location';
 import { describe, it, expect } from 'vitest';
 import Page from '../page';
 import { Route, Router } from 'wouter';
-import PageTitle from '#components/page-title.tsx';
+import PageTitle from '#components/page-title';
 
 describe('Page', () => {
   it('renders active tab, with title and labelled tab panel', () => {

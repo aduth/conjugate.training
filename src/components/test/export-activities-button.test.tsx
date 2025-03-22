@@ -1,7 +1,7 @@
 import { type Mock, describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createActivity } from '#entities/activity.ts';
+import { createActivity } from '#entities/activity';
 import { db } from '#db';
 import ExportActivitiesButton, { toCSVValue, toCSV } from '../export-activities-button';
 

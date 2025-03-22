@@ -14,7 +14,7 @@ import {
 import { Drawer, DrawerContent, DrawerTrigger } from '#/components/ui/drawer';
 import { Popover, PopoverContent, PopoverTrigger } from '#components/ui/popover';
 import useExerciseData from '#hooks/use-exercise-data';
-import { useMediaQuery } from '#hooks/use-media-query.ts';
+import { useMediaQuery } from '#hooks/use-media-query';
 import { DialogDescription, DialogTitle } from './ui/dialog';
 
 interface ExerciseSelectProps {

@@ -1,10 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Award, Calendar1 } from 'lucide-react';
-import { db } from '#db.ts';
+import { db } from '#db';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
 import { Details, DetailsItem } from './ui/details';
-import { getEstimatedWeight } from '#lib/estimator.ts';
+import { getEstimatedWeight } from '#lib/estimator';
 
 interface ExerciseInfoProps {
   name: string;

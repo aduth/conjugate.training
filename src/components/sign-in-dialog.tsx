@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { type DXCAlert, type DXCInputField, resolveText } from 'dexie-cloud-addon';
 import { useObservable } from 'dexie-react-hooks';
-import { db } from '#db.ts';
+import { db } from '#db';
 import { Button } from './ui/button';
 import {
   Dialog,

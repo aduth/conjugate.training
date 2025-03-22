@@ -1,12 +1,12 @@
-import { db } from '#db.ts';
-import useCachedLiveQuery from '#hooks/use-cached-live-query.ts';
+import { db } from '#db';
+import useCachedLiveQuery from '#hooks/use-cached-live-query';
 import { Activity } from 'lucide-react';
 import { Link } from 'wouter';
 import EmptyActivitiesState from './empty-activities-state';
 import ListSkeleton from './list-skeleton';
 import TwoColumnList, { TwoColumnListItem, TwoColumnListItemColumn } from './two-column-list';
 import { Details, DetailsItem } from './ui/details';
-import { getExerciseSlug } from '#entities/exercise.ts';
+import { getExerciseSlug } from '#entities/exercise';
 
 function ExerciseList() {
   const exerciseCounts = useCachedLiveQuery('exerciseCounts', async () => {
