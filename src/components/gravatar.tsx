@@ -1,5 +1,4 @@
 import useSWR from 'swr';
-import { Avatar, AvatarImage } from './ui/avatar';
 
 const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
 
@@ -23,7 +22,7 @@ async function getGravatarURL(email: string, size?: number) {
   const hash = await getDigest(email);
   const url = new URL(hash, GRAVATAR_BASE_URL);
   url.searchParams.set('d', 'mp');
-  if (size) url.searchParams.set('s', size.toString());
+  if (size) url.searchParams.set('s', (size * 2).toString());
   return url.toString();
 }
 
@@ -32,7 +31,9 @@ function Gravatar({ email, size }: GravatarProps) {
     getGravatarURL(email, size),
   );
 
-  return <Avatar>{url && <AvatarImage src={url} alt="Avatar" />}</Avatar>;
+  if (!url) return null;
+
+  return <img src={url} alt="Avatar" width={size} height={size} className="rounded-full" />;
 }
 
 export default Gravatar;

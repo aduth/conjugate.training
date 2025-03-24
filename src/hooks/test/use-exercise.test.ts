@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import useExercise from '../use-exercise';
 import { db } from '#db';
 
-vi.mock('#db.ts', () => ({
+vi.mock('#db', () => ({
   db: {
     exercises: {
       get: vi.fn().mockResolvedValue(undefined),
