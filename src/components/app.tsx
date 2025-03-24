@@ -5,6 +5,7 @@ import NewActivityPage from '#pages/new-activity-page';
 import EditActivityPage from '#pages/edit-activity-page';
 import ExercisesPage from '#pages/exercises-page';
 import ExerciseDetailPage from '#pages/exercise-detail-page';
+import SettingsPage from '#pages/settings-page.tsx';
 import logoImageURL from '#assets/images/logo.svg';
 import SignInOut from './sign-in-out';
 import Page from './page';
@@ -27,6 +28,7 @@ function App() {
             <Route path="/activities/:activityId/edit" component={EditActivityPage} />
             <Route path="/exercises" component={ExercisesPage} />
             <Route path="/exercises/:exercise" component={ExerciseDetailPage} />
+            <Route path="/settings" component={SettingsPage} />
             <Route>
               <Redirect to="/latest" />
             </Route>

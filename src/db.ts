@@ -16,9 +16,15 @@ interface Exercise extends Partial<DBSyncedObject> {
   name: string;
 }
 
+interface Settings extends Partial<DBSyncedObject> {
+  id: string;
+  unit?: 'lbs' | 'kgs';
+}
+
 interface Database extends Dexie {
   activities: DexieCloudTable<Activity, 'id'>;
   exercises: DexieCloudTable<Exercise, 'name'>;
+  settings: DexieCloudTable<Settings, 'id'>;
 }
 
 const db = new Dexie('conjugate', { addons: [dexieCloud] }) as Database;
@@ -26,6 +32,7 @@ const db = new Dexie('conjugate', { addons: [dexieCloud] }) as Database;
 db.version(1).stores({
   activities: '@id, exercise, bandType, chainWeight, createdAt',
   exercises: 'name, slug',
+  settings: '@id',
 });
 
 if (process.env.NODE_ENV !== 'test') {
@@ -36,4 +43,4 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
-export { db, type Activity, type Exercise };
+export { db, type Activity, type Exercise, type Settings };

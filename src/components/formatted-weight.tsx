@@ -1,14 +1,18 @@
+import useSettings from '#hooks/use-settings.ts';
 import { pluralize } from '#lib/i18n';
 
 interface FormattedWeightProps {
   value: number;
 }
 
-export const getFormattedWeight = (value: number): string =>
-  `${value}${pluralize('lb', 'lbs', value)}`;
+const getUnitSingular = (unit: 'lbs' | 'kgs') => unit.slice(0, -1);
+
+export const getFormattedWeight = (value: number, unit: 'lbs' | 'kgs' = 'lbs'): string =>
+  `${value}${pluralize(getUnitSingular(unit), unit, value)}`;
 
 function FormattedWeight({ value }: FormattedWeightProps) {
-  return getFormattedWeight(value);
+  const [settings] = useSettings();
+  return getFormattedWeight(value, settings?.unit);
 }
 
 export default FormattedWeight;
