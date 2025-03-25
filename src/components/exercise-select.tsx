@@ -107,7 +107,7 @@ export function ExerciseSelect({ id, value, onChange }: ExerciseSelectProps) {
             role="combobox"
             aria-expanded={isOpen}
             aria-label="Select exercise"
-            className="justify-between"
+            className="justify-between truncate"
           >
             {value ? value : 'Select exercise…'}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -128,7 +128,7 @@ export function ExerciseSelect({ id, value, onChange }: ExerciseSelectProps) {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="justify-between" aria-label="Select exercise">
+        <Button variant="outline" className="justify-between truncate" aria-label="Select exercise">
           {value ? value : 'Select exercise…'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
