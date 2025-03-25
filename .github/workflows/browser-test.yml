@@ -1,4 +1,4 @@
-name: Unit Test
+name: Browser Test
 
 on: [push]
 
@@ -15,5 +15,5 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install dependencies
         run: npm ci && npx playwright install
-      - name: Unit Test
+      - name: Browser Test
         run: npm run test:browser
