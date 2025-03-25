@@ -38,4 +38,13 @@ describe('PageHeading', () => {
 
     expect(heading.id).toBe('test-id');
   });
+
+  it('renders a skeleton fallback when no title or children are provided', () => {
+    const { getByRole } = render(<PageHeading />);
+
+    const heading = getByRole('heading', { level: 1, name: 'Loading' });
+
+    expect(heading).toBeTruthy();
+    expect(heading.querySelector('[data-slot=skeleton]')).toBeTruthy();
+  });
 });

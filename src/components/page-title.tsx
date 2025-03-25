@@ -5,7 +5,7 @@ import useDocumentState from '#hooks/use-document-state';
 interface PageTitleProps {
   showHeading?: boolean;
 
-  children: string;
+  children: string | null;
 }
 
 const BASE_TITLE = 'Conjugate Training';

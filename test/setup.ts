@@ -1,5 +1,6 @@
 import 'fake-indexeddb/auto';
 import '@testing-library/jest-dom/vitest';
+import { resetAllStores } from '#lib/state';
 import { beforeEach, beforeAll, vi } from 'vitest';
 import { db } from '#db';
 
@@ -36,4 +37,5 @@ beforeAll(async () => {
 beforeEach(async () => {
   await db.activities.clear();
   history.replaceState(null, '');
+  resetAllStores();
 });

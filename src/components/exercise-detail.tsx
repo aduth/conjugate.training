@@ -34,6 +34,7 @@ function ExerciseDetail({ slug }: ExerciseDetailProps) {
   } else if (exercise === null) {
     return (
       <>
+        <PageHeading>{exercise}</PageHeading>
         <ExerciseDetailBackLink />
         <EmptyExerciseState />
       </>
@@ -42,6 +43,7 @@ function ExerciseDetail({ slug }: ExerciseDetailProps) {
 
   return (
     <>
+      <PageHeading>{exercise}</PageHeading>
       <ExerciseDetailBackLink />
       <ListSkeleton />
     </>

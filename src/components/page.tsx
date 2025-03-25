@@ -40,7 +40,12 @@ function Page({ children }: PageProps) {
           </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent ref={tabRef} value={activeTab} aria-labelledby={undefined} aria-label={title}>
+      <TabsContent
+        ref={tabRef}
+        value={activeTab}
+        aria-labelledby={undefined}
+        aria-label={title ?? undefined}
+      >
         <TabPage>
           {showHeading && <PageHeading />}
           {children}
