@@ -21,8 +21,8 @@ function fetchExercises(query: string, allExercises: string[]): string[] {
 function useExerciseData(query?: string): string[] {
   const allExercises = useCachedLiveQuery('exercises', () => fetchAllExercises());
   const { data: filteredExercises } = useSWR(
-    allExercises && query ? `exercises/${query}` : null,
-    () => fetchExercises(query!, allExercises!),
+    allExercises && query ? ['exercises', query, allExercises] : null,
+    ([, query, allExercises]) => fetchExercises(query, allExercises),
     { keepPreviousData: true },
   );
 
