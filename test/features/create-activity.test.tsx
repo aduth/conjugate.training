@@ -12,14 +12,14 @@ test('creating new activity', async () => {
   // Populate initial entry
   await getByRole('button', { name: 'Select exercise' }).click();
   await getByRole('combobox', { name: 'Search exercise' }).fill('Barbell Bench Press');
-  await getByRole('option', { name: 'Add new “Barbell Bench Press”…' }).click();
+  await getByRole('option', { name: 'Add new “Barbell Bench Press”…', exact: true }).click();
   await getByRole('textbox', { name: 'Weight', exact: true }).fill('225');
   await getByRole('button', { name: 'Submit' }).click();
 
   // Fill basic info
   await getByRole('button', { name: 'Select exercise' }).click();
   await getByRole('combobox', { name: 'Search exercise' }).fill('Barbell Bench Press');
-  await getByRole('option', { name: 'Barbell Bench Press' }).click();
+  await getByRole('option', { name: 'Barbell Bench Press', exact: true }).click();
   await getByRole('textbox', { name: 'Weight', exact: true }).fill('225');
 
   // Navigating from and back should maintain information

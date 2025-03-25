@@ -1,7 +1,7 @@
 import useSWR from 'swr';
-import useSWRImmutable from 'swr/immutable';
 import Fuzzy from '@leeoniya/ufuzzy';
 import { db } from '#db';
+import useCachedLiveQuery from './use-cached-live-query';
 
 const fuzzy = new Fuzzy({ intraMode: 1 });
 
@@ -19,7 +19,7 @@ function fetchExercises(query: string, allExercises: string[]): string[] {
 }
 
 function useExerciseData(query?: string): string[] {
-  const { data: allExercises } = useSWRImmutable('exercises', () => fetchAllExercises());
+  const allExercises = useCachedLiveQuery('exercises', () => fetchAllExercises());
   const { data: filteredExercises } = useSWR(
     allExercises && query ? `exercises/${query}` : null,
     () => fetchExercises(query!, allExercises!),
