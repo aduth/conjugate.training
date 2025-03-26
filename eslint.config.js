@@ -21,6 +21,7 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': 'off',
       '@typescript-eslint/no-shadow': 'off',
+      'prefer-const': ['error', { destructuring: 'all' }],
     },
   },
 );

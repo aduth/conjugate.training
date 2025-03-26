@@ -13,6 +13,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { prop, sortBy } from 'remeda';
 import { type Activity, db } from '#db';
 import { getEstimatedWeight } from '#lib/estimator';
+import useSettings from '#hooks/use-settings';
 import { formatDate } from './formatted-date';
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
 import cn from '#lib/class-names';
@@ -77,6 +78,7 @@ function ExerciseDetailChartDot({
 }
 
 function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
+  const [settings] = useSettings();
   const activities = useLiveQuery<EstimatedActivity[]>(async () => {
     if (!exercise) return [];
     const result = await db.activities
@@ -86,7 +88,7 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
 
     return result.map((activity) => {
       if (activity.reps > 1 || activity.chainWeight) {
-        const estimate = getEstimatedWeight(1, activity)!;
+        const estimate = getEstimatedWeight(1, activity, settings?.maxRepFormula)!;
         return {
           ...activity,
           label: `~${estimate}`,
@@ -97,7 +99,7 @@ function ExerciseDetailChart({ exercise }: ExerciseDetailChartProps) {
 
       return { ...activity, label: activity.weight.toString() };
     });
-  }, [exercise]);
+  }, [exercise, settings]);
   const domain = useMemo(() => {
     const sortedActivities = sortBy(activities ?? [], prop('weight'));
 

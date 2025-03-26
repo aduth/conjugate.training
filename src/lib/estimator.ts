@@ -6,6 +6,10 @@ function getBrzyckiEstimate(weight: number, reps: number): number {
   return weight * (36.0 / (37 - reps));
 }
 
+function getEpleyEstimate(weight: number, reps: number): number {
+  return weight * (1 + reps / 30);
+}
+
 function getNCSALoadEstimate(weight: number, reps: number): number | null {
   if (reps <= 0 || reps > NCSA_LOAD_COEFFICIENTS.length) {
     return null;
@@ -14,11 +18,28 @@ function getNCSALoadEstimate(weight: number, reps: number): number | null {
   return weight * NCSA_LOAD_COEFFICIENTS[reps - 1];
 }
 
-export function getEstimatedWeight(reps: number, best: Activity): number | null {
+export function getOneRepMax(best: Activity, formula: 'brzycki' | 'epley' = 'brzycki'): number {
+  let { weight, reps, chainWeight } = best;
+
+  if (chainWeight) weight += chainWeight / 2;
+  if (reps === 1) return weight;
+
+  switch (formula) {
+    case 'brzycki':
+      return getBrzyckiEstimate(weight, reps);
+
+    case 'epley':
+      return getEpleyEstimate(weight, reps);
+  }
+}
+
+export function getEstimatedWeight(
+  reps: number,
+  best: Activity,
+  formula: 'brzycki' | 'epley' = 'brzycki',
+): number | null {
   if (best.bandType) return null;
-  let { weight } = best;
-  if (best.chainWeight) weight += best.chainWeight / 2;
-  const oneRepMax = getBrzyckiEstimate(weight, best.reps);
+  const oneRepMax = getOneRepMax(best, formula);
   const estimatedWeight = getNCSALoadEstimate(oneRepMax, reps);
   return estimatedWeight === null ? null : Math.round(estimatedWeight * 10) / 10;
 }

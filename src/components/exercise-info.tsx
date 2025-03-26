@@ -1,10 +1,11 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Award, Calendar1 } from 'lucide-react';
 import { db } from '#db';
+import { getEstimatedWeight } from '#lib/estimator';
+import useSettings from '#hooks/use-settings';
 import FormattedWeight from './formatted-weight';
 import FormattedDate from './formatted-date';
 import { Details, DetailsItem } from './ui/details';
-import { getEstimatedWeight } from '#lib/estimator';
 
 interface ExerciseInfoProps {
   name: string;
@@ -44,13 +45,14 @@ function useSortedFirst(
 }
 
 function ExerciseInfo({ name, reps = 1, chainWeight = 0, bandType = null }: ExerciseInfoProps) {
+  const [settings] = useSettings();
   const best = useSortedFirst(name, 'weight', { reps, chainWeight, bandType });
   const bestAllReps = useSortedFirst(name, 'weight', { bandType, chainWeight });
   const latest = useSortedFirst(name, 'createdAt', { reps, chainWeight, bandType });
 
   let estimated;
   if (!chainWeight && !bandType && best?.reps !== reps && bestAllReps) {
-    estimated = getEstimatedWeight(reps, bestAllReps);
+    estimated = getEstimatedWeight(reps, bestAllReps, settings?.maxRepFormula);
   }
 
   if (!best && !bestAllReps && !latest && !estimated) return null;

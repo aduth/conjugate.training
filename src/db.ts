@@ -19,6 +19,7 @@ interface Exercise extends Partial<DBSyncedObject> {
 interface Settings extends Partial<DBSyncedObject> {
   id: string;
   unit?: 'lbs' | 'kgs';
+  maxRepFormula?: 'brzycki' | 'epley';
 }
 
 interface Database extends Dexie {

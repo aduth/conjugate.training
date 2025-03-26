@@ -10,6 +10,7 @@ import { Button } from './ui/button';
 
 const formSchema = z.object({
   unit: z.enum(['lbs', 'kgs']).default('lbs'),
+  maxRepFormula: z.enum(['brzycki', 'epley']).default('brzycki'),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -19,7 +20,7 @@ function SettingsForm() {
   const [settings, setSettings] = useSettings();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { unit: 'lbs' },
+    defaultValues: { unit: 'lbs', maxRepFormula: 'brzycki' },
   });
 
   useEffect(() => {
@@ -59,6 +60,36 @@ function SettingsForm() {
                       <RadioGroupItem value="kgs" />
                     </FormControl>
                     <FormLabel className="font-normal">kgs</FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="maxRepFormula"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="font-bold">1RM Formula</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="brzycki" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Brzycki</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="epley" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Epley</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
