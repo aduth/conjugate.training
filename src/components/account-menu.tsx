@@ -1,6 +1,6 @@
 import { useObservable } from 'dexie-react-hooks';
 import { Menu } from 'lucide-react';
-import { useLocation } from 'wouter';
+import { Link } from 'wouter';
 import { db } from '#db';
 import {
   DropdownMenu,
@@ -13,7 +13,6 @@ import Gravatar from './gravatar';
 
 function AccountMenu() {
   const currentUser = useObservable(db.cloud.currentUser)!;
-  const [, navigate] = useLocation();
 
   return (
     <DropdownMenu>
@@ -24,7 +23,9 @@ function AccountMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => navigate('/settings')}>Settings</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/settings">Settings</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => db.cloud.logout()}>Sign Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
