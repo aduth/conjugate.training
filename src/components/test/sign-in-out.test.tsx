@@ -29,27 +29,8 @@ describe('SignInOut Component', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('renders sign in button when user is not logged in', () => {
+  it('renders user menu', () => {
     db.cloud.syncState.next({ phase: 'in-sync', status: 'connected' });
-    db.cloud.currentUser.next({ isLoggedIn: false, claims: {}, lastLogin: new Date() });
-
-    const { getByRole } = render(<SignInOut />);
-
-    expect(getByRole('button', { name: 'Sign in' })).toBeTruthy();
-  });
-
-  it('renders sign in button when data is syncing', () => {
-    db.cloud.syncState.next({ phase: 'not-in-sync', status: 'connected' });
-    db.cloud.currentUser.next({ isLoggedIn: false, claims: {}, lastLogin: new Date() });
-
-    const { getByRole } = render(<SignInOut />);
-
-    expect(getByRole('button', { name: 'Sign in' })).toBeTruthy();
-  });
-
-  it('renders user menu when signed in', () => {
-    db.cloud.syncState.next({ phase: 'in-sync', status: 'connected' });
-    db.cloud.currentUser.next({ isLoggedIn: true, claims: {}, lastLogin: new Date() });
 
     const { getByRole } = render(<SignInOut />);
 

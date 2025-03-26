@@ -12,21 +12,26 @@ import { Button } from './ui/button';
 import Gravatar from './gravatar';
 
 function AccountMenu() {
-  const currentUser = useObservable(db.cloud.currentUser)!;
+  const currentUser = useObservable(db.cloud.currentUser);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="rounded-full" aria-label="Account menu">
           <Menu />
-          <Gravatar email={currentUser.email} size={24} />
+          <Gravatar email={currentUser?.email} size={24} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        {!currentUser?.isLoggedIn && (
+          <DropdownMenuItem onClick={() => db.cloud.login()}>Sign In</DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link to="/settings">Settings</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => db.cloud.logout()}>Sign Out</DropdownMenuItem>
+        {currentUser?.isLoggedIn && (
+          <DropdownMenuItem onClick={() => db.cloud.logout()}>Sign Out</DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

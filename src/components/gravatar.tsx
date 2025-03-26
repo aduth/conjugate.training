@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import { User } from 'lucide-react';
 
 const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
 
@@ -31,9 +32,11 @@ function Gravatar({ email, size }: GravatarProps) {
     getGravatarURL(email, size),
   );
 
-  if (!url) return null;
+  if (url) {
+    return <img src={url} alt="Avatar" width={size} height={size} className="rounded-full" />;
+  }
 
-  return <img src={url} alt="Avatar" width={size} height={size} className="rounded-full" />;
+  return <User size={size} />;
 }
 
 export default Gravatar;
