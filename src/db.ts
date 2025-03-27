@@ -20,6 +20,7 @@ interface Settings extends Partial<DBSyncedObject> {
   id: string;
   unit?: 'lbs' | 'kgs';
   maxRepFormula?: 'brzycki' | 'epley';
+  estimateFrom?: 'best' | 'latest';
 }
 
 interface Database extends Dexie {

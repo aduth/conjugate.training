@@ -1,7 +1,13 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import ExerciseInfo from '../exercise-info';
 import { db } from '#db';
+
+vi.mock(import('#db'), async (importOriginal) => {
+  const original = await importOriginal();
+  original.db.settings.toArray = vi.fn().mockImplementation(() => []);
+  return original;
+});
 
 describe('ExerciseInfo', () => {
   beforeEach(async () => {
@@ -110,6 +116,26 @@ describe('ExerciseInfo', () => {
       '185lbs (1/3/25)',
       'Estimated',
       '209.3lbs',
+    ]);
+  });
+
+  it('renders estimated weight when settings is configured to estimate from latest', async () => {
+    (db.settings.toArray as Mock).mockImplementation(() => [{ estimateFrom: 'latest' }]);
+
+    const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" reps={3} />);
+
+    await findByText('Latest (2RM)');
+    const term = await findByText('Estimated');
+    const list = term.closest('dl')!;
+    const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
+
+    expect(terms).to.deep.equal([
+      'Best (1RM)',
+      '225lbs (1/1/25)',
+      'Latest (2RM)',
+      '185lbs (1/3/25)',
+      'Estimated',
+      '177lbs',
     ]);
   });
 

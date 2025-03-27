@@ -11,6 +11,7 @@ import { Button } from './ui/button';
 const formSchema = z.object({
   unit: z.enum(['lbs', 'kgs']).default('lbs'),
   maxRepFormula: z.enum(['brzycki', 'epley']).default('brzycki'),
+  estimateFrom: z.enum(['best', 'latest']).default('best'),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -20,7 +21,7 @@ function SettingsForm() {
   const [settings, setSettings] = useSettings();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { unit: 'lbs', maxRepFormula: 'brzycki' },
+    defaultValues: { unit: 'lbs', maxRepFormula: 'brzycki', estimateFrom: 'best' },
   });
 
   useEffect(() => {
@@ -90,6 +91,36 @@ function SettingsForm() {
                       <RadioGroupItem value="epley" />
                     </FormControl>
                     <FormLabel className="font-normal">Epley</FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="estimateFrom"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className="font-bold">Estimate Based On</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="best" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Best Activity</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="latest" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Latest Activity</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
