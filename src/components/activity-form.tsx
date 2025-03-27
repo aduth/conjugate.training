@@ -201,6 +201,7 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       type="number"
                       inputMode="numeric"
                       pattern="[0-9]*"
+                      min={1}
                       onFocus={(event) => event.target.select()}
                       onChange={(event) => field.onChange(Number(event.target.value))}
                     />
