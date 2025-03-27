@@ -18,8 +18,8 @@ function getNCSALoadEstimate(weight: number, reps: number): number | null {
   return weight * NCSA_LOAD_COEFFICIENTS[reps - 1];
 }
 
-export function getOneRepMax(best: Activity, formula: 'brzycki' | 'epley' = 'brzycki'): number {
-  let { weight, reps, chainWeight } = best;
+export function getOneRepMax(activity: Activity, formula: 'brzycki' | 'epley' = 'brzycki'): number {
+  let { weight, reps, chainWeight } = activity;
 
   if (chainWeight) weight += chainWeight / 2;
   if (reps === 1) return weight;
@@ -35,11 +35,11 @@ export function getOneRepMax(best: Activity, formula: 'brzycki' | 'epley' = 'brz
 
 export function getEstimatedWeight(
   reps: number,
-  best: Activity,
+  activity: Activity,
   formula: 'brzycki' | 'epley' = 'brzycki',
 ): number | null {
-  if (best.bandType) return null;
-  const oneRepMax = getOneRepMax(best, formula);
+  if (activity.bandType) return null;
+  const oneRepMax = getOneRepMax(activity, formula);
   const estimatedWeight = getNCSALoadEstimate(oneRepMax, reps);
   return estimatedWeight === null ? null : Math.round(estimatedWeight * 10) / 10;
 }
