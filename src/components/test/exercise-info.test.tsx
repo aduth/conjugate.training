@@ -98,23 +98,37 @@ describe('ExerciseInfo', () => {
   it('renders estimated weight when reps do not match', async () => {
     const { findByText } = render(<ExerciseInfo name="Barbell Bench Press" reps={3} />);
 
+    await findByText('Latest (2RM)');
     const term = await findByText('Estimated');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
-    expect(terms).to.deep.equal(['Best (1RM)', '225lbs (1/1/25)', 'Estimated', '209.3lbs']);
+    expect(terms).to.deep.equal([
+      'Best (1RM)',
+      '225lbs (1/1/25)',
+      'Latest (2RM)',
+      '185lbs (1/3/25)',
+      'Estimated',
+      '209.3lbs',
+    ]);
   });
 
-  it('renders best but not estimate with band type', async () => {
+  it('renders best and latest but not estimate with band type', async () => {
     const { findByText } = render(
       <ExerciseInfo name="Barbell Bench Press" reps={3} bandType="Mini Band" />,
     );
 
+    await findByText('Latest (1RM)');
     const term = await findByText('Best (1RM)');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
-    expect(terms).to.deep.equal(['Best (1RM)', '185lbs (1/4/25)']);
+    expect(terms).to.deep.equal([
+      'Best (1RM)',
+      '185lbs (1/4/25)',
+      'Latest (1RM)',
+      '185lbs (1/4/25)',
+    ]);
   });
 
   it('renders best but not estimate with chain weight', async () => {
@@ -122,10 +136,16 @@ describe('ExerciseInfo', () => {
       <ExerciseInfo name="Barbell Bench Press" reps={3} chainWeight={80} />,
     );
 
+    await findByText('Latest (1RM)');
     const term = await findByText('Best (1RM)');
     const list = term.closest('dl')!;
     const terms = Array.from(list.querySelectorAll('dt,dd')).map((el) => el.textContent);
 
-    expect(terms).to.deep.equal(['Best (1RM)', '185lbs (1/5/25)']);
+    expect(terms).to.deep.equal([
+      'Best (1RM)',
+      '185lbs (1/5/25)',
+      'Latest (1RM)',
+      '185lbs (1/5/25)',
+    ]);
   });
 });

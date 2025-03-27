@@ -49,6 +49,7 @@ function ExerciseInfo({ name, reps = 1, chainWeight = 0, bandType = null }: Exer
   const best = useSortedFirst(name, 'weight', { reps, chainWeight, bandType });
   const bestAllReps = useSortedFirst(name, 'weight', { bandType, chainWeight });
   const latest = useSortedFirst(name, 'createdAt', { reps, chainWeight, bandType });
+  const latestAllReps = useSortedFirst(name, 'createdAt', { chainWeight, bandType });
 
   let estimated;
   if (!chainWeight && !bandType && best?.reps !== reps && bestAllReps) {
@@ -79,17 +80,29 @@ function ExerciseInfo({ name, reps = 1, chainWeight = 0, bandType = null }: Exer
           </span>
         </DetailsItem>
       )}
-      {estimated && (
-        <DetailsItem icon={Calendar1} name="Estimated" className="justify-self-start">
-          <FormattedWeight value={estimated} />
-        </DetailsItem>
-      )}
       {latest && (
         <DetailsItem icon={Calendar1} name="Latest" className="justify-self-start">
           <FormattedWeight value={latest.weight} />{' '}
           <span className="font-normal text-gray-500">
             (<FormattedDate value={latest.createdAt} variant="short" />)
           </span>
+        </DetailsItem>
+      )}
+      {!latest && latestAllReps && (
+        <DetailsItem
+          icon={Calendar1}
+          name={`Latest (${latestAllReps.reps}RM)`}
+          className="text-right only:text-center"
+        >
+          <FormattedWeight value={latestAllReps.weight} />{' '}
+          <span className="font-normal text-gray-500">
+            (<FormattedDate value={latestAllReps.createdAt} variant="short" />)
+          </span>
+        </DetailsItem>
+      )}
+      {estimated && (
+        <DetailsItem icon={Calendar1} name="Estimated" className="justify-self-start">
+          <FormattedWeight value={estimated} />
         </DetailsItem>
       )}
     </Details>
