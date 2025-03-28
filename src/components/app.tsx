@@ -6,6 +6,7 @@ import EditActivityPage from '#pages/edit-activity-page';
 import ExercisesPage from '#pages/exercises-page';
 import ExerciseDetailPage from '#pages/exercise-detail-page';
 import SettingsPage from '#pages/settings-page.tsx';
+import RepMaxCalculatorPage from '#pages/rep-max-calculator-page.tsx';
 import logoImageURL from '#assets/images/logo.svg';
 import SignInOut from './sign-in-out';
 import Page from './page';
@@ -29,6 +30,7 @@ function App() {
             <Route path="/exercises" component={ExercisesPage} />
             <Route path="/exercises/:exercise" component={ExerciseDetailPage} />
             <Route path="/settings" component={SettingsPage} />
+            <Route path="/calculator" component={RepMaxCalculatorPage} />
             <Route>
               <Redirect to="/latest" />
             </Route>

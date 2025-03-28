@@ -1,4 +1,9 @@
-import { type Activity } from '#db';
+interface EstimateSource {
+  weight: number;
+  reps: number;
+  bandType?: string | null;
+  chainWeight?: number;
+}
 
 const NCSA_LOAD_COEFFICIENTS: number[] = [1.0, 0.95, 0.93, 0.9, 0.87, 0.85, 0.83, 0.8, 0.77, 0.75];
 
@@ -18,7 +23,10 @@ function getNCSALoadEstimate(weight: number, reps: number): number | null {
   return weight * NCSA_LOAD_COEFFICIENTS[reps - 1];
 }
 
-export function getOneRepMax(activity: Activity, formula: 'brzycki' | 'epley' = 'brzycki'): number {
+export function getOneRepMax(
+  activity: EstimateSource,
+  formula: 'brzycki' | 'epley' = 'brzycki',
+): number {
   let { weight, reps, chainWeight } = activity;
 
   if (chainWeight) weight += chainWeight / 2;
@@ -35,7 +43,7 @@ export function getOneRepMax(activity: Activity, formula: 'brzycki' | 'epley' = 
 
 export function getEstimatedWeight(
   reps: number,
-  activity: Activity,
+  activity: EstimateSource,
   formula: 'brzycki' | 'epley' = 'brzycki',
 ): number | null {
   if (activity.bandType) return null;

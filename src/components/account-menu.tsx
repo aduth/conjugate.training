@@ -27,6 +27,9 @@ function AccountMenu() {
           <DropdownMenuItem onClick={() => db.cloud.login()}>Sign In</DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
+          <Link to="/calculator">Rep Max Calculator</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link to="/settings">Settings</Link>
         </DropdownMenuItem>
         {currentUser?.isLoggedIn && (
