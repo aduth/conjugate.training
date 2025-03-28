@@ -52,4 +52,20 @@ describe('FormattedWeight component', () => {
 
     expect(getByText('0lbs')).toBeTruthy();
   });
+
+  it('should render formatted weight with rounded value', () => {
+    (useSettings as Mock).mockReturnValue([{ unit: 'lbs' }]);
+
+    const { getByText } = render(<FormattedWeight value={10.456} />);
+
+    expect(getByText('10.5lbs')).toBeTruthy();
+  });
+
+  it('should render formatted weight with rounded value close to whole number', () => {
+    (useSettings as Mock).mockReturnValue([{ unit: 'lbs' }]);
+
+    const { getByText } = render(<FormattedWeight value={9.95} />);
+
+    expect(getByText('10lbs')).toBeTruthy();
+  });
 });
