@@ -40,4 +40,12 @@ describe('RepMaxCalculatorForm', () => {
 
     expect(getByRole('status')).toHaveTextContent('Result: 83.7lbs');
   });
+
+  it('should ignore invalid (non-numeric) input in numeric text fields', async () => {
+    const { getByLabelText } = render(<RepMaxCalculatorForm />);
+
+    const sourceWeightInput = getByLabelText('Source Weight');
+    await userEvent.type(sourceWeightInput, '12invalid');
+    expect(sourceWeightInput).toHaveValue('12');
+  });
 });

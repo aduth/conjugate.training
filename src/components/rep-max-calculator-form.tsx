@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { pipe, when, isNumber } from 'remeda';
 import { getEstimatedWeight } from '#lib/estimator';
 import useSettings from '#hooks/use-settings';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
@@ -57,7 +58,9 @@ function RepMaxCalculatorForm() {
                       {...field}
                       inputMode="numeric"
                       onFocus={(event) => event.target.select()}
-                      onChange={(event) => field.onChange(Number(event.target.value))}
+                      onChange={(event) =>
+                        pipe(event.target.value, Number, when(isNumber, field.onChange))
+                      }
                     />
                   </FormControl>
                   <FormMessage />

@@ -1,6 +1,6 @@
 import { render, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { type Mock, describe, it, expect, vi, afterEach } from 'vitest';
+import { type Mock, describe, it, expect, vi } from 'vitest';
 import { useLocation } from 'wouter';
 import { db } from '#db';
 import { toast } from 'sonner';
@@ -8,7 +8,7 @@ import ActivityForm from '../activity-form';
 
 vi.mock(import('wouter'), async (importOriginal) => ({
   ...(await importOriginal()),
-  useLocation: vi.fn().mockImplementation(() => []),
+  useLocation: vi.fn().mockReturnValue([undefined, vi.fn()]),
 }));
 
 vi.mock('sonner', () => ({
@@ -18,10 +18,6 @@ vi.mock('sonner', () => ({
 }));
 
 describe('ActivityForm', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   it('should allow creation of new activity', async () => {
     vi.spyOn(db.activities, 'add');
     const { getByRole } = render(<ActivityForm />);
@@ -59,7 +55,6 @@ describe('ActivityForm', () => {
 
   it('saves empty band type as null', async () => {
     vi.spyOn(db.activities, 'add');
-    (useLocation as Mock).mockReturnValue([undefined, vi.fn()]);
     const { getByRole } = render(<ActivityForm />);
 
     // Select exercise
@@ -94,6 +89,23 @@ describe('ActivityForm', () => {
         bandType: null,
       }),
     );
+  });
+
+  it('should ignore invalid (non-numeric) input in numeric text fields', async () => {
+    const { getByRole } = render(<ActivityForm />);
+
+    const chainWeightField = getByRole('textbox', { name: 'Chain Weight' }) as HTMLInputElement;
+    await userEvent.type(chainWeightField, '12invalid');
+    expect(chainWeightField).toHaveValue('12');
+
+    const weightField = getByRole('textbox', { name: 'Weight' }) as HTMLInputElement;
+    await userEvent.type(weightField, '12invalid');
+    expect(weightField).toHaveValue('12');
+    await userEvent.clear(weightField);
+    await userEvent.type(weightField, '12.');
+    expect(weightField).toHaveValue('12.');
+    await userEvent.tab();
+    expect(weightField).toHaveValue('12');
   });
 
   it('should allow editing of existing activity', async () => {

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { History } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { isShallowEqual } from 'remeda';
+import { isNumber, isShallowEqual, pipe, when } from 'remeda';
 import { Button } from '#components/ui/button';
 import {
   Form,
@@ -178,7 +178,9 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       {...field}
                       inputMode="numeric"
                       onFocus={(event) => event.target.select()}
-                      onChange={(event) => field.onChange(Number(event.target.value))}
+                      onChange={(event) =>
+                        pipe(event.target.value, Number, when(isNumber, field.onChange))
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -223,6 +225,16 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       {...field}
                       inputMode="decimal"
                       onFocus={(event) => event.target.select()}
+                      onChange={(event) =>
+                        pipe(
+                          event.target.value,
+                          Number,
+                          when(isNumber, {
+                            onTrue: () => field.onChange(event.target.value),
+                            onFalse: event.preventDefault,
+                          }),
+                        )
+                      }
                       onBlur={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
