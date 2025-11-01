@@ -4,7 +4,7 @@ import App from '#components/app';
 
 test('creating new activity', async () => {
   indexedDB.deleteDatabase('conjugate');
-  const { getByRole } = render(<App />);
+  const { getByRole } = await render(<App />);
 
   // Navigate to Add New
   await getByRole('tab', { name: 'Add New' }).click();

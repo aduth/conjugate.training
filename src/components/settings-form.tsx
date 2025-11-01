@@ -9,9 +9,9 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Button } from './ui/button';
 
 const formSchema = z.object({
-  unit: z.enum(['lbs', 'kgs']).default('lbs'),
-  maxRepFormula: z.enum(['brzycki', 'epley']).default('brzycki'),
-  estimateFrom: z.enum(['best', 'latest']).default('best'),
+  unit: z.enum(['lbs', 'kgs']),
+  maxRepFormula: z.enum(['brzycki', 'epley']),
+  estimateFrom: z.enum(['best', 'latest']),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -19,9 +19,13 @@ type FormSchema = z.infer<typeof formSchema>;
 function SettingsForm() {
   const initialized = useRef<boolean>(false);
   const [settings, setSettings] = useSettings();
-  const form = useForm<FormSchema>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { unit: 'lbs', maxRepFormula: 'brzycki', estimateFrom: 'best' },
+    defaultValues: {
+      unit: 'lbs' as const,
+      maxRepFormula: 'brzycki' as const,
+      estimateFrom: 'best' as const,
+    },
   });
 
   useEffect(() => {
@@ -30,7 +34,7 @@ function SettingsForm() {
     form.reset(settings);
   }, [settings, form]);
 
-  async function onSubmit(nextSettings: z.infer<typeof formSchema>) {
+  async function onSubmit(nextSettings: FormSchema) {
     await setSettings(nextSettings);
     toast.success('Settings saved successfully');
   }

@@ -10,7 +10,7 @@
     "paths": {
       "#*": ["./src/*"]
     },
-    "types": ["@vitest/browser/matchers"],
+    "types": ["node", "vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -27,5 +27,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "test", "bin"]
+  "include": ["src", "test"]
 }

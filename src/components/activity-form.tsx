@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useLocation } from 'wouter';
 import { toast } from 'sonner';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { History } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -35,11 +35,11 @@ const getDefaultValues = () => ({
 
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
-  reps: z.number().min(0).default(0),
-  weight: z.number().min(0).default(0),
-  chainWeight: z.number().min(0).default(0),
-  bandType: z.string().nullable().default(null),
-  createdAt: z.date().default(() => new Date()),
+  reps: z.number().min(0),
+  weight: z.number().min(0),
+  chainWeight: z.number().min(0),
+  bandType: z.string().nullable(),
+  createdAt: z.date(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -51,18 +51,16 @@ interface ActivityFormProps {
 function ActivityForm({ entity }: ActivityFormProps) {
   const [, navigate] = useLocation();
   const [historyState, setHistoryState] = useState<{ activityForm?: FormSchema }>({});
-  const form = useForm<FormSchema>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: history.state?.activityForm ?? getDefaultValues(),
   });
-  const [exercise, reps, chainWeight, bandType, weight, createdAt] = form.watch([
-    'exercise',
-    'reps',
-    'chainWeight',
-    'bandType',
-    'weight',
-    'createdAt',
-  ]);
+  const exercise = useWatch({ name: 'exercise', control: form.control });
+  const reps = useWatch({ name: 'reps', control: form.control });
+  const chainWeight = useWatch({ name: 'chainWeight', control: form.control });
+  const bandType = useWatch({ name: 'bandType', control: form.control });
+  const weight = useWatch({ name: 'weight', control: form.control });
+  const createdAt = useWatch({ name: 'createdAt', control: form.control });
   const historyCount = useLiveQuery<number | null>(
     () => (exercise ? db.activities.where({ exercise }).count() : null),
     [exercise],

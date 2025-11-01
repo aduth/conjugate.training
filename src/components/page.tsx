@@ -16,7 +16,7 @@ function Page({ children }: PageProps) {
   const [, params] = useRoute('/:activeTab/*?');
   const title = useDocumentState((state) => state.title);
   const showHeading = useDocumentState((state) => state.showHeading);
-  useMaintainedNavigateFocus(tabRef.current);
+  useMaintainedNavigateFocus(tabRef);
   const { activeTab = '' } = params ?? {};
 
   return (

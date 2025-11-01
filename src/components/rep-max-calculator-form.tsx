@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { pipe, when, isNumber } from 'remeda';
 import { getEstimatedWeight } from '#lib/estimator';
@@ -9,17 +9,15 @@ import { Input } from './ui/input';
 import FormattedWeight from './formatted-weight';
 
 const formSchema = z.object({
-  sourceWeight: z.number().min(0).default(0),
-  sourceReps: z.number().min(1).default(1),
-  targetPercentage: z.number().min(0).max(100).default(100),
-  targetReps: z.number().min(1).default(1),
+  sourceWeight: z.number().min(0),
+  sourceReps: z.number().min(1),
+  targetPercentage: z.number().min(0).max(100),
+  targetReps: z.number().min(1),
 });
-
-type FormSchema = z.infer<typeof formSchema>;
 
 function RepMaxCalculatorForm() {
   const [settings] = useSettings();
-  const form = useForm<FormSchema>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       sourceWeight: 0,
@@ -28,13 +26,11 @@ function RepMaxCalculatorForm() {
       targetReps: 1,
     },
   });
-
-  const [sourceWeight, sourceReps, targetPercentage, targetReps] = form.watch([
-    'sourceWeight',
-    'sourceReps',
-    'targetPercentage',
-    'targetReps',
-  ]);
+  const { control } = form;
+  const sourceWeight = useWatch({ name: 'sourceWeight', control });
+  const sourceReps = useWatch({ name: 'sourceReps', control });
+  const targetPercentage = useWatch({ name: 'targetPercentage', control });
+  const targetReps = useWatch({ name: 'targetReps', control });
 
   const result = getEstimatedWeight(
     targetReps,

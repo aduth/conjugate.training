@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type RefObject } from 'react';
 import { useLocation } from 'wouter';
 import useDidUpdateEffect from './use-did-update-effect';
 
-function useMaintainedNavigateFocus(fallbackElement: HTMLElement | null) {
+function useMaintainedNavigateFocus(fallbackElement: RefObject<HTMLElement | null>) {
   const [location] = useLocation();
   const [focusedElement, setFocusedElement] = useState<Element | null>(null);
 
@@ -15,7 +15,7 @@ function useMaintainedNavigateFocus(fallbackElement: HTMLElement | null) {
   }, []);
   useDidUpdateEffect(() => {
     if (focusedElement && !focusedElement.isConnected) {
-      fallbackElement?.focus({ preventScroll: true });
+      fallbackElement.current?.focus({ preventScroll: true });
     }
   }, [location]);
 }
