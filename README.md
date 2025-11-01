@@ -15,6 +15,7 @@ Conjugate Training is an exercise journaling application designed to record your
 You will need the following to be installed before getting started:
 
 - [Node.js](https://nodejs.org/en)
+- [pnpm](https://pnpm.io/installation)
 
 To get started, follow these steps:
 
@@ -28,13 +29,13 @@ To get started, follow these steps:
 2. **Install dependencies:**
 
    ```sh
-   npm install
+   pnpm install
    ```
 
 3. **Start the development server:**
 
    ```sh
-   npm run dev
+   pnpm dev
    ```
 
 4. **Open the application:** Open your browser and navigate to `http://localhost:5173` to start using the application.
