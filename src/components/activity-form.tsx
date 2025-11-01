@@ -5,7 +5,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { History } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { isNumber, isShallowEqual, pipe, when } from 'remeda';
+import { isShallowEqual } from 'remeda';
 import { Button } from '#components/ui/button';
 import {
   Form,
@@ -35,9 +35,9 @@ const getDefaultValues = () => ({
 
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
-  reps: z.number().min(0),
-  weight: z.number().min(0),
-  chainWeight: z.number().min(0),
+  reps: z.coerce.number('Reps must be a number').min(0),
+  weight: z.coerce.number('Weight must be a number').min(0),
+  chainWeight: z.coerce.number('Chain weight must be a number').min(0),
   bandType: z.string().nullable(),
   createdAt: z.date(),
 });
@@ -176,9 +176,6 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       {...field}
                       inputMode="numeric"
                       onFocus={(event) => event.target.select()}
-                      onChange={(event) =>
-                        pipe(event.target.value, Number, when(isNumber, field.onChange))
-                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -203,7 +200,6 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       pattern="[0-9]*"
                       min={1}
                       onFocus={(event) => event.target.select()}
-                      onChange={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
                   <FormMessage />
@@ -223,17 +219,6 @@ function ActivityForm({ entity }: ActivityFormProps) {
                       {...field}
                       inputMode="decimal"
                       onFocus={(event) => event.target.select()}
-                      onChange={(event) =>
-                        pipe(
-                          event.target.value,
-                          Number,
-                          when(isNumber, {
-                            onTrue: () => field.onChange(event.target.value),
-                            onFalse: event.preventDefault,
-                          }),
-                        )
-                      }
-                      onBlur={(event) => field.onChange(Number(event.target.value))}
                     />
                   </FormControl>
                   <FormMessage />

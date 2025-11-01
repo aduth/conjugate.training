@@ -11,6 +11,7 @@ export default defineConfig({
           environment: 'happy-dom',
           globals: true,
           setupFiles: './test/setup.ts',
+          clearMocks: true,
         },
         optimizeDeps: {
           include: ['react/jsx-dev-runtime'],
@@ -21,6 +22,7 @@ export default defineConfig({
           name: 'browser',
           dir: './test/features',
           setupFiles: './test/features/setup.ts',
+          clearMocks: true,
           browser: {
             enabled: true,
             headless: true,

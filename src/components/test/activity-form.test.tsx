@@ -91,21 +91,54 @@ describe('ActivityForm', () => {
     );
   });
 
-  it('should ignore invalid (non-numeric) input in numeric text fields', async () => {
-    const { getByRole } = render(<ActivityForm />);
+  it('should validate invalid (non-numeric) input in numeric text fields on submission', async () => {
+    const { getByRole, container } = render(<ActivityForm />);
+    vi.spyOn(db.activities, 'add');
+
+    // Select exercise
+    const exerciseField = getByRole('combobox', { name: 'Select exercise' });
+    await userEvent.click(exerciseField);
+    const input = document.activeElement!;
+    await userEvent.type(input, 'Barbell Bench Press');
+    const controlsId = input.getAttribute('aria-controls')!;
+    const options = document.getElementById(controlsId)!;
+    const option = await within(options).findByRole('option', { name: 'Barbell Bench Press' });
+    await userEvent.click(option);
 
     const chainWeightField = getByRole('textbox', { name: 'Chain Weight' }) as HTMLInputElement;
     await userEvent.type(chainWeightField, '12invalid');
-    expect(chainWeightField).toHaveValue('12');
+    await userEvent.keyboard('[Enter]');
+    expect(chainWeightField).toHaveAccessibleDescription('Chain weight must be a number');
+
+    await userEvent.clear(chainWeightField);
+    expect(chainWeightField).not.toHaveAccessibleDescription();
 
     const weightField = getByRole('textbox', { name: 'Weight' }) as HTMLInputElement;
     await userEvent.type(weightField, '12invalid');
-    expect(weightField).toHaveValue('12');
+    await userEvent.keyboard('[Enter]');
+    expect(weightField).toHaveAccessibleDescription('Weight must be a number');
+
     await userEvent.clear(weightField);
+    expect(weightField).not.toHaveAccessibleDescription();
+
     await userEvent.type(weightField, '12.');
     expect(weightField).toHaveValue('12.');
-    await userEvent.tab();
-    expect(weightField).toHaveValue('12');
+
+    const form = container.querySelector('form')!;
+    const { promise, resolve } = Promise.withResolvers();
+    form.addEventListener('submit', resolve);
+
+    await userEvent.keyboard('[Enter]');
+    await promise;
+
+    expect(db.activities.add).toHaveBeenCalledWith(
+      expect.objectContaining({
+        chainWeight: 0,
+        exercise: 'Barbell Bench Press',
+        reps: 1,
+        weight: 12,
+      }),
+    );
   });
 
   it('should allow editing of existing activity', async () => {
