@@ -111,6 +111,7 @@ describe('ActivityForm', () => {
     expect(chainWeightField).toHaveAccessibleDescription('Chain weight must be a number');
 
     await userEvent.clear(chainWeightField);
+    await userEvent.type(chainWeightField, '0');
     expect(chainWeightField).not.toHaveAccessibleDescription();
 
     const weightField = getByRole('textbox', { name: 'Weight' }) as HTMLInputElement;
@@ -119,6 +120,8 @@ describe('ActivityForm', () => {
     expect(weightField).toHaveAccessibleDescription('Weight must be a number');
 
     await userEvent.clear(weightField);
+    await userEvent.type(weightField, '0');
+    await userEvent.click(exerciseField);
     expect(weightField).not.toHaveAccessibleDescription();
 
     await userEvent.type(weightField, '12.');

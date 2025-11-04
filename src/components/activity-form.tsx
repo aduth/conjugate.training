@@ -35,9 +35,9 @@ const getDefaultValues = () => ({
 
 const formSchema = z.object({
   exercise: z.string().min(1, 'You must make a selection'),
-  reps: z.coerce.number('Reps must be a number').min(0),
-  weight: z.coerce.number('Weight must be a number').min(0),
-  chainWeight: z.coerce.number('Chain weight must be a number').min(0),
+  reps: z.number('Reps must be a number').min(0),
+  weight: z.number('Weight must be a number').min(0),
+  chainWeight: z.number('Chain weight must be a number').min(0),
   bandType: z.string().nullable(),
   createdAt: z.date(),
 });
@@ -51,15 +51,15 @@ interface ActivityFormProps {
 function ActivityForm({ entity }: ActivityFormProps) {
   const [, navigate] = useLocation();
   const [historyState, setHistoryState] = useState<{ activityForm?: FormSchema }>({});
-  const form = useForm({
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: history.state?.activityForm ?? getDefaultValues(),
   });
   const exercise = useWatch({ name: 'exercise', control: form.control });
   const reps = useWatch({ name: 'reps', control: form.control });
-  const chainWeight = useWatch({ name: 'chainWeight', control: form.control });
+  const chainWeight = useWatch({ name: 'chainWeight', control: form.control }) || 0;
   const bandType = useWatch({ name: 'bandType', control: form.control });
-  const weight = useWatch({ name: 'weight', control: form.control });
+  const weight = useWatch({ name: 'weight', control: form.control }) || 0;
   const createdAt = useWatch({ name: 'createdAt', control: form.control });
   const historyCount = useLiveQuery<number | null>(
     () => (exercise ? db.activities.where({ exercise }).count() : null),
@@ -168,12 +168,12 @@ function ActivityForm({ entity }: ActivityFormProps) {
             <FormField
               control={form.control}
               name="chainWeight"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Chain Weight</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
+                      {...form.register('chainWeight', { valueAsNumber: true })}
                       inputMode="numeric"
                       onFocus={(event) => event.target.select()}
                     />
@@ -211,12 +211,12 @@ function ActivityForm({ entity }: ActivityFormProps) {
             <FormField
               control={form.control}
               name="weight"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Weight</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
+                      {...form.register('weight', { valueAsNumber: true })}
                       inputMode="decimal"
                       onFocus={(event) => event.target.select()}
                     />

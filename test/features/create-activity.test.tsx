@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import App from '#components/app';
 
@@ -14,6 +15,7 @@ test('creating new activity', async () => {
   await getByRole('combobox', { name: 'Search exercise' }).fill('Barbell Bench Press');
   await getByRole('option', { name: 'Add new “Barbell Bench Press”…', exact: true }).click();
   await getByRole('textbox', { name: 'Weight', exact: true }).fill('225');
+  await getByRole('textbox', { name: 'Chain Weight', exact: true }).fill('80');
   await getByRole('button', { name: 'Submit' }).click();
 
   // Fill basic info
@@ -21,6 +23,12 @@ test('creating new activity', async () => {
   await getByRole('combobox', { name: 'Search exercise' }).fill('Barbell Bench Press');
   await getByRole('option', { name: 'Barbell Bench Press', exact: true }).click();
   await getByRole('textbox', { name: 'Weight', exact: true }).fill('225');
+
+  // Exercise detail should show latest recorded data when creating activity for same exercise, but
+  // only for exact match of all parameters
+  await expect.element(page.getByText('Best', { exact: true })).not.toBeInTheDocument();
+  await getByRole('textbox', { name: 'Chain Weight', exact: true }).fill('80');
+  await expect.element(page.getByText('Best', { exact: true })).toBeInTheDocument();
 
   // Navigating from and back should maintain information
   await getByRole('link', { name: 'History (1)' }).click();
