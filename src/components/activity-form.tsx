@@ -189,12 +189,12 @@ function ActivityForm({ entity }: ActivityFormProps) {
             <FormField
               control={form.control}
               name="reps"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Reps</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
+                      {...form.register('reps', { valueAsNumber: true })}
                       type="number"
                       inputMode="numeric"
                       pattern="[0-9]*"

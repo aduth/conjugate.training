@@ -127,6 +127,10 @@ describe('ActivityForm', () => {
     await userEvent.type(weightField, '12.');
     expect(weightField).toHaveValue('12.');
 
+    const repsField = getByRole('spinbutton', { name: 'Reps' }) as HTMLInputElement;
+    await userEvent.type(repsField, '2');
+    expect(repsField).not.toHaveAccessibleDescription();
+
     const form = container.querySelector('form')!;
     const { promise, resolve } = Promise.withResolvers();
     form.addEventListener('submit', resolve);
@@ -138,7 +142,7 @@ describe('ActivityForm', () => {
       expect.objectContaining({
         chainWeight: 0,
         exercise: 'Barbell Bench Press',
-        reps: 1,
+        reps: 2,
         weight: 12,
       }),
     );
